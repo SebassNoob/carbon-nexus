@@ -1,0 +1,20 @@
+{
+	"name": "carbon-nexus",
+	"private": true,
+	"scripts": {
+		"build": "turbo build",
+		"dev": "turbo dev",
+    "start": "turbo start", 
+		"format": "bunx @biomejs/biome format --write ./*.{json,md,yml}"
+	},
+	"devDependencies": {
+		"prettier": "^3.2.5",
+		"turbo": "^2.1.1",
+		"typescript": "^5.4.5"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"packageManager": "bun@1.1.26",
+	"workspaces": ["apps/*", "packages/*"]
+}

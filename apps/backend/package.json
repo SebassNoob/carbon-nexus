@@ -1,0 +1,29 @@
+{
+	"name": "backend",
+	"module": "index.ts",
+	"type": "module",
+	"scripts": {
+		"dev": "bun run --watch src/index.ts",
+		"build": "bun build src/index.ts --outdir dist --minify",
+		"start": "node dist/index.js",
+		"biome:format": "bunx @biomejs/biome format --write .",
+		"biome:lint": "bunx @biomejs/biome lint --write ./src",
+		"prisma:generate": "prisma generate --schema src/db/schema.prisma",
+		"prisma:migrate": "prisma migrate dev --schema src/db/schema.prisma",
+		"prisma:format": "prisma format --schema src/db/schema.prisma"
+	},
+	"devDependencies": {
+		"@shared/biome-config": "workspace:*",
+		"@shared/types": "workspace:*",
+		"@types/bun": "latest",
+		"@types/node": "^22.5.2",
+		"prisma": "^5.19.0"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	},
+	"dependencies": {
+		"@prisma/client": "5.19.0",
+		"hono": "^4.5.10"
+	}
+}
