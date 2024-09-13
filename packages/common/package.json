@@ -1,0 +1,14 @@
+{
+  "name": "@shared/common",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "exports": {
+    "./types": "./src/types/index.ts",
+    "./schemas": "./src/schemas/index.ts",
+    "./utils": "./src/utils/index.ts"
+  },
+  "devDependencies": {
+    "zod": "^3.23.8"
+  }
+}

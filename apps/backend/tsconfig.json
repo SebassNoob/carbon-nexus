@@ -7,6 +7,8 @@
 		"moduleDetection": "force",
 		"jsx": "react-jsx",
 		"allowJs": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
 
 		// Bundler mode
 		"moduleResolution": "bundler",
@@ -28,7 +30,8 @@
 		"paths": {
 			"@/*": ["./src/*"],
 			"@db/*": ["./src/db/*"],
-			"@routes/*": ["./src/routes/*"]
+			"@modules/*": ["./src/app/modules/*"],
+			"@utils/*": ["./src/utils/*"]
 		}
 	},
 	"include": ["src/**/*.ts"],

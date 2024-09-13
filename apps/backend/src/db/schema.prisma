@@ -11,7 +11,8 @@ model User {
   id           String        @id
   username     String
   createdAt    DateTime      @default(now())
-  email        String?
+  email        String        @unique
+  passwordHash String?
   sessions     Session[]
   oauthAccount OAuthAccount?
 }
