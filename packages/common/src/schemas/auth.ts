@@ -28,7 +28,7 @@ export const SignUpInputSchema = z.object({
 }) satisfies z.ZodType<SignUpInput>;
 
 export const SignInInputSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email('Invalid email address'),
   password: z.string(),
 }) as z.ZodType<SignInInput>;
 

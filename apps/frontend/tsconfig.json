@@ -13,6 +13,7 @@
 		"isolatedModules": true,
 		"jsx": "preserve",
 		"incremental": true,
+		"verbatimModuleSyntax": true,
 		"plugins": [
 			{
 				"name": "next"
@@ -21,6 +22,7 @@
 		"paths": {
 			"@/*": ["./src/*"],
 			"@": ["./src"],
+			"@shared/common/*": ["../../packages/common/src"],
 			"@lib/*": ["./src/lib/*"],
 			"@lib": ["./src/lib"],
 			"@utils/*": ["./src/utils/*"],

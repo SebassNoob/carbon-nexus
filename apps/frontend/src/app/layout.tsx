@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import dynamic from "next/dynamic";
+
+const ClientProvider = dynamic(() => import("@lib/providers").then((mod) => mod.ClientProvider), {
+	ssr: false,
+});
 import "./globals.css";
+import { Footer, Header } from "@lib/components";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -18,7 +24,15 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={inter.className}>{children}</body>
+			<body className={inter.className}>
+				<ClientProvider>
+					<main className="bg-slate-100 dark:bg-slate-900 min-h-screen w-full transition-all p-8">
+						<Header />
+						<section className="p-4">{children}</section>
+						<Footer />
+					</main>
+				</ClientProvider>
+			</body>
 		</html>
 	);
 }

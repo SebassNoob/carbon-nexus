@@ -31,22 +31,22 @@ export const AppErrorTypes = {
 	InvalidCredentials: {
 		name: "InvalidCredentials",
 		code: 403,
-    cause: "Invalid username or password",
+		cause: "Invalid username or password",
 	},
 	UserNotFound: {
 		name: "UserNotFound",
 		code: 404,
-    cause: "User not found",
+		cause: "User not found",
 	},
 	Unauthorized: {
 		name: "Unauthorized",
 		code: 401,
-    cause: "Unauthorized",
+		cause: "Unauthorized",
 	},
 	ResouceExists: {
 		name: "ResourceExists",
 		code: 409,
-    cause: "Resource already exists",
+		cause: "Resource already exists",
 	},
 	GenericError: (cause: string) => ({
 		name: "GenericError",

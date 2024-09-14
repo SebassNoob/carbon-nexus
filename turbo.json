@@ -6,9 +6,9 @@
 			"inputs": ["src/**"],
 			"outputs": [".next/**", "!.next/cache/**", "dist/**"]
 		},
-    "start": {
-      "dependsOn": ["build"]
-    },
+		"start": {
+			"dependsOn": ["build"]
+		},
 		"dev": {
 			"cache": false,
 			"persistent": true

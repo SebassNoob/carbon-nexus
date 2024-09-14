@@ -4,10 +4,11 @@
 	"scripts": {
 		"build": "turbo build",
 		"dev": "turbo dev",
-    "start": "turbo start", 
+		"start": "turbo start",
 		"format": "bunx @biomejs/biome format --write ./*.{json,md,yml}"
 	},
 	"devDependencies": {
+		"@types/cookie-parser": "^1.4.7",
 		"prettier": "^3.2.5",
 		"turbo": "^2.1.1",
 		"typescript": "^5.4.5"
@@ -16,5 +17,9 @@
 		"node": ">=18"
 	},
 	"packageManager": "bun@1.1.26",
-	"workspaces": ["apps/*", "packages/*"]
+	"workspaces": ["apps/*", "packages/*"],
+	"dependencies": {
+		"@hookform/resolvers": "^3.9.0",
+		"cookie-parser": "^1.4.6"
+	}
 }

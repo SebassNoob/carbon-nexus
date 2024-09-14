@@ -37,8 +37,7 @@ export class AuthService {
 			});
 
 			const session = await lucia.createSession(user.id, {});
-      console.log(session);
-			
+
 			const sessionCookie = lucia.createSessionCookie(session.id);
 
 			return {
@@ -76,7 +75,6 @@ export class AuthService {
 
 		const session = await lucia.createSession(user.id, {});
 
-		
 		const sessionCookie = lucia.createSessionCookie(session.id);
 		return {
 			id: sessionCookie.value,

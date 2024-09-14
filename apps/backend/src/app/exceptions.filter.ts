@@ -5,7 +5,6 @@ import { AppError } from "@utils/appErrors";
 @Catch(AppError)
 export class AppErrorFilter implements ExceptionFilter {
 	catch(exception: AppError, host: ArgumentsHost) {
-		
 		const ctx = host.switchToHttp();
 		const response = ctx.getResponse<Response>();
 		const request = ctx.getRequest<Request>();
@@ -14,7 +13,7 @@ export class AppErrorFilter implements ExceptionFilter {
 		response.status(status).json({
 			timestamp: new Date().toISOString(),
 			path: request.url,
-      name: exception.message,
+			name: exception.message,
 			cause: exception.cause,
 		});
 	}

@@ -4,8 +4,7 @@ import { AppError, AppErrorTypes } from "@utils/appErrors";
 export function handleDatabaseError(error: unknown): never {
 	if (error instanceof Prisma.PrismaClientKnownRequestError) {
 		if (Object.keys(prismaErrors).includes(error.code)) {
-        
-			throw new AppError(prismaErrors[error.code as keyof typeof prismaErrors](error.message))
+			throw new AppError(prismaErrors[error.code as keyof typeof prismaErrors](error.message));
 		}
 		throw new AppError(AppErrorTypes.DatabaseError("Unknown", 500, error.message));
 	} else if (error instanceof Prisma.PrismaClientUnknownRequestError) {
