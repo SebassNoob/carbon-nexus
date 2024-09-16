@@ -36,7 +36,7 @@ export class AuthController {
 	@Delete("signout/:sessionId")
 	@HttpCode(204)
 	async signOut(@Param("sessionId") sessionId: string) {
-		this.authService.signOut({sessionId});
+		this.authService.signOut({ sessionId });
 		return {};
 	}
 

@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-import dynamic from "next/dynamic";
-
-const ClientProvider = dynamic(() => import("@lib/providers").then((mod) => mod.ClientProvider), {
-	ssr: false,
-});
+import { ClientProvider } from "@lib/providers";
 import "./globals.css";
 import { Footer, Header } from "@lib/components";
 

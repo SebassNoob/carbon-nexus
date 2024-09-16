@@ -16,34 +16,34 @@ export default async function Home() {
 				<table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
 					<tbody>
 						<tr className="border-b dark:border-gray-700">
-							<td className="px-4 py-2 text-gray-700 dark:text-gray-300">
+							<td className="px-4 py-2 ">
 								<Text>ID:</Text>
 							</td>
-							<td className="px-4 py-2 text-gray-900 dark:text-gray-100">
+							<td className="px-4 py-2 ">
 								<Text>{data?.id ?? "null"}</Text>
 							</td>
 						</tr>
 						<tr className="border-b dark:border-gray-700">
-							<td className="px-4 py-2 text-gray-700 dark:text-gray-300">
+							<td className="px-4 py-2 ">
 								<Text>Email:</Text>
 							</td>
-							<td className="px-4 py-2 text-gray-900 dark:text-gray-100">
+							<td className="px-4 py-2 ">
 								<Text>{data?.email ?? "null"}</Text>
 							</td>
 						</tr>
 						<tr className="border-b dark:border-gray-700">
-							<td className="px-4 py-2 text-gray-700 dark:text-gray-300">
+							<td className="px-4 py-2 ">
 								<Text>Username:</Text>
 							</td>
-							<td className="px-4 py-2 text-gray-900 dark:text-gray-100">
+							<td className="px-4 py-2 ">
 								<Text>{data?.username ?? "null"}</Text>
 							</td>
 						</tr>
 						<tr>
-							<td className="px-4 py-2 text-gray-700 dark:text-gray-300">
+							<td className="px-4 py-2 ">
 								<Text>CreatedAt:</Text>
 							</td>
-							<td className="px-4 py-2 text-gray-900 dark:text-gray-100">
+							<td className="px-4 py-2 ">
 								<Text>{data?.createdAt ?? "null"}</Text>
 							</td>
 						</tr>

@@ -3,6 +3,7 @@ import { createContext } from "react";
 import { useTheme, useBreakpoint } from "@lib/hooks";
 import type { ClientContextProps, ClientProviderProps } from "./types";
 import { useMemo } from "react";
+import dynamic from "next/dynamic";
 
 export const ClientContext = createContext<ClientContextProps>({
 	theme: "light",
@@ -11,7 +12,7 @@ export const ClientContext = createContext<ClientContextProps>({
 	isMobile: false,
 });
 
-export const ClientProvider = ({ children }: ClientProviderProps) => {
+const _ClientProvider = ({ children }: ClientProviderProps) => {
 	const { theme, setTheme } = useTheme();
 	const { breakpoint, isMobile } = useBreakpoint();
 
@@ -22,3 +23,5 @@ export const ClientProvider = ({ children }: ClientProviderProps) => {
 
 	return <ClientContext.Provider value={value}>{children}</ClientContext.Provider>;
 };
+
+export const ClientProvider = dynamic(() => Promise.resolve(_ClientProvider), { ssr: false });

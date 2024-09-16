@@ -8,9 +8,6 @@
 		"format": "bunx @biomejs/biome format --write ./*.{json,md,yml}"
 	},
 	"devDependencies": {
-		"@types/cookie-parser": "^1.4.7",
-		"@types/js-cookie": "^3.0.6",
-		"prettier": "^3.2.5",
 		"turbo": "^2.1.1",
 		"typescript": "^5.4.5"
 	},
@@ -18,10 +15,5 @@
 		"node": ">=18"
 	},
 	"packageManager": "bun@1.1.26",
-	"workspaces": ["apps/*", "packages/*"],
-	"dependencies": {
-		"@hookform/resolvers": "^3.9.0",
-		"cookie-parser": "^1.4.6",
-		"js-cookie": "^3.0.5"
-	}
+	"workspaces": ["apps/*", "packages/*"]
 }

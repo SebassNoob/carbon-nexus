@@ -9,9 +9,9 @@
 		"biome:lint": "bunx @biomejs/biome lint --write ./src"
 	},
 	"dependencies": {
-		"next": "^15.0.0-canary.154",
-		"react": "^19.0.0-rc-94e652d5-20240912",
-		"react-dom": "^19.0.0-rc-94e652d5-20240912",
+		"next": "^15.0.0-rc.0",
+		"react": "^19.0.0-rc-ee1a403a-20240916",
+		"react-dom": "^19.0.0-rc-ee1a403a-20240916",
 		"react-hook-form": "^7.53.0",
 		"react-hot-toast": "^2.4.1",
 		"swr": "^2.2.5",
