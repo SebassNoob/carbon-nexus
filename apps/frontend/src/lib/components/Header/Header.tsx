@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Code } from "@lib/components";
+import { Code, Logo } from "@lib/components";
 import { useContext } from "react";
 import { ClientContext } from "@lib/providers";
 
@@ -16,9 +16,7 @@ export function Header() {
 				onClick={() => router.push("/")}
 				onKeyDown={(e) => e.key === "Enter" && router.push("/")}
 			>
-				<pre className="dark:bg-black bg-slate-100 p-2 rounded">
-					<Code>Carbon Nexus</Code>
-				</pre>
+				<Logo />
 			</div>
 			<button
 				onClick={() => setTheme(theme === "light" ? "dark" : "light")}

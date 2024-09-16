@@ -23,12 +23,18 @@ export const SignUpInputSchema = z.object({
     message: "Password must contain at least one special character",
   }),
   repeatPassword: z.string(),
-}).refine(data => data.password === data.repeatPassword, {
-  message: "Passwords do not match",
+}).superRefine((data, ctx) => {
+  if (data.password !== data.repeatPassword) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Passwords do not match",
+      path: ["repeatPassword"], // Attach the error to the repeatPassword field
+    });
+  }
 }) satisfies z.ZodType<SignUpInput>;
 
 export const SignInInputSchema = z.object({
-  email: z.string().email('Invalid email address'),
+  email: z.string().email(),
   password: z.string(),
 }) as z.ZodType<SignInInput>;
 

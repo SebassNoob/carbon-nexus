@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { generateIdFromEntropySize } from "lucia";
 import { password as bunPassword } from "bun";
-import type { SignUpInput, SignInInput, SafeUser, SessionCookie } from "@shared/common/types";
+import type { SafeUser, SessionCookie } from "@shared/common/types";
 import { SignUpInputSchema, SignInInputSchema, SessionIdSchema } from "@shared/common/schemas";
 import { validateSchema } from "@utils/validateSchema";
 import { prisma, lucia } from "@db/client";
@@ -87,7 +87,7 @@ export class AuthService {
 		await lucia.invalidateSession(sessionId);
 	}
 
-	async getUserFromSession(_sessionId: unknown): Promise<SafeUser | null> {
+	async getUserFromSession(_sessionId: unknown): Promise<SafeUser> {
 		const { sessionId } = validateSchema(SessionIdSchema, _sessionId);
 		const session = await prisma.session.findFirst({
 			where: {
@@ -96,7 +96,7 @@ export class AuthService {
 		});
 
 		if (!session) {
-			return null;
+			throw new AppError(AppErrorTypes.UserNotFound);
 		}
 
 		const user = await prisma.user.findFirst({
@@ -112,7 +112,7 @@ export class AuthService {
 		});
 
 		if (!user) {
-			return null;
+			throw new AppError(AppErrorTypes.UserNotFound);
 		}
 
 		return user;

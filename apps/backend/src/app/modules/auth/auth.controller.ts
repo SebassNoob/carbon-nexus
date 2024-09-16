@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Post, HttpCode, Res, Query, Delete } from "@nestjs/common";
+import { Controller, Get, Body, Post, HttpCode, Res, Query, Delete, Param } from "@nestjs/common";
 import type { Response, Request } from "express";
 import type { SignInInput, SignUpInput } from "@shared/common/types";
 import { AuthService } from "./auth.service";
@@ -33,15 +33,15 @@ export class AuthController {
 		return {};
 	}
 
-	@Delete("signout")
+	@Delete("signout/:sessionId")
 	@HttpCode(204)
-	async signOut(@Body() input: { sessionId: string }) {
-		this.authService.signOut(input);
+	async signOut(@Param("sessionId") sessionId: string) {
+		this.authService.signOut({sessionId});
 		return {};
 	}
 
-	@Get("me")
-	async me(@Query("sessionId") sessionId: string) {
+	@Get("user")
+	async user(@Query("sessionId") sessionId: string) {
 		return this.authService.getUserFromSession({ sessionId });
 	}
 }

@@ -13,3 +13,4 @@ export * from "./Footer";
 export * from "./Pagination";
 export * from "./Image";
 export * from "./TextInput";
+export * from "./Logo";

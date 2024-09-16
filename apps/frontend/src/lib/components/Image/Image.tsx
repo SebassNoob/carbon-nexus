@@ -1,35 +1,21 @@
-"use client";
-import { useState } from "react";
+import { Suspense } from "react";
 import { twMerge } from "tailwind-merge";
 import { default as NextImage } from "next/image";
 import type { ImageProps } from "./types";
 
 const defaultSkeletonStyle = "w-full h-full animate-pulse bg-gray-300 dark:bg-gray-700";
 
-export function Image({ src, alt, className, skeletonClassName, ...rest }: ImageProps) {
-	const [loaded, setLoaded] = useState(false);
-	const [error, setError] = useState(false);
-	const mergedSkeletonStyles = twMerge(defaultSkeletonStyle, skeletonClassName);
-	const mergedStyles = twMerge(loaded ? "" : "hidden", className);
-
-	if (error) {
-		console.error(`Failed to load image: ${src}`);
-		return null;
-	}
-
+export function Image({ src, alt, skeletonClassName, ...rest }: ImageProps) {
 	return (
-		<>
-			{!loaded && <div className={mergedSkeletonStyles} />}
+		<Suspense fallback={<div className={twMerge(defaultSkeletonStyle, skeletonClassName)} />}>
 			<NextImage
 				src={src}
 				alt={alt ?? ""}
-				fill={true}
-				onLoad={() => setLoaded(true)}
-				onError={() => setError(true)}
-				className={mergedStyles}
+				fill
+				className={twMerge("object-contain", rest.className)}
 				{...rest}
 			/>
-		</>
+		</Suspense>
 	);
 }
 
