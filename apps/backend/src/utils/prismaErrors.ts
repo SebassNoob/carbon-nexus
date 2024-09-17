@@ -7,13 +7,17 @@ export function handleDatabaseError(error: unknown): never {
 			throw new AppError(prismaErrors[error.code as keyof typeof prismaErrors](error.message));
 		}
 		throw new AppError(AppErrorTypes.DatabaseError("Unknown", 500, error.message));
-	} else if (error instanceof Prisma.PrismaClientUnknownRequestError) {
+	}
+	if (error instanceof Prisma.PrismaClientUnknownRequestError) {
 		throw new AppError(AppErrorTypes.DatabaseError("Unknown", 500, error.message));
-	} else if (error instanceof Prisma.PrismaClientInitializationError) {
+	}
+	if (error instanceof Prisma.PrismaClientInitializationError) {
 		throw new AppError(AppErrorTypes.Panic(error.message));
-	} else if (error instanceof Prisma.PrismaClientValidationError) {
+	}
+	if (error instanceof Prisma.PrismaClientValidationError) {
 		throw new AppError(AppErrorTypes.Panic(error.message));
-	} else if (error instanceof Prisma.PrismaClientRustPanicError) {
+	}
+	if (error instanceof Prisma.PrismaClientRustPanicError) {
 		throw new AppError(AppErrorTypes.Panic(error.message));
 	}
 	throw new AppError(AppErrorTypes.GenericError(String(error)));

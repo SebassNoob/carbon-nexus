@@ -12,7 +12,6 @@ export function Header() {
 		<header className="flex items-center justify-between p-4">
 			<div
 				className="flex items-center cursor-pointer"
-				tabIndex={0}
 				onClick={() => router.push("/")}
 				onKeyDown={(e) => e.key === "Enter" && router.push("/")}
 			>
