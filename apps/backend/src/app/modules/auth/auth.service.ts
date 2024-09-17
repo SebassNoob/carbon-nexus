@@ -4,12 +4,16 @@ import { password as bunPassword } from "bun";
 import type { SafeUser, SessionCookie } from "@shared/common/types";
 import { SignUpInputSchema, SignInInputSchema, SessionIdSchema } from "@shared/common/schemas";
 import { validateSchema } from "@utils/validateSchema";
-import { prisma, lucia } from "@db/client";
 import { handleDatabaseError } from "@utils/prismaErrors";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
+import { PrismaService, LuciaService } from "@db/client";
 
 @Injectable()
 export class AuthService {
+	constructor(
+		private prisma: PrismaService,
+		private lucia: LuciaService,
+	) {}
 	private generateUserId(): string {
 		return generateIdFromEntropySize(10);
 	}
@@ -27,7 +31,7 @@ export class AuthService {
 
 		const passwordHash = await this.hashPassword(data.password);
 		try {
-			const user = await prisma.user.create({
+			const user = await this.prisma.user.create({
 				data: {
 					id: this.generateUserId(),
 					username: data.username,
@@ -36,9 +40,9 @@ export class AuthService {
 				},
 			});
 
-			const session = await lucia.createSession(user.id, {});
+			const session = await this.lucia.createSession(user.id, {});
 
-			const sessionCookie = lucia.createSessionCookie(session.id);
+			const sessionCookie = this.lucia.createSessionCookie(session.id);
 
 			return {
 				id: sessionCookie.value,
@@ -52,7 +56,7 @@ export class AuthService {
 	async signIn(input: unknown): Promise<SessionCookie> {
 		const data = validateSchema(SignInInputSchema, input);
 
-		const user = await prisma.user.findFirst({
+		const user = await this.prisma.user.findFirst({
 			where: {
 				email: data.email,
 			},
@@ -73,9 +77,9 @@ export class AuthService {
 			throw new AppError(AppErrorTypes.InvalidCredentials);
 		}
 
-		const session = await lucia.createSession(user.id, {});
+		const session = await this.lucia.createSession(user.id, {});
 
-		const sessionCookie = lucia.createSessionCookie(session.id);
+		const sessionCookie = this.lucia.createSessionCookie(session.id);
 		return {
 			id: sessionCookie.value,
 			expiresAt: session.expiresAt,
@@ -84,12 +88,12 @@ export class AuthService {
 
 	async signOut(_sessionId: unknown): Promise<void> {
 		const { sessionId } = validateSchema(SessionIdSchema, _sessionId);
-		await lucia.invalidateSession(sessionId);
+		await this.lucia.invalidateSession(sessionId);
 	}
 
 	async getUserFromSession(_sessionId: unknown): Promise<SafeUser> {
 		const { sessionId } = validateSchema(SessionIdSchema, _sessionId);
-		const session = await prisma.session.findFirst({
+		const session = await this.prisma.session.findFirst({
 			where: {
 				id: sessionId,
 			},
@@ -99,7 +103,7 @@ export class AuthService {
 			throw new AppError(AppErrorTypes.UserNotFound);
 		}
 
-		const user = await prisma.user.findFirst({
+		const user = await this.prisma.user.findFirst({
 			where: {
 				id: session.userId,
 			},

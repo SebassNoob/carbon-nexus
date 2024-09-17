@@ -1,2 +1,4 @@
-export { default as prisma } from "./prisma";
-export { default as lucia } from "./lucia";
+export * from "./prisma.service";
+export * from "./lucia.service";
+export * from "./prisma.spec";
+export * from './dbClient.module'

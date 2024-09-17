@@ -1,5 +1,5 @@
 import { Controller, Get, Body, Post, HttpCode, Res, Query, Delete, Param } from "@nestjs/common";
-import type { Response, Request } from "express";
+import type { Response } from "express";
 import type { SignInInput, SignUpInput } from "@shared/common/types";
 import { AuthService } from "./auth.service";
 
