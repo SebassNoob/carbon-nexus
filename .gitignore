@@ -40,3 +40,7 @@ yarn-error.log*
 # db
 *.db
 *.db-journal
+
+# Log
+*.log
+**/logs

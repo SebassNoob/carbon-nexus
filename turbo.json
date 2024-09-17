@@ -7,11 +7,22 @@
 			"outputs": [".next/**", "!.next/cache/**", "dist/**"]
 		},
 		"start": {
-			"dependsOn": ["build"]
+			"dependsOn": ["build"],
+      "cache": false
 		},
 		"dev": {
 			"cache": false,
 			"persistent": true
-		}
+		},
+    "biome:format": {
+      "dependsOn": ["^biome:format"],
+      "inputs": ["src/**"],
+      "outputs": ["src/**"]
+    },
+    "biome:lint": {
+      "dependsOn": ["^biome:lint"],
+      "inputs": ["src/**"],
+      "outputs": ["src/**"]
+    }
 	}
 }
