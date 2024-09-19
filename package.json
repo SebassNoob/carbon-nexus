@@ -5,9 +5,12 @@
 		"build": "turbo build",
 		"dev": "turbo dev",
 		"start": "turbo start",
-		"format": "bunx @biomejs/biome format --write ./*.{json,md,yml}"
+		"test": "turbo test",
+		"format": "bunx biome format --write ./*.{json,md,yml} && turbo biome:format",
+		"lint": "bunx @biomejs/biome lint --write ./*.{json,md,yml} && turbo biome:lint"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "^1.9.1",
 		"turbo": "^2.1.1",
 		"typescript": "^5.4.5"
 	},

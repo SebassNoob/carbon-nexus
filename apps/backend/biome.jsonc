@@ -1,0 +1,14 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.9.0/schema.json",
+	"extends": ["@shared/biome-config/base"],
+	"linter": {
+		"rules": {
+			"style": { "useImportType": "off" } // NestJS uses `import type` for injecting services
+		}
+	},
+	"javascript": {
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
+		}
+	}
+}

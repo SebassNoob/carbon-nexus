@@ -4,42 +4,40 @@ import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
 import { PrismaService } from "./prisma.service";
 
 @Injectable()
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: enforce the forwarding of calls
 export class LuciaService {
-    private lucia: Lucia;
+	private lucia: Lucia;
 
-    constructor(private prismaService: PrismaService) {
-        const adapter = new PrismaAdapter(
-            this.prismaService.session,
-            this.prismaService.user,
-        );
-        this.lucia = new Lucia(adapter, {
-            sessionCookie: {
-                expires: false,
-                attributes: {
-                    secure: process.env.NODE_ENV === "production",
-                },
-            },
-            getUserAttributes: (attributes) => ({
-                email: attributes.email,
-            }),
-        });
+	constructor(private prismaService: PrismaService) {
+		const adapter = new PrismaAdapter(this.prismaService.session, this.prismaService.user);
+		this.lucia = new Lucia(adapter, {
+			sessionCookie: {
+				expires: false,
+				attributes: {
+					secure: process.env.NODE_ENV === "production",
+				},
+			},
+			getUserAttributes: (attributes) => ({
+				email: attributes.email,
+			}),
+		});
 
-        return new Proxy(this, {
-            get: (target, prop: string | symbol) => {
-                if (prop in target.lucia) {
-                    return target.lucia[prop as keyof typeof target.lucia];
-                }
-                return target[prop as keyof typeof target];
-            },
-        });
-    }
+		// biome-ignore lint/correctness/noConstructorReturn: allow calls to this object be forwarded to the lucia instance
+		return new Proxy(this, {
+			get: (target, prop: string | symbol) => {
+				if (prop in target.lucia) {
+					return target.lucia[prop as keyof typeof target.lucia];
+				}
+				return target[prop as keyof typeof target];
+			},
+		});
+	}
 }
 
 export interface LuciaService extends Lucia {}
 
 declare module "lucia" {
 	interface Register {
-		// biome-ignore lint: these are internals of Lucia typings
 		Lucia: typeof LuciaService;
 		DatabaseUserAttributes: {
 			email: string;

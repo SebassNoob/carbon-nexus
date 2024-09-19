@@ -8,21 +8,26 @@
 		},
 		"start": {
 			"dependsOn": ["build"],
-      "cache": false
+			"cache": false
 		},
 		"dev": {
 			"cache": false,
 			"persistent": true
 		},
-    "biome:format": {
-      "dependsOn": ["^biome:format"],
-      "inputs": ["src/**"],
-      "outputs": ["src/**"]
-    },
-    "biome:lint": {
-      "dependsOn": ["^biome:lint"],
-      "inputs": ["src/**"],
-      "outputs": ["src/**"]
-    }
+		"test": {
+			"dependsOn": ["^test"],
+			"inputs": ["src/**"],
+			"outputs": ["coverage/**"]
+		},
+		"biome:format": {
+			"dependsOn": ["^biome:format"],
+			"inputs": ["src/**"],
+			"outputs": ["src/**"]
+		},
+		"biome:lint": {
+			"dependsOn": ["^biome:lint"],
+			"inputs": ["src/**"],
+			"outputs": ["src/**"]
+		}
 	}
 }

@@ -9,11 +9,12 @@
 		"allowJs": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
+		"esModuleInterop": true,
 
 		// Bundler mode
 		"moduleResolution": "bundler",
 		"allowImportingTsExtensions": true,
-		"verbatimModuleSyntax": true,
+		"verbatimModuleSyntax": false,
 		"noEmit": true,
 
 		// Best practices
@@ -31,7 +32,9 @@
 			"@/*": ["./src/*"],
 			"@db/*": ["./src/db/*"],
 			"@modules/*": ["./src/app/modules/*"],
-			"@utils/*": ["./src/utils/*"]
+			"@utils/*": ["./src/utils/*"],
+			"@mocks/*": ["./__mocks__/*"],
+			"@mocks": ["./__mocks__"]
 		}
 	},
 	"include": ["src/**/*.ts"],

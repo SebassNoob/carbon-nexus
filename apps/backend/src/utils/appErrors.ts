@@ -3,6 +3,7 @@ import { HttpException } from "@nestjs/common";
 export class AppError extends HttpException {
 	constructor(error: AppErrorType) {
 		super(error.name, error.code, { cause: error.cause });
+		this.name = error.name;
 	}
 }
 
@@ -53,4 +54,5 @@ export const AppErrorTypes = {
 		code: 500,
 		cause,
 	}),
+	// biome-ignore lint/suspicious/noExplicitAny: allow the use of any in this context
 } as const satisfies Record<string, ((...args: any[]) => AppErrorType) | AppErrorType>;

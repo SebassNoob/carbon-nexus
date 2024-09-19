@@ -63,11 +63,11 @@ export class AuthService {
 		});
 
 		if (!user) {
-			throw new AppError(AppErrorTypes.InvalidCredentials);
+			throw new AppError(AppErrorTypes.UserNotFound);
 		}
 
 		// no password -- used oauth
-		if (!user.passwordHash) {
+		if (user.passwordHash === null) {
 			throw new AppError(AppErrorTypes.InvalidCredentials);
 		}
 

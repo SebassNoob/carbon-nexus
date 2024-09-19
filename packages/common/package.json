@@ -12,7 +12,7 @@
 		"zod": "^3.23.8"
 	},
 	"scripts": {
-		"biome:format": "bunx @biomejs/biome format --write .",
+		"biome:format": "bunx biome format --write .",
 		"biome:lint": "bunx @biomejs/biome lint --write ./src"
 	}
 }
