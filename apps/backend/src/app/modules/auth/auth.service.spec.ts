@@ -11,7 +11,7 @@ mock.module("lucia", () => ({
 }));
 
 mock.module("bun", () => ({
-	bunPassword: {
+	password: {
 		hash: jest.fn(() => ""),
 		verify: jest.fn(() => true),
 	},

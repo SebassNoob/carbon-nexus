@@ -34,6 +34,9 @@ export function SignInForm() {
 			case 403:
 				toast.error("Invalid credentials");
 				break;
+      case 404:
+        toast.error("User not found");
+        break;
 			default:
 				toast.error("An unexpected error occurred");
 				break;
