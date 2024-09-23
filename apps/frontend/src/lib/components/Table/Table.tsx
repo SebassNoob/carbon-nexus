@@ -14,6 +14,7 @@ const defaultTableHeaderStyles =
 const defaultTableRowStyles = "border-t-2 dark:border-gray-700";
 const defaultTableStyles = "w-full table-auto dark:bg-gray-800";
 
+// biome-ignore lint/complexity/noStaticOnlyClass: allow static-only classes for components
 export class Table {
 	static TableCell = ({ children, className, ...rest }: TableCellProps) => {
 		const mergedStyles = twMerge(defaultTableCellStyles, className);

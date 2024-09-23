@@ -28,6 +28,7 @@ export function TextInput({
 
 	return (
 		<div className={twMerge("flex flex-col items-start", className)}>
+      {/* biome-ignore lint/a11y/noLabelWithoutControl: htmlFor is not available as id is a prop */}
 			{label && <label className={helperTextClasses}>{label}</label>}
 			<input className={inputClasses} disabled={disabled} {...rest} />
 			{helperText && <p className={helperTextClasses}>{helperText}</p>}

@@ -5,6 +5,7 @@ const defaultListItemStyles = "text-slate-600 dark:text-slate-300";
 const defaultUnorderedListStyles = "list-disc pl-4";
 const defaultOrderedListStyles = "list-decimal pl-4";
 
+// biome-ignore lint/complexity/noStaticOnlyClass: allow static-only classes for components
 export class List {
 	static ListItem = ({ children, className, ...rest }: ListItemProps) => {
 		const mergedStyles = twMerge(defaultListItemStyles, className);

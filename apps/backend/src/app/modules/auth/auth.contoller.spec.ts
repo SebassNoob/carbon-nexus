@@ -157,7 +157,7 @@ describe("AuthController", () => {
 					app,
 					method: "GET",
 
-					path: "/auth/user?sessionId=" + cookie,
+					path: `/auth/user?sessionId=${cookie}`,
 				},
 				callback: (response) => {
 					expect(response.status).toBe(200);

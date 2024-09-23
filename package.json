@@ -7,7 +7,7 @@
 		"start": "bunx turbo start",
 		"test": "bunx turbo test",
 		"format": "bunx biome format --write ./*.{json,md,yml} && bunx turbo biome:format",
-		"lint": "bunx @biomejs/biome lint --write ./*.{json,md,yml} && bunx turbo biome:lint"
+		"lint": "bunx biome lint --write ./*.{json,md,yml} && bunx turbo biome:lint"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.1",

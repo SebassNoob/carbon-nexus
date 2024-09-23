@@ -8,6 +8,7 @@ import type { Prettify } from "./prettify";
  * @template T - A Zod schema representing the shape of the validated data.
  * @typedef {Record<keyof T, string[]>} FormErrors
  */
+// biome-ignore lint/suspicious/noExplicitAny: allow the use of any in this file
 type FormErrors<T extends ZodType<any>> = Record<keyof T, string[]>;
 
 /**
@@ -29,6 +30,7 @@ type FormErrors<T extends ZodType<any>> = Record<keyof T, string[]>;
  * @property {T} parsedData - The validated data. Only present if `isValid` is `true`.
  * @property {Prettify<FormErrors<T>>} errors - The validation errors. Only present if `isValid` is `false`.
  */
+// biome-ignore lint/suspicious/noExplicitAny: allow the use of any in this file
 export type ValidateFormResult<T extends ZodType<any>> =
 	| {
 			isValid: false;
@@ -49,6 +51,7 @@ export type ValidateFormResult<T extends ZodType<any>> =
  * @param {FormData} data - The form data to validate.
  * @returns {ValidateFormResult<z.infer<T>>} - The result of the form validation.
  */
+// biome-ignore lint/suspicious/noExplicitAny: allow the use of any in this file
 export function validateForm<T extends ZodType<any>>(
 	schema: T,
 	data: FormData,

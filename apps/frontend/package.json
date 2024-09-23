@@ -6,7 +6,7 @@
 		"build": "next build",
 		"start": "next start -H 0.0.0.0",
 		"biome:format": "bunx biome format --write .",
-		"biome:lint": "bunx @biomejs/biome lint --write ./src"
+		"biome:lint": "bunx biome lint --write ./src"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.9.0",

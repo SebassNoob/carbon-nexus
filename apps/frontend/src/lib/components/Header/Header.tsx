@@ -22,6 +22,7 @@ export function Header() {
 				className="p-2 rounded bg-slate-100 dark:bg-black"
 				data-testid="theme-toggle"
 				tabIndex={-1}
+        type="button"
 			>
 				{theme === "light" ? (
 					<img src="/common/moon.svg" alt="dark mode" className="h-6 w-6" />

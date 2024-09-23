@@ -13,6 +13,6 @@
 	},
 	"scripts": {
 		"biome:format": "bunx biome format --write .",
-		"biome:lint": "bunx @biomejs/biome lint --write ./src"
+		"biome:lint": "bunx biome lint --write ./src"
 	}
 }
