@@ -27,9 +27,7 @@ jobs:
   
   test:
     name: Test
-    runs-on: ubuntu-latest
-    env:
-      PRISMA_CLI_BINARY_TARGETS: 'debian-openssl-3.0.x'
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
