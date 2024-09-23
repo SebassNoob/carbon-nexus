@@ -11,5 +11,5 @@ export async function bootstrap() {
 	});
 	app.use(cookieParser());
 	app.useGlobalFilters(new AppErrorFilter());
-	await app.listen(8080, '0.0.0.0');
+	await app.listen(8080, "0.0.0.0");
 }

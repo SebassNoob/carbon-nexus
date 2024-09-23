@@ -12,7 +12,7 @@ function getFileName(time: Date | number | null, index?: number): string {
 	if (typeof time === "number" || time === null) {
 		return `${logDirectory}/access.log`;
 	}
-	return `${logDirectory}${time.toISOString().split("T")[0]}.log`;
+	return `${logDirectory}/${time.toISOString().split("T")[0]}.log`;
 }
 
 const stream = createStream(getFileName, {

@@ -6,11 +6,12 @@
 		"dev": "bun run --env-file .env.development --watch src/index.ts",
 		"build": "bun build src/index.ts --env-file .env.production --outdir dist --minify --target bun --external @nestjs/microservices --external class-validator --external @nestjs/websockets --external class-transformer",
 		"start": "bun run --env-file .env.production ./dist/index.js",
-		"test": "bun test",
+		"test": "NODE_ENV=test bun test --env-file .env.testing --coverage",
+		"prisma:resetDb": "dotenv -e .env.testing -- prisma db push --force-reset --schema src/db/schema.prisma",
 		"biome:format": "bunx biome format --write .",
 		"biome:lint": "bunx @biomejs/biome lint --write ./src",
-		"prisma:generate": "prisma generate --schema src/db/schema.prisma",
-		"prisma:migrate": "prisma migrate dev --schema src/db/schema.prisma",
+		"prisma:generate": "dotenv -e .env.development -- prisma generate --schema src/db/schema.prisma",
+		"prisma:migrate": "dotenv -e .env.development -- prisma migrate dev --schema src/db/schema.prisma",
 		"prisma:format": "prisma format --schema src/db/schema.prisma"
 	},
 	"devDependencies": {
@@ -22,11 +23,13 @@
 		"@types/cookie-parser": "^1.4.7",
 		"@types/express": "^4.17.21",
 		"@types/node": "^22.5.2",
-		"jest": "^29.7.0",
-		"jest-mock-extended": "^4.0.0-beta1",
+		"@types/supertest": "^6.0.2",
+		"dotenv-cli": "^7.4.2",
 		"prisma": "^5.19.0",
+		"supertest": "^7.0.0",
 		"ts-jest": "^29.2.5",
-		"zod": "^3.23.8"
+		"zod": "^3.23.8",
+		"@faker-js/faker": "^9.0.1"
 	},
 	"peerDependencies": {
 		"typescript": "^5.0.0"

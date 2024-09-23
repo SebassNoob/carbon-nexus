@@ -2,12 +2,12 @@
 	"name": "carbon-nexus",
 	"private": true,
 	"scripts": {
-		"build": "turbo build",
-		"dev": "turbo dev",
-		"start": "turbo start",
-		"test": "turbo test",
-		"format": "bunx biome format --write ./*.{json,md,yml} && turbo biome:format",
-		"lint": "bunx @biomejs/biome lint --write ./*.{json,md,yml} && turbo biome:lint"
+		"build": "bunx turbo build",
+		"dev": "bunx turbo dev",
+		"start": "bunx turbo start",
+		"test": "bunx turbo test",
+		"format": "bunx biome format --write ./*.{json,md,yml} && bunx turbo biome:format",
+		"lint": "bunx @biomejs/biome lint --write ./*.{json,md,yml} && bunx turbo biome:lint"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.1",
