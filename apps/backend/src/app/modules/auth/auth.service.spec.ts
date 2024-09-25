@@ -1,21 +1,21 @@
 import { expect, it, describe, beforeEach } from "bun:test";
 import { Test, type TestingModule } from "@nestjs/testing";
 import { PrismaService, LuciaService } from "@db/client";
-import { AuthService } from "./auth.service";
+import { PasswordAuthService } from "./passwordAuth.service";
 import type { SignUpInput, SignInInput, SessionCookie } from "@shared/common/types";
 import { AppError } from "@utils/appErrors";
 import { resetDatabase } from "@utils/test";
 import { faker } from "@faker-js/faker";
 
-describe("AuthService", () => {
-	let service: AuthService;
+describe("PasswordAuthService", () => {
+	let service: PasswordAuthService;
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			providers: [AuthService, PrismaService, LuciaService],
+			providers: [PasswordAuthService, PrismaService, LuciaService],
 		}).compile();
 
-		service = module.get<AuthService>(AuthService);
+		service = module.get<PasswordAuthService>(PasswordAuthService);
 		await resetDatabase();
 	});
 

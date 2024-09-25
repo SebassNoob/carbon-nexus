@@ -1,7 +1,7 @@
 import { expect, it, describe, beforeEach, beforeAll } from "bun:test";
 import { Test, type TestingModule } from "@nestjs/testing";
 import { PrismaService, LuciaService } from "@db/client";
-import { AuthService } from "./auth.service";
+import { PasswordAuthService } from "./passwordAuth.service";
 import { AuthController } from "./auth.controller";
 import type { SignUpInput, SignInInput, SessionCookie } from "@shared/common/types";
 import { AppError } from "@utils/appErrors";
@@ -14,7 +14,7 @@ describe("AuthController", () => {
 
 	beforeAll(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			providers: [AuthService, PrismaService, LuciaService],
+			providers: [PasswordAuthService, PrismaService, LuciaService],
 			controllers: [AuthController],
 		}).compile();
 

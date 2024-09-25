@@ -4,9 +4,9 @@
 	"linter": {
 		"rules": {
 			"style": { "useImportType": "off" }, // NestJS uses `import type` for injecting services
-      "complexity": {"noForEach": "off"} // goofy ahh rule
+			"complexity": { "noForEach": "off" } // goofy ahh rule
 		},
-    "ignore": ["src/**/*.spec.ts"]
+		"ignore": ["src/**/*.spec.ts"]
 	},
 	"javascript": {
 		"parser": {

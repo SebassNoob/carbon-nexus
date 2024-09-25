@@ -9,10 +9,10 @@ import { AppError, AppErrorTypes } from "@utils/appErrors";
 import { PrismaService, LuciaService } from "@db/client";
 
 @Injectable()
-export class AuthService {
+export class PasswordAuthService {
 	constructor(
-		private prisma: PrismaService,
-		private lucia: LuciaService,
+		private readonly prisma: PrismaService,
+		private readonly lucia: LuciaService,
 	) {}
 	private generateUserId(): string {
 		return generateIdFromEntropySize(10);

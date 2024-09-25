@@ -2,19 +2,23 @@ import { Injectable } from "@nestjs/common";
 import { Lucia } from "lucia";
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
 import { PrismaService } from "./prisma.service";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 // biome-ignore lint/suspicious/noUnsafeDeclarationMerging: enforce the forwarding of calls
 export class LuciaService {
 	private lucia: Lucia;
 
-	constructor(private prismaService: PrismaService) {
+	constructor(
+		private readonly configService: ConfigService,
+		private prismaService: PrismaService,
+	) {
 		const adapter = new PrismaAdapter(this.prismaService.session, this.prismaService.user);
 		this.lucia = new Lucia(adapter, {
 			sessionCookie: {
 				expires: false,
 				attributes: {
-					secure: process.env.NODE_ENV === "production",
+					secure: this.configService.get<string>("NODE_ENV") === "production",
 				},
 			},
 			getUserAttributes: (attributes) => ({

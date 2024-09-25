@@ -1,11 +1,12 @@
 import { Module } from "@nestjs/common";
-import { AuthService } from "./auth.service";
+import { PasswordAuthService } from "./passwordAuth.service";
+import { OpenAuthService } from "./openAuth.service";
 import { AuthController } from "./auth.controller";
 import { DbClientModule, LuciaService, PrismaService } from "@db/client";
 
 @Module({
 	imports: [DbClientModule],
 	controllers: [AuthController],
-	providers: [AuthService, LuciaService, PrismaService],
+	providers: [PasswordAuthService, OpenAuthService, LuciaService, PrismaService],
 })
 export class AuthModule {}
