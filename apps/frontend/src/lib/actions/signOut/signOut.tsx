@@ -2,17 +2,18 @@
 
 import { cookies } from "next/headers";
 import { query } from "@utils";
+import { sessionCookieName } from "@shared/common/constants";
 
 export async function signOut() {
-	const cookieStore = cookies();
-	const sessionCookie = cookieStore.get("sessionId")?.value;
+	const cookieStore = await cookies();
+	const sessionCookie = cookieStore.get(sessionCookieName)?.value;
 
 	const { status } = await query<void>(`/auth/signout/${sessionCookie}`, {
 		method: "DELETE",
 	});
 
 	if (status === 204) {
-		cookieStore.delete("sessionId");
+		cookieStore.delete(sessionCookieName);
 	}
 
 	return {

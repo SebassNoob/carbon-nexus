@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { AuthModule } from "./modules";
+import { AuthModule, OpenAuthModule } from "./modules";
 import { ConfigModule } from "@nestjs/config";
 
 let envFilePath: string;
@@ -20,6 +20,7 @@ switch (process.env.NODE_ENV) {
 @Module({
 	imports: [
 		AuthModule,
+		OpenAuthModule,
 		ConfigModule.forRoot({
 			envFilePath: [envFilePath, ".env.local"],
 			isGlobal: true,

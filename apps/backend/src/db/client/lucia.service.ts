@@ -11,7 +11,7 @@ export class LuciaService {
 
 	constructor(
 		private readonly configService: ConfigService,
-		private prismaService: PrismaService,
+		private readonly prismaService: PrismaService,
 	) {
 		const adapter = new PrismaAdapter(this.prismaService.session, this.prismaService.user);
 		this.lucia = new Lucia(adapter, {

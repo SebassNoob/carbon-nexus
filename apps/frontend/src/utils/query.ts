@@ -4,6 +4,7 @@ type Serialized<T> = Record<keyof T, string>;
 export type QueryResult<T> = {
 	status: number;
 	data: Prettify<Serialized<T>> | null;
+	headers: Headers;
 };
 
 export async function query<T>(input: string, init?: RequestInit): Promise<QueryResult<T>> {
@@ -12,9 +13,9 @@ export async function query<T>(input: string, init?: RequestInit): Promise<Query
 	return fetch(url, { ...init, credentials: "include" }).then(async (res) => {
 		try {
 			const data = await res.json();
-			return { status: res.status, data };
+			return { status: res.status, data, headers: res.headers };
 		} catch (error) {
-			return { status: res.status, data: null };
+			return { status: res.status, data: null, headers: res.headers };
 		}
 	});
 }

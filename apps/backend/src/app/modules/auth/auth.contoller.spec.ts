@@ -1,20 +1,21 @@
 import { expect, it, describe, beforeEach, beforeAll } from "bun:test";
 import { Test, type TestingModule } from "@nestjs/testing";
 import { PrismaService, LuciaService } from "@db/client";
-import { PasswordAuthService } from "./passwordAuth.service";
+import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
 import type { SignUpInput, SignInInput, SessionCookie } from "@shared/common/types";
-import { AppError } from "@utils/appErrors";
 import { resetDatabase, testFetch } from "@utils/test";
 import type { INestApplication } from "@nestjs/common";
 import { faker } from "@faker-js/faker";
+import { ConfigModule } from "@nestjs/config";
 
 describe("AuthController", () => {
 	let app: INestApplication;
 
 	beforeAll(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			providers: [PasswordAuthService, PrismaService, LuciaService],
+			imports: [ConfigModule],
+			providers: [AuthService, PrismaService, LuciaService],
 			controllers: [AuthController],
 		}).compile();
 

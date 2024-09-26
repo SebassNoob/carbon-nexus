@@ -54,5 +54,10 @@ export const AppErrorTypes = {
 		code: 500,
 		cause,
 	}),
+	InvalidState: {
+		name: "InvalidState",
+		code: 400,
+		cause: "Invalid state",
+	},
 	// biome-ignore lint/suspicious/noExplicitAny: allow the use of any in this context
 } as const satisfies Record<string, ((...args: any[]) => AppErrorType) | AppErrorType>;
