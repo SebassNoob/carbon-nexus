@@ -6,7 +6,8 @@
 		"rules": {
 			"recommended": true,
 			"style": { "useImportType": "error" },
-			"nursery": { "noCommonJs": "error" }
+			"nursery": { "noCommonJs": "error" },
+      "suspicious": { "noConsole": "warn" }
 		}
 	},
 	"formatter": {

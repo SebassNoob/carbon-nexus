@@ -56,7 +56,7 @@ export class OpenAuthController {
 				if (!stateCookie) {
 					throw new AppError(AppErrorTypes.InvalidState);
 				}
-				console.log("stateCookie", stateCookie);
+
 				res.clearCookie(oAuthCookieNames.discord.state);
 				if (stateCookie !== state) {
 					throw new AppError(AppErrorTypes.InvalidState);

@@ -23,11 +23,16 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={inter.className}>
 				<ClientProvider>
-					<main className="bg-slate-100 dark:bg-slate-800 min-h-screen w-full transition-all sm:p-8 p-4">
+					<main className="bg-slate-50 dark:bg-black min-h-screen w-full transition-all sm:p-8 p-4">
 						<Header />
 						<section className="p-4">{children}</section>
 						<Footer />
-						<Toaster position="bottom-right" />
+						<Toaster
+							position="bottom-right"
+							toastOptions={{
+								className: "!bg-slate-100 !text-slate-900 dark:!bg-slate-900 dark:!text-white",
+							}}
+						/>
 					</main>
 				</ClientProvider>
 			</body>
