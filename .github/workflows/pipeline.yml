@@ -68,14 +68,14 @@ jobs:
       - name: Build
         run: bun run build
       
-      - name: Upload backend artifact
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
+          if-no-files-found: error
           name: backend
-          path: apps/backend/dist
+          path: |
+            apps/backend/dist
+            apps/frontend/.next
+      - name: debug
+        run: ls -la apps/frontend/.next
       
-      - name: Upload frontend artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend
-          path: apps/frontend/.next
