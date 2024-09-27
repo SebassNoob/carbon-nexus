@@ -1,6 +1,6 @@
 import { Text, Code, Button, Title } from "@lib/components";
 import { getUser } from "@lib/actions";
-import { DiscordOAuthButton, SignOutButton } from "./components";
+import { SignOutButton } from "./components";
 
 export default async function Home() {
 	const { data } = await getUser();
@@ -52,7 +52,6 @@ export default async function Home() {
 				<div>
 					<Button href="/auth/signin">Sign In</Button>
 					<SignOutButton />
-					<DiscordOAuthButton />
 				</div>
 			</div>
 		</div>

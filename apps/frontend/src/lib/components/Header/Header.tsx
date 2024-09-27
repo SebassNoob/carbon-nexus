@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Code, Logo } from "@lib/components";
+import { Logo } from "@lib/components";
 import { useContext } from "react";
 import { ClientContext } from "@lib/providers";
 

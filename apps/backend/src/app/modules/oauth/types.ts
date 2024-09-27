@@ -4,7 +4,17 @@ export interface InitOAuthData {
 	codeVerifier?: string;
 }
 
-export type DiscordUser = {
+export type DiscordUser = OAuthUser;
+
+export type GoogleUser = {
+	sub: string;
+	email: string | null;
+	name: string;
+};
+
+export type OAuthProvider = "discord" | "google" | "github";
+
+export type OAuthUser = {
 	id: string;
 	email: string | null;
 	username: string;

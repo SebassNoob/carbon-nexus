@@ -23,7 +23,7 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={inter.className}>
 				<ClientProvider>
-					<main className="bg-slate-50 dark:bg-black min-h-screen w-full transition-all sm:p-8 p-4">
+					<main className="bg-slate-50 dark:bg-black min-h-screen w-full transition-all sm:p-8 xs:p-4 p-2">
 						<Header />
 						<section className="p-4">{children}</section>
 						<Footer />

@@ -1,15 +1,4 @@
-import {
-	Controller,
-	Get,
-	Body,
-	Post,
-	HttpCode,
-	Res,
-	Query,
-	Delete,
-	Param,
-	Req,
-} from "@nestjs/common";
+import { Controller, Get, HttpCode, Res, Query, Param, Req } from "@nestjs/common";
 import type { Response, Request } from "express";
 import { ConfigService } from "@nestjs/config";
 import { OpenAuthService } from "./oauth.service";
@@ -23,22 +12,33 @@ export class OpenAuthController {
 		private readonly openAuthService: OpenAuthService,
 	) {}
 
+	private setCSRFCookie(res: Response, cookieName: string, state: string) {
+		res.cookie(cookieName, state, {
+			httpOnly: true,
+			secure: this.configService.get<string>("NODE_ENV") === "production",
+			sameSite: "lax",
+			expires: new Date(Date.now() + 1000 * 60 * 5),
+		});
+	}
+
 	@Get(":provider")
+	@HttpCode(200)
 	async getAuthUrl(@Param("provider") provider: string, @Res({ passthrough: true }) res: Response) {
 		switch (provider) {
 			case "discord": {
 				const { url, state } = await this.openAuthService.getDiscordAuthUrl();
-				res.cookie(oAuthCookieNames.discord.state, state, {
-					httpOnly: true,
-					secure: this.configService.get<string>("NODE_ENV") === "production",
-					sameSite: "lax",
-					expires: new Date(Date.now() + 1000 * 60 * 5),
-				});
+				this.setCSRFCookie(res, oAuthCookieNames.discord.state, state);
+				return { url };
+			}
+			case "google": {
+				const { url, state, codeVerifier } = await this.openAuthService.getGoogleAuthUrl();
+				this.setCSRFCookie(res, oAuthCookieNames.google.state, state);
+				this.setCSRFCookie(res, oAuthCookieNames.google.codeVerifier, codeVerifier);
 				return { url };
 			}
 
 			default:
-				return {};
+				throw new AppError(AppErrorTypes.InvalidProvider);
 		}
 	}
 
@@ -61,7 +61,33 @@ export class OpenAuthController {
 				if (stateCookie !== state) {
 					throw new AppError(AppErrorTypes.InvalidState);
 				}
-				const { expiresAt, id } = await this.openAuthService.handleDiscordCallback(code, state);
+				const { expiresAt, id } = await this.openAuthService.handleDiscordCallback(code);
+
+				res.cookie(sessionCookieName, id, {
+					httpOnly: true,
+					secure: this.configService.get<string>("NODE_ENV") === "production",
+					sameSite: "lax",
+					expires: expiresAt,
+				});
+				return res.redirect(this.configService.get<string>("FRONTEND_URL") as string);
+			}
+
+			case "google": {
+				const stateCookie = req.cookies[oAuthCookieNames.google.state];
+				const codeVerifierCookie = req.cookies[oAuthCookieNames.google.codeVerifier];
+				if (!stateCookie || !codeVerifierCookie) {
+					throw new AppError(AppErrorTypes.InvalidState);
+				}
+
+				res.clearCookie(oAuthCookieNames.google.state);
+				res.clearCookie(oAuthCookieNames.google.codeVerifier);
+				if (stateCookie !== state) {
+					throw new AppError(AppErrorTypes.InvalidState);
+				}
+				const { expiresAt, id } = await this.openAuthService.handleGoogleCallback(
+					code,
+					codeVerifierCookie,
+				);
 
 				res.cookie(sessionCookieName, id, {
 					httpOnly: true,
@@ -72,7 +98,7 @@ export class OpenAuthController {
 				return res.redirect(this.configService.get<string>("FRONTEND_URL") as string);
 			}
 			default:
-				return {};
+				throw new AppError(AppErrorTypes.InvalidProvider);
 		}
 	}
 }

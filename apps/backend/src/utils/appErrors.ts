@@ -57,7 +57,12 @@ export const AppErrorTypes = {
 	InvalidState: {
 		name: "InvalidState",
 		code: 400,
-		cause: "Invalid state",
+		cause: "Invalid state from OAuth provider",
+	},
+	InvalidProvider: {
+		name: "InvalidProvider",
+		code: 400,
+		cause: "OAuth provider not found",
 	},
 	// biome-ignore lint/suspicious/noExplicitAny: allow the use of any in this context
 } as const satisfies Record<string, ((...args: any[]) => AppErrorType) | AppErrorType>;

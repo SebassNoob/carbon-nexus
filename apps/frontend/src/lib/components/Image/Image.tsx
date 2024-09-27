@@ -11,7 +11,7 @@ export function Image({ src, alt, skeletonClassName, ...rest }: ImageProps) {
 			<NextImage
 				src={src}
 				alt={alt ?? ""}
-				fill
+				fill={!rest.height || !rest.width}
 				className={twMerge("object-contain", rest.className)}
 				{...rest}
 			/>
