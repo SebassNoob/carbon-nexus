@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { DiscordUser, GoogleUser } from "./types";
+import type { DiscordUser, GoogleUser, GitHubUser } from "./types";
 
 export const DiscordUserSchema = z.object({
 	id: z.string(),
@@ -12,3 +12,9 @@ export const GoogleUserSchema = z.object({
 	email: z.string().nullable(),
 	name: z.string(),
 }) satisfies z.ZodType<GoogleUser>;
+
+export const GitHubUserSchema = z.object({
+	id: z.number(),
+	email: z.string().nullable(),
+	login: z.string(),
+}) satisfies z.ZodType<GitHubUser>;

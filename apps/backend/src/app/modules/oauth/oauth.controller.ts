@@ -36,6 +36,11 @@ export class OpenAuthController {
 				this.setCSRFCookie(res, oAuthCookieNames.google.codeVerifier, codeVerifier);
 				return { url };
 			}
+			case "github": {
+				const { url, state } = await this.openAuthService.getGitHubAuthUrl();
+				this.setCSRFCookie(res, oAuthCookieNames.github.state, state);
+				return { url };
+			}
 
 			default:
 				throw new AppError(AppErrorTypes.InvalidProvider);
@@ -88,6 +93,26 @@ export class OpenAuthController {
 					code,
 					codeVerifierCookie,
 				);
+
+				res.cookie(sessionCookieName, id, {
+					httpOnly: true,
+					secure: this.configService.get<string>("NODE_ENV") === "production",
+					sameSite: "lax",
+					expires: expiresAt,
+				});
+				return res.redirect(this.configService.get<string>("FRONTEND_URL") as string);
+			}
+			case "github": {
+				const stateCookie = req.cookies[oAuthCookieNames.github.state];
+				if (!stateCookie) {
+					throw new AppError(AppErrorTypes.InvalidState);
+				}
+
+				res.clearCookie(oAuthCookieNames.github.state);
+				if (stateCookie !== state) {
+					throw new AppError(AppErrorTypes.InvalidState);
+				}
+				const { expiresAt, id } = await this.openAuthService.handleGitHubCallback(code);
 
 				res.cookie(sessionCookieName, id, {
 					httpOnly: true,

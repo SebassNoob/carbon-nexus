@@ -5,8 +5,10 @@ import {
 	generateCodeVerifier,
 	Discord,
 	Google,
+	GitHub,
 	type DiscordTokens,
 	type GoogleTokens,
+	type GitHubTokens,
 } from "arctic";
 import type { SessionCookie } from "@shared/common/types";
 import { validateSchema } from "@utils/validateSchema";
@@ -14,14 +16,22 @@ import { handleDatabaseError } from "@utils/prismaErrors";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
 import { PrismaService, LuciaService } from "@db/client";
 import { ConfigService } from "@nestjs/config";
-import type { DiscordUser, GoogleUser, InitOAuthData, OAuthUser, OAuthProvider } from "./types";
-import { DiscordUserSchema, GoogleUserSchema } from "./constants";
+import type {
+	DiscordUser,
+	GoogleUser,
+	GitHubUser,
+	InitOAuthData,
+	OAuthUser,
+	OAuthProvider,
+} from "./types";
+import { DiscordUserSchema, GoogleUserSchema, GitHubUserSchema } from "./constants";
 import type { z } from "zod";
 
 @Injectable()
 export class OpenAuthService {
 	private discord!: Discord;
 	private google!: Google;
+	private github!: GitHub;
 
 	constructor(
 		private readonly configService: ConfigService,
@@ -39,6 +49,10 @@ export class OpenAuthService {
 			this.configService.get<string>("GOOGLE_OAUTH_CLIENT_ID") as string,
 			this.configService.get<string>("GOOGLE_OAUTH_CLIENT_SECRET") as string,
 			this.configService.get<string>("GOOGLE_OAUTH_REDIRECT_URI") as string,
+		);
+		this.github = new GitHub(
+			this.configService.get<string>("GITHUB_OAUTH_CLIENT_ID") as string,
+			this.configService.get<string>("GITHUB_OAUTH_CLIENT_SECRET") as string,
 		);
 	}
 
@@ -159,6 +173,14 @@ export class OpenAuthService {
 		return { state, codeVerifier, url: url.toString() };
 	}
 
+	async getGitHubAuthUrl(): Promise<InitOAuthData> {
+		const state = generateState();
+		const url = await this.github.createAuthorizationURL(state, {
+			scopes: ["user:email"],
+		});
+		return { state, url: url.toString() };
+	}
+
 	async handleDiscordCallback(code: string | undefined): Promise<SessionCookie> {
 		if (code === undefined) {
 			throw new AppError(AppErrorTypes.GenericError("Missing code from OAuth provider"));
@@ -213,6 +235,34 @@ export class OpenAuthService {
 			id: googleUser.sub,
 			email: googleUser.email,
 			username: googleUser.name,
+		});
+	}
+
+	async handleGitHubCallback(code: string | undefined): Promise<SessionCookie> {
+		if (code === undefined) {
+			throw new AppError(AppErrorTypes.GenericError("Missing code from OAuth provider"));
+		}
+
+		let tokens: GitHubTokens;
+		try {
+			tokens = await this.github.validateAuthorizationCode(code);
+		} catch (error) {
+			throw new AppError(AppErrorTypes.GenericError("Failed to validate authorization code"));
+		}
+
+		// get user info from github
+		const githubUser = await this.fetchUserDataFromOAuthProvider<GitHubUser>(
+			"https://api.github.com/user",
+			{
+				Authorization: `Bearer ${tokens.accessToken}`,
+			},
+			GitHubUserSchema,
+		);
+
+		return await this.handleOAuth("github", {
+			id: githubUser.id.toString(),
+			email: githubUser.email,
+			username: githubUser.login,
 		});
 	}
 }

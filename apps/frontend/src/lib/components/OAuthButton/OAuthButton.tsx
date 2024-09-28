@@ -15,12 +15,12 @@ export function OAuthButton({ location, iconPath, name }: OAuthButtonProps) {
 		});
 
 		if (status !== 200) {
-			toast.error("Failed to redirect to Discord OAuth, try again later.");
+			toast.error(`Failed to redirect to ${name} OAuth, try again later.`);
 			return;
 		}
 		const url = data?.url;
 		if (!url) {
-			toast.error("Failed to redirect to Discord OAuth, try again later.");
+			toast.error(`Failed to redirect to ${name} OAuth, try again later.`);
 			return;
 		}
 		router.push(url);
