@@ -7,8 +7,8 @@
 			"recommended": true,
 			"style": { "useImportType": "error" },
 			"nursery": { "noCommonJs": "error" },
-      "suspicious": { "noConsole": "warn" },
-      "correctness": {"noUnusedImports": "error"}
+			"suspicious": { "noConsole": "warn" },
+			"correctness": { "noUnusedImports": "error" }
 		}
 	},
 	"formatter": {

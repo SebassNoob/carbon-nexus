@@ -76,6 +76,4 @@ jobs:
           path: |
             apps/backend/dist
             apps/frontend/.next
-      - name: debug
-        run: ls -la apps/frontend/.next
       
