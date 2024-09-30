@@ -4,19 +4,25 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
 
 model User {
-  id           String        @id
+  id           String   @id
   username     String
-  createdAt    DateTime      @default(now())
-  email        String?       @unique
+  createdAt    DateTime @default(now())
+  email        String?  @unique
   passwordHash String?
-  verified     Boolean       @default(false)
-  sessions     Session[]
-  oauthAccount OAuthAccount?
+  verified     Boolean  @default(false)
+
+  // preferences
+  theme         String        @default("dark")
+  language      String        @default("en")
+  reducedMotion Boolean       @default(false)
+  
+  sessions      Session[]
+  oauthAccount  OAuthAccount?
 }
 
 model Session {

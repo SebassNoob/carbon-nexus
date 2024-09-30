@@ -112,6 +112,10 @@ export class AuthService {
 				username: true,
 				email: true,
 				createdAt: true,
+				verified: true,
+				theme: true,
+				reducedMotion: true,
+				language: true,
 			},
 		});
 

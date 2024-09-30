@@ -8,6 +8,7 @@ import { resetDatabase, testFetch } from "@utils/test";
 import type { INestApplication } from "@nestjs/common";
 import { faker } from "@faker-js/faker";
 import { ConfigModule } from "@nestjs/config";
+import cookieParser from "cookie-parser";
 
 describe("AuthController", () => {
 	let app: INestApplication;
@@ -20,6 +21,7 @@ describe("AuthController", () => {
 		}).compile();
 
 		app = module.createNestApplication();
+		app.use(cookieParser());
 		await app.init();
 	});
 
@@ -122,13 +124,12 @@ describe("AuthController", () => {
 					path: `/auth/signout/${cookie}`,
 				},
 				callback: (response) => {
-					console.log(response.text);
 					expect(response.status).toBe(204);
 				},
 			});
 		});
 	});
-	describe("/user", () => {
+	describe("/me", () => {
 		const testInput: SignUpInput = {
 			email: faker.internet.email(),
 			username: faker.internet.userName(),
@@ -157,8 +158,12 @@ describe("AuthController", () => {
 				init: {
 					app,
 					method: "GET",
-
-					path: `/auth/user?sessionId=${cookie}`,
+					options: {
+						headers: {
+							Cookie: `sessionId=${cookie}`,
+						},
+					},
+					path: "/auth/me",
 				},
 				callback: (response) => {
 					expect(response.status).toBe(200);

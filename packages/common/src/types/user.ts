@@ -1,21 +1,19 @@
-import type { DeepPartial, Prettify } from "./utils";
+import type { Prettify } from "./utils";
 export type SafeUser = {
 	id: string;
 	username: string;
 	email: string | null;
 	createdAt: Date;
 	verified: boolean;
-	preferences: UserPreferences | null;
-};
 
-type UserPreferences = Prettify<{
+	// User preferences
 	theme: string;
 	reducedMotion: boolean;
-	locale: string;
-}>;
+	language: string;
+};
 
 export type GetUserInput = {
 	id: string;
 };
 
-export type UpdateUserInput = Prettify<DeepPartial<Omit<SafeUser, "id">>>;
+export type UpdateUserInput = Prettify<Partial<Omit<SafeUser, "id">>>;

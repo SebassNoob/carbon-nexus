@@ -1,9 +1,11 @@
 import { HttpException } from "@nestjs/common";
 
 export class AppError extends HttpException {
+	public code: number;
 	constructor(error: AppErrorType) {
 		super(error.name, error.code, { cause: error.cause });
 		this.name = error.name;
+		this.code = error.code;
 	}
 }
 

@@ -16,6 +16,8 @@ export type Prettify<T> = {
  * @template T - The type to create a partial version of.
  * @typedef {Object} DeepPartial
  */
-export type DeepPartial<T> = {
-	[P in keyof T]?: DeepPartial<T[P]>;
-};
+export type DeepPartial<T> = T extends object
+	? {
+			[P in keyof T]?: DeepPartial<T[P]>;
+		}
+	: T;

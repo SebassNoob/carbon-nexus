@@ -1,5 +1,5 @@
-import { Controller, Get, Body, Post, HttpCode, Res, Query, Delete, Param } from "@nestjs/common";
-import type { Response } from "express";
+import { Controller, Get, Body, Post, HttpCode, Res, Delete, Param, Req } from "@nestjs/common";
+import type { Response, Request } from "express";
 import type { SignInInput, SignUpInput } from "@shared/common/types";
 import { sessionCookieName } from "@shared/common/constants";
 import { ConfigService } from "@nestjs/config";
@@ -45,8 +45,9 @@ export class AuthController {
 		return {};
 	}
 
-	@Get("user")
-	async user(@Query("sessionId") sessionId: string) {
+	@Get("me")
+	async user(@Req() req: Request) {
+		const sessionId = req.cookies[sessionCookieName] as string | undefined;
 		return this.authService.getUserFromSession({ sessionId });
 	}
 }
