@@ -1,10 +1,3 @@
-export type SafeUser = {
-	id: string;
-	username: string;
-	email: string | null;
-	createdAt: Date;
-};
-
 export type SignUpInput = {
 	username: string;
 	email: string;

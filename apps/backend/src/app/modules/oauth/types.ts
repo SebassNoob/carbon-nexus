@@ -13,10 +13,10 @@ export type GoogleUser = {
 };
 
 export type GitHubUser = {
-  id: number;
-  email: string | null;
-  login: string;
-}
+	id: number;
+	email: string | null;
+	login: string;
+};
 
 export type OAuthProvider = "discord" | "google" | "github";
 

@@ -1,4 +1,4 @@
-import type { Prettify } from "@utils";
+import type { Prettify } from "@shared/common/types";
 type Serialized<T> = Record<keyof T, string>;
 
 export type QueryResult<T> = {

@@ -1,5 +1,5 @@
 import type { z, ZodType } from "zod";
-import type { Prettify } from "./prettify";
+import type { Prettify } from "@shared/common/types";
 
 /**
  * Type alias for form errors. It represents a record where each key is a property of the validated data
