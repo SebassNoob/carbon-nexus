@@ -9,7 +9,7 @@ export async function getUser() {
 	const cookieStore = await cookies();
 	const sessionCookie = cookieStore.get(sessionCookieName)?.value;
 
-	const { status, data } = await query<SafeUser>("/auth/me", {
+	const { status, body } = await query<SafeUser>("/auth/me", {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
@@ -19,6 +19,7 @@ export async function getUser() {
 
 	return {
 		status,
-		data,
+		data: body,
+		sessionId: sessionCookie,
 	};
 }

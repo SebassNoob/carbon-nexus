@@ -1,9 +1,8 @@
-import type { Prettify } from "@shared/common/types";
-type Serialized<T> = Record<keyof T, string>;
+import type { Prettify, Serialized } from "@shared/common/types";
 
 export type QueryResult<T> = {
 	status: number;
-	data: Prettify<Serialized<T>> | null;
+	body: Prettify<Serialized<T>> | null;
 	headers: Headers;
 };
 
@@ -12,10 +11,10 @@ export async function query<T>(input: string, init?: RequestInit): Promise<Query
 	const url = input.startsWith("/") ? baseURL + input : input;
 	return fetch(url, { ...init, credentials: "include" }).then(async (res) => {
 		try {
-			const data = await res.json();
-			return { status: res.status, data, headers: res.headers };
+			const body = await res.json();
+			return { status: res.status, body, headers: res.headers };
 		} catch (error) {
-			return { status: res.status, data: null, headers: res.headers };
+			return { status: res.status, body: null, headers: res.headers };
 		}
 	});
 }

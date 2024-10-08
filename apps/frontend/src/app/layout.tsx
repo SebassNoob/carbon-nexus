@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-import { ClientProvider } from "@lib/providers";
+import { ClientProvider, AuthProvider } from "@lib/providers";
 import "./globals.css";
 import { Footer, Header } from "@lib/components";
 
@@ -22,19 +22,21 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<ClientProvider>
-					<main className="bg-slate-50 dark:bg-black min-h-screen w-full transition-all sm:p-8 xs:p-4 p-2">
-						<Header />
-						<section className="p-4">{children}</section>
-						<Footer />
-						<Toaster
-							position="bottom-right"
-							toastOptions={{
-								className: "!bg-slate-100 !text-slate-900 dark:!bg-slate-900 dark:!text-white",
-							}}
-						/>
-					</main>
-				</ClientProvider>
+				<AuthProvider>
+					<ClientProvider>
+						<main className="bg-slate-50 dark:bg-black min-h-screen w-full transition-all sm:p-8 xs:p-4 p-2">
+							<Header />
+							<section className="p-4">{children}</section>
+							<Footer />
+							<Toaster
+								position="bottom-right"
+								toastOptions={{
+									className: "!bg-slate-100 !text-slate-900 dark:!bg-slate-900 dark:!text-white",
+								}}
+							/>
+						</main>
+					</ClientProvider>
+				</AuthProvider>
 			</body>
 		</html>
 	);

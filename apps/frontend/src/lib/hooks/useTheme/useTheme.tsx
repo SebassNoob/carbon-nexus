@@ -1,14 +1,15 @@
 "use client";
-import { useState, useLayoutEffect, useEffect, cache } from "react";
+import { useState, useLayoutEffect, useEffect, useContext, use } from "react";
 import { query } from "@utils";
-import { getUser } from "@lib/actions";
+import { AuthContext } from "@lib/providers";
 import type { Theme } from "./types";
 import type { SafeUser } from "@shared/common/types";
 
-const getCachedUser = cache(async () => await getUser());
 export function useTheme() {
+	const { user, loading } = useContext(AuthContext);
 	const [theme, setTheme] = useState<Theme>(() => {
 		const localStorageTheme = localStorage.getItem("theme");
+    
 		if (localStorageTheme === "light" || localStorageTheme === "dark") {
 			return localStorageTheme;
 		}
@@ -19,7 +20,6 @@ export function useTheme() {
 	});
 
 	useLayoutEffect(() => {
-		localStorage.setItem("theme", theme);
 		if (theme === "dark") {
 			document.documentElement.classList.add("dark");
 		} else {
@@ -27,27 +27,34 @@ export function useTheme() {
 		}
 	}, [theme]);
 
+  useEffect(() => {
+    if (!loading && user && ["light", "dark"].includes(user.theme)) {
+        setTheme(user.theme as Theme);
+        localStorage.setItem("theme", user.theme as Theme);
+    }
+}, [user, loading]);
+
 	useEffect(() => {
+    if (!loading) localStorage.setItem("theme", theme);
+		if (!user) return;
 		const abort = new AbortController();
 		const updateTheme = async () => {
-			const user = await getCachedUser();
-			if (!user.data?.id) return;
 
 			try {
-				await query<SafeUser>(`/user/${user.data.id}`, {
+				await query<SafeUser>(`/user/${user.id}`, {
 					method: "PATCH",
 					body: JSON.stringify({ theme }),
 					signal: abort.signal,
 				});
 			} catch (error) {
-				// fail silently
+				console.error(error);
 			}
 		};
 		updateTheme();
 		return () => {
 			abort.abort();
 		};
-	}, [theme]);
+	}, [theme, loading, user]);
 
 	return {
 		theme,

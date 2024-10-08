@@ -1,12 +1,15 @@
 "use client";
-import { signOut } from "@lib/actions";
+import { useContext } from "react";
+import { AuthContext } from "@lib/providers";
 import { toast } from "react-hot-toast";
 import { Button } from "@lib/components";
 
 export function SignOutButton() {
+	const { signOut } = useContext(AuthContext);
+
 	const signOutResponse = () => {
-		signOut().then(({ status }) => {
-			if (status === 204) {
+		signOut().then((success) => {
+			if (success) {
 				toast.success("Signed out successfully");
 			} else {
 				toast.error("Failed to sign out");

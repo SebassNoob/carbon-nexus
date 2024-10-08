@@ -21,3 +21,20 @@ export type DeepPartial<T> = T extends object
 			[P in keyof T]?: DeepPartial<T[P]>;
 		}
 	: T;
+
+/**
+ * Type representing a serialized version of the given type `T`.
+ * Useful for converting complex types to a JSON-serializable format.
+ *
+ * @template T - The type to serialize.
+ * @typedef {Object} Serialized
+ */
+export type Serialized<T> = T extends string | number | boolean | null
+	? T
+	: T extends Date
+		? string
+		: T extends Function
+			? never
+			: T extends object
+				? { [K in keyof T]: Serialized<T[K]> }
+				: never;
