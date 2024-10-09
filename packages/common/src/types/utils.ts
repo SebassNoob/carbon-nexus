@@ -31,10 +31,13 @@ export type DeepPartial<T> = T extends object
  */
 export type Serialized<T> = T extends string | number | boolean | null
 	? T
-	: T extends Date
-		? string
-		: T extends Function
-			? never
-			: T extends object
-				? { [K in keyof T]: Serialized<T[K]> }
-				: never;
+	: T extends Array<infer U>
+		? Array<Serialized<U>>
+		: T extends Date
+			? string
+			: // biome-ignore lint/complexity/noBannedTypes: intentionally using Function as a type only
+				T extends Function
+				? never
+				: T extends object
+					? { [K in keyof T]: Serialized<T[K]> }
+					: never;

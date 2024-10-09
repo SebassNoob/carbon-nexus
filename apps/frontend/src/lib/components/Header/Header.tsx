@@ -54,15 +54,24 @@ export function Header() {
 					padding={5}
 					content={
 						<div className="max-w-lg bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-							<button className="flex justify-between gap-3 items-center px-4 py-2 hover:dark:bg-gray-700  hover:bg-gray-100 rounded-lg">
+							<button
+								type="button"
+								className="flex justify-between gap-3 items-center px-4 py-2 hover:dark:bg-gray-700  hover:bg-gray-100 rounded-lg"
+							>
 								<Image src="/common/user.svg" alt="menu" height={20} width={20} />
 								<Text order="sm">settings</Text>
 							</button>
-							<button className="flex justify-between gap-3 items-center px-4 py-2 hover:dark:bg-gray-700  hover:bg-gray-100 rounded-lg">
+							<button
+								type="button"
+								className="flex justify-between gap-3 items-center px-4 py-2 hover:dark:bg-gray-700  hover:bg-gray-100 rounded-lg"
+							>
 								<Image src="/common/user.svg" alt="menu" height={20} width={20} />
 								<Text order="sm">settings</Text>
 							</button>
-							<button className="flex justify-between gap-3 items-center px-4 py-2 hover:dark:bg-gray-700  hover:bg-gray-100 rounded-lg">
+							<button
+								type="button"
+								className="flex justify-between gap-3 items-center px-4 py-2 hover:dark:bg-gray-700  hover:bg-gray-100 rounded-lg"
+							>
 								<Image src="/common/user.svg" alt="menu" height={20} width={20} />
 								<Text order="sm">settings</Text>
 							</button>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, createContext, useMemo, useEffect } from "react";
+import { useState, createContext, useEffect } from "react";
 import type { AuthContextProps, AuthProviderProps } from "./types";
 import type { SafeUser, Serialized } from "@shared/common/types";
 import { signOut } from "@lib/actions";
@@ -46,11 +46,10 @@ function _AuthProvider({ children }: AuthProviderProps) {
 			setSessionId(null);
 			setLoading(false);
 			return true;
-		} else {
-			console.error("Failed to sign out");
-      setLoading(false);
-			return false;
 		}
+		console.error("Failed to sign out");
+		setLoading(false);
+		return false;
 	}
 
 	return (
