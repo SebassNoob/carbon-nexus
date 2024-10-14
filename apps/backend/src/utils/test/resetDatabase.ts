@@ -1,7 +1,7 @@
 import { $ } from "bun";
 
 export async function resetDatabase() {
-	if (process.env.NODE_ENV !== "testing") {
+	if (process.env.NODE_ENV !== "test") {
 		throw new Error("resetDatabase should only be used in test environment");
 	}
 	if (!process.env.DATABASE_URL) {
