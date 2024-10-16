@@ -17,12 +17,12 @@ model User {
   verified     Boolean  @default(false)
 
   // preferences
-  theme         String        @default("dark")
-  language      String        @default("en")
-  reducedMotion Boolean       @default(false)
-  
-  sessions      Session[]
-  oauthAccount  OAuthAccount?
+  theme                  String  @default("dark")
+  reducedMotion          Boolean @default(false)
+  timezone               String  @default("UTC")
+
+  sessions     Session[]
+  oauthAccount OAuthAccount[]
 }
 
 model Session {
@@ -35,7 +35,7 @@ model Session {
 model OAuthAccount {
   providerId     String
   providerUserId String
-  userId         String @unique
+  userId         String
   user           User   @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@id([providerId, providerUserId])

@@ -3,8 +3,12 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "username" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "email" TEXT NOT NULL,
-    "passwordHash" TEXT
+    "email" TEXT,
+    "passwordHash" TEXT,
+    "verified" BOOLEAN NOT NULL DEFAULT false,
+    "theme" TEXT NOT NULL DEFAULT 'dark',
+    "reducedMotion" BOOLEAN NOT NULL DEFAULT false,
+    "timezone" TEXT NOT NULL DEFAULT 'UTC'
 );
 
 -- CreateTable
@@ -27,6 +31,3 @@ CREATE TABLE "OAuthAccount" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "OAuthAccount_userId_key" ON "OAuthAccount"("userId");

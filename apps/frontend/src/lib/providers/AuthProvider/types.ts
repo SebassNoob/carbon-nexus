@@ -6,6 +6,7 @@ export interface AuthContextProps {
 	sessionId: string | null;
 	loading: boolean;
 	signOut: () => Promise<boolean>;
+	updateUser: (user: Partial<SafeUser>) => Promise<void>;
 }
 
 export interface AuthProviderProps {

@@ -26,7 +26,7 @@ export class UserService {
 					verified: true,
 					theme: true,
 					reducedMotion: true,
-					language: true,
+					timezone: true,
 				},
 			});
 		} catch (error: unknown) {
@@ -58,7 +58,7 @@ export class UserService {
 					verified: true,
 					theme: true,
 					reducedMotion: true,
-					language: true,
+					timezone: true,
 				},
 			});
 		} catch (error: unknown) {

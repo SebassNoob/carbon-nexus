@@ -9,7 +9,7 @@ export type SafeUser = {
 	// User preferences
 	theme: string;
 	reducedMotion: boolean;
-	language: string;
+	timezone: string;
 };
 
 export type GetUserInput = {

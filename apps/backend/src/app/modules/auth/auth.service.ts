@@ -115,7 +115,7 @@ export class AuthService {
 				verified: true,
 				theme: true,
 				reducedMotion: true,
-				language: true,
+				timezone: true,
 			},
 		});
 

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext, useEffect, useRef } from "react";
 import type { AuthContextProps, AuthProviderProps } from "./types";
 import type { SafeUser, Serialized } from "@shared/common/types";
-import { signOut } from "@lib/actions";
-import { getUser } from "@lib/actions";
+import { signOut, getUser } from "@lib/actions";
+import { query } from "@utils";
 import dynamic from "next/dynamic";
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -12,6 +12,7 @@ export const AuthContext = createContext<AuthContextProps>({
 	sessionId: null,
 	loading: true,
 	signOut: async () => false,
+	updateUser: async () => {},
 });
 
 function unserializeUser(user: Serialized<SafeUser> | null): SafeUser | null {
@@ -27,6 +28,9 @@ function _AuthProvider({ children }: AuthProviderProps) {
 	const [user, setUser] = useState<SafeUser | null>(null);
 	const [sessionId, setSessionId] = useState<string | null>(null);
 
+	// AbortController to cancel updateUser requests
+	const updateUserAbortController = useRef<AbortController | null>(null);
+
 	useEffect(() => {
 		getUser().then(({ status, data: reqUser, sessionId }) => {
 			if (status === 200) {
@@ -36,6 +40,35 @@ function _AuthProvider({ children }: AuthProviderProps) {
 			setLoading(false);
 		});
 	}, []);
+
+	async function updateUser(update: Partial<SafeUser>) {
+		if (!user || loading) return;
+
+		// Cancel previous update request
+		if (updateUserAbortController.current) {
+			updateUserAbortController.current.abort();
+		}
+		const abort = new AbortController();
+		updateUserAbortController.current = abort;
+
+		try {
+			const { status, body } = await query<SafeUser>(`/user/${user.id}`, {
+				method: "PATCH",
+				body: JSON.stringify(update),
+				signal: abort.signal,
+			});
+
+			if (status === 200) {
+				setUser(unserializeUser(body));
+				return;
+			}
+			console.error("Failed to update user");
+		} catch (error) {
+			console.error(error);
+		} finally {
+			updateUserAbortController.current = null;
+		}
+	}
 
 	async function handleSignout() {
 		setLoading(true);
@@ -53,7 +86,7 @@ function _AuthProvider({ children }: AuthProviderProps) {
 	}
 
 	return (
-		<AuthContext.Provider value={{ user, sessionId, loading, signOut: handleSignout }}>
+		<AuthContext.Provider value={{ user, sessionId, loading, signOut: handleSignout, updateUser }}>
 			{children}
 		</AuthContext.Provider>
 	);

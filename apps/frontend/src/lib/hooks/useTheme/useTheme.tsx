@@ -1,12 +1,10 @@
 "use client";
-import { useState, useLayoutEffect, useEffect, useContext } from "react";
-import { query } from "@utils";
+import { useState, useLayoutEffect, useEffect, useContext, useRef, use } from "react";
 import { AuthContext } from "@lib/providers";
 import type { Theme } from "./types";
-import type { SafeUser } from "@shared/common/types";
 
 export function useTheme() {
-	const { user, loading } = useContext(AuthContext);
+	const { user, loading, updateUser } = useContext(AuthContext);
 	const [theme, setTheme] = useState<Theme>(() => {
 		const localStorageTheme = localStorage.getItem("theme");
 
@@ -19,6 +17,9 @@ export function useTheme() {
 		return systemTheme;
 	});
 
+	const prevThemeRef = useRef<Theme | null>(null);
+
+	// on initial render, set the theme class on the html element
 	useLayoutEffect(() => {
 		if (theme === "dark") {
 			document.documentElement.classList.add("dark");
@@ -27,33 +28,29 @@ export function useTheme() {
 		}
 	}, [theme]);
 
+	// always update the local storage when the theme changes
 	useEffect(() => {
-		if (!loading && user && ["light", "dark"].includes(user.theme)) {
-			setTheme(user.theme as Theme);
-			localStorage.setItem("theme", user.theme as Theme);
-		}
-	}, [user, loading]);
+		localStorage.setItem("theme", theme);
+	}, [theme]);
 
+	// if the user is not loaded yet, do nothing
+	// if the user is loaded, set the theme to the user's theme
 	useEffect(() => {
-		if (!loading) localStorage.setItem("theme", theme);
-		if (!user) return;
-		const abort = new AbortController();
-		const updateTheme = async () => {
-			try {
-				await query<SafeUser>(`/user/${user.id}`, {
-					method: "PATCH",
-					body: JSON.stringify({ theme }),
-					signal: abort.signal,
-				});
-			} catch (error) {
-				console.error(error);
-			}
-		};
-		updateTheme();
-		return () => {
-			abort.abort();
-		};
-	}, [theme, loading, user]);
+		if (loading || !user) return;
+
+		setTheme(user.theme as Theme);
+	}, [loading, user]);
+
+	// if the theme has changed, update the user
+	useEffect(() => {
+		if (loading || !user) return;
+
+		// Only update the backend if the theme has changed
+		if (prevThemeRef.current !== theme) {
+			updateUser({ theme });
+			prevThemeRef.current = theme;
+		}
+	}, [theme, loading, user, updateUser]);
 
 	return {
 		theme,
