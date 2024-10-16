@@ -14,13 +14,21 @@ focus:visited:text-violet-800 dark:focus:visited:text-violet-600
 active:text-teal-600 dark:active:text-teal-300
 active:visited:text-violet-800 dark:active:visited:text-violet-600
 `;
-export function Link({ children, order = "base", className, href, ...rest }: LinkProps) {
+export function Link({
+	children,
+	order = "base",
+	className,
+	href,
+	external = false,
+	...rest
+}: LinkProps) {
 	const textSize = `text-${order}` as const;
 	const mergedStyles = twMerge(defaultStyles, textSize, className);
 
 	return (
 		<NextLink href={href} className={mergedStyles} {...rest}>
 			{children}
+			{external && " ⬈"}
 		</NextLink>
 	);
 }

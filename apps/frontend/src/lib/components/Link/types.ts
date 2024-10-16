@@ -18,4 +18,5 @@ export interface LinkProps extends HTMLAttributes<HTMLAnchorElement> {
 		| "9xl";
 	className?: string;
 	href: string;
+	external?: boolean;
 }
