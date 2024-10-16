@@ -1,6 +1,5 @@
-import { Text, Code, Button, Title } from "@lib/components";
+import { Text, Code, Title } from "@lib/components";
 import { getUser } from "@lib/actions";
-import { SignOutButton } from "./components";
 
 export default async function Home() {
 	const { data } = await getUser();

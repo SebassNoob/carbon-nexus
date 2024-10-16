@@ -8,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpInputSchema } from "@shared/common/schemas";
 import type { SignUpInput } from "@shared/common/types";
 import { Button, TextInput } from "@lib/components";
-import { query } from "@utils";
 import { toast } from "react-hot-toast";
 
 export function SignUpForm() {

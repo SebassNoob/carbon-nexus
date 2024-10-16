@@ -16,7 +16,7 @@ export function useReducedMotion() {
 		if (user.reducedMotion !== reducedMotion) {
 			setReducedMotion(user.reducedMotion);
 		}
-	}, [loading, user]);
+	}, [loading, user, reducedMotion]);
 
 	// class to disable animations and transitions
 	const reducedMotionClass = "!animate-none !transition-none";

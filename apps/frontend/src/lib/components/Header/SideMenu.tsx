@@ -41,16 +41,16 @@ export function SideMenu() {
 					/>
 				</>
 			);
-		else
-			return (
-				<SideMenuButton
-					icon="/common/signin.svg"
-					imageClassname="-scale-x-100"
-					text="Sign Out"
-					onClick={signOutResponse}
-				/>
-			);
-	}, [user, loading]);
+
+		return (
+			<SideMenuButton
+				icon="/common/signin.svg"
+				imageClassname="-scale-x-100"
+				text="Sign Out"
+				onClick={signOutResponse}
+			/>
+		);
+	}, [user, loading, signOutResponse, router]);
 
 	return (
 		<Popover

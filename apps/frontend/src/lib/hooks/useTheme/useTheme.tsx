@@ -1,5 +1,5 @@
 "use client";
-import { useState, useLayoutEffect, useEffect, useContext, useRef, use } from "react";
+import { useState, useLayoutEffect, useEffect, useContext, useRef } from "react";
 import { AuthContext } from "@lib/providers";
 import type { Theme } from "./types";
 
