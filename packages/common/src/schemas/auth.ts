@@ -43,6 +43,4 @@ export const SignInInputSchema = z.object({
 	password: z.string(),
 }) satisfies z.ZodType<SignInInput>;
 
-export const TokenIdSchema = z.object({
-	tokenId: z.string(),
-}) satisfies z.ZodType<{ tokenId: string }>;
+export const TokenIdSchema = z.string().length(64);

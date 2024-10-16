@@ -73,7 +73,6 @@ export class OpenAuthService {
 		}
 	}
 
-
 	private async makeSessionCookie(userId: string): Promise<TokenCookie> {
 		const token = this.lucia.generateSessionToken();
 		const session = await this.lucia.createSession(token, userId);

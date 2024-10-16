@@ -18,9 +18,9 @@ export class LuciaService {
 
 	private sessionDuration = 1000 * 60 * 60 * 24 * 30; // 30 days
 
-  generateUserId(): string {
-    return randomBytes(16).toString("hex");
-  }
+	generateUserId(): string {
+		return randomBytes(16).toString("hex");
+	}
 
 	generateSessionToken(): string {
 		const bytes = randomBytes(32);
@@ -95,4 +95,3 @@ export class LuciaService {
 		});
 	}
 }
-

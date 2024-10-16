@@ -11,7 +11,32 @@ export class AppErrorFilter implements ExceptionFilter {
 		const request = ctx.getRequest<Request>();
 		const status = exception.getStatus();
 
-		logger.error({ host, error: exception, request, response });
+		if (process.env.NODE_ENV === "production")
+			logger.error({
+				host,
+				error: {
+					code: exception.code,
+					name: exception.name,
+					message: exception.message,
+					stack: exception.stack,
+				},
+				request: {
+					url: request.url,
+					method: request.method,
+					headers: request.headers,
+					body: request.body,
+					query: request.query,
+					ips: request.ips,
+					hostname: request.hostname,
+					protocol: request.protocol,
+					secure: request.secure,
+				},
+				response: {
+					headers: response.getHeaders(),
+					statusCode: response.statusCode,
+					statusMessage: response.statusMessage,
+				},
+			});
 
 		response.status(status).json({
 			timestamp: new Date().toISOString(),

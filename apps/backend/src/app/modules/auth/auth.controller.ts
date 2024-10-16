@@ -4,6 +4,8 @@ import type { SignInInput, SignUpInput } from "@shared/common/types";
 import { sessionCookieName } from "@shared/common/constants";
 import { AuthService } from "./auth.service";
 import { LuciaService } from "@db/client";
+import { SignUpInputSchema, SignInInputSchema, TokenIdSchema } from "@shared/common/schemas";
+import { ValidationPipe } from "@pipes";
 
 @Controller("auth")
 export class AuthController {
@@ -14,7 +16,10 @@ export class AuthController {
 
 	@Post("signup")
 	@HttpCode(201)
-	async signUp(@Body() input: SignUpInput, @Res({ passthrough: true }) res: Response) {
+	async signUp(
+		@Body(new ValidationPipe(SignUpInputSchema)) input: SignUpInput,
+		@Res({ passthrough: true }) res: Response,
+	) {
 		const tokenCookie = await this.authService.signUp(input);
 		this.luciaService.setSessionCookie(res, sessionCookieName, tokenCookie);
 		return {};
@@ -22,7 +27,10 @@ export class AuthController {
 
 	@Post("signin")
 	@HttpCode(201)
-	async signIn(@Body() input: SignInInput, @Res({ passthrough: true }) res: Response) {
+	async signIn(
+		@Body(new ValidationPipe(SignInInputSchema)) input: SignInInput,
+		@Res({ passthrough: true }) res: Response,
+	) {
 		const tokenCookie = await this.authService.signIn(input);
 		this.luciaService.setSessionCookie(res, sessionCookieName, tokenCookie);
 		return {};
@@ -30,14 +38,14 @@ export class AuthController {
 
 	@Delete("signout/:tokenId")
 	@HttpCode(204)
-	async signOut(@Param("tokenId") tokenId: string) {
-		this.authService.signOut({ tokenId });
+	async signOut(@Param("tokenId", new ValidationPipe(TokenIdSchema)) tokenId: string) {
+		this.authService.signOut(tokenId);
 		return {};
 	}
 
 	@Get("me")
 	async user(@Req() req: Request) {
 		const tokenId = req.cookies[sessionCookieName] as string | undefined;
-		return this.authService.getUserFromSession({ tokenId });
+		return this.authService.getUserFromSession(tokenId);
 	}
 }

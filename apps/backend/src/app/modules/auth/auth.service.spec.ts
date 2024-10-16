@@ -110,7 +110,7 @@ describe("AuthService", () => {
 			cookie = await service.signUp(testInput);
 		});
 		it("should sign out a user", async () => {
-			await service.signOut({ tokenId: cookie.value });
+			await service.signOut(cookie.value);
 			expect(service.getUserFromSession(cookie.value)).rejects.toThrow(AppError);
 		});
 
@@ -131,7 +131,7 @@ describe("AuthService", () => {
 			cookie = await service.signUp(testInput);
 		});
 		it("should get a user", async () => {
-			const user = await service.getUserFromSession({ tokenId: cookie.value });
+			const user = await service.getUserFromSession(cookie.value);
 			expect(user).toBeDefined();
 			expect(user.id).toBeDefined();
 			expect(user.username).toBe(testInput.username);

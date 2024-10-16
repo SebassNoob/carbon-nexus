@@ -1,9 +1,7 @@
 import type { GetUserInput, UpdateUserInput } from "@shared/common/types";
 import { z } from "zod";
 
-export const GetUserInputSchema = z.object({
-	id: z.string(),
-}) satisfies z.ZodType<GetUserInput>;
+export const GetUserInputSchema = z.string() satisfies z.ZodType<GetUserInput>;
 
 export const UpdateUserInputSchema = z.object({
 	username: z.string().optional(),

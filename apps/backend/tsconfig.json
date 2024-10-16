@@ -32,6 +32,8 @@
 			"@/*": ["./src/*"],
 			"@db/*": ["./src/db/*"],
 			"@modules/*": ["./src/app/modules/*"],
+			"@middleware": ["./src/app/middleware"],
+			"@pipes": ["./src/app/pipes"],
 			"@utils/*": ["./src/utils/*"],
 			"@mocks/*": ["./__mocks__/*"],
 			"@mocks": ["./__mocks__"]

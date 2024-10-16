@@ -1,8 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { password as bunPassword } from "bun";
-import type { SafeUser, TokenCookie } from "@shared/common/types";
-import { SignUpInputSchema, SignInInputSchema, TokenIdSchema } from "@shared/common/schemas";
-import { validateSchema } from "@utils/validateSchema";
+import type { SafeUser, SignInInput, TokenCookie, SignUpInput } from "@shared/common/types";
 import { handleDatabaseError } from "@utils/prismaErrors";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
 import { PrismaService, LuciaService } from "@db/client";
@@ -13,7 +11,6 @@ export class AuthService {
 		private readonly prisma: PrismaService,
 		private readonly lucia: LuciaService,
 	) {}
-	
 
 	private hashPassword(password: string): Promise<string> {
 		return bunPassword.hash(password, {
@@ -23,9 +20,7 @@ export class AuthService {
 		});
 	}
 
-	async signUp(input: unknown): Promise<TokenCookie> {
-		const data = validateSchema(SignUpInputSchema, input);
-
+	async signUp(data: SignUpInput): Promise<TokenCookie> {
 		const passwordHash = await this.hashPassword(data.password);
 		try {
 			const user = await this.prisma.user.create({
@@ -49,9 +44,7 @@ export class AuthService {
 		}
 	}
 
-	async signIn(input: unknown): Promise<TokenCookie> {
-		const data = validateSchema(SignInInputSchema, input);
-
+	async signIn(data: SignInInput): Promise<TokenCookie> {
 		const user = await this.prisma.user.findFirst({
 			where: {
 				email: data.email,
@@ -82,16 +75,17 @@ export class AuthService {
 		};
 	}
 
-	async signOut(_tokenId: unknown): Promise<void> {
-		const { tokenId } = validateSchema(TokenIdSchema, _tokenId);
+	async signOut(tokenId: string): Promise<void> {
 		const { session } = await this.lucia.validateSessionToken(tokenId);
 		if (!session) throw new AppError(AppErrorTypes.InvalidToken);
 
 		await this.lucia.invalidateSession(session.id);
 	}
 
-	async getUserFromSession(_tokenId: unknown): Promise<SafeUser> {
-		const { tokenId } = validateSchema(TokenIdSchema, _tokenId);
+	async getUserFromSession(tokenId: string | undefined): Promise<SafeUser> {
+		if (!tokenId) {
+			throw new AppError(AppErrorTypes.InvalidToken);
+		}
 
 		const { session, user } = await this.lucia.validateSessionToken(tokenId);
 

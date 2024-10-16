@@ -12,8 +12,5 @@ export type SafeUser = {
 	timezone: string;
 };
 
-export type GetUserInput = {
-	id: string;
-};
-
+export type GetUserInput = string;
 export type UpdateUserInput = Prettify<Partial<Omit<SafeUser, "id">>>;

@@ -1,8 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "@db/client";
-import { validateSchema } from "@utils/validateSchema";
-import { GetUserInputSchema, UpdateUserInputSchema } from "@shared/common/schemas";
-import type { SafeUser } from "@shared/common/types";
+import type { SafeUser, UpdateUserInput } from "@shared/common/types";
 import { handleDatabaseError } from "@utils/prismaErrors";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
 
@@ -10,8 +8,7 @@ import { AppError, AppErrorTypes } from "@utils/appErrors";
 export class UserService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	async getUserById(_userId: unknown): Promise<SafeUser> {
-		const { id } = validateSchema(GetUserInputSchema, _userId);
+	async getUserById(id: string): Promise<SafeUser> {
 		let user: SafeUser | null = null;
 		try {
 			user = await this.prisma.user.findUnique({
@@ -38,13 +35,7 @@ export class UserService {
 		return user;
 	}
 
-	async updateUserById(id: string, _data: unknown): Promise<SafeUser> {
-		if (typeof id !== "string") {
-			throw new AppError(AppErrorTypes.UserNotFound);
-		}
-
-		const data = validateSchema(UpdateUserInputSchema, _data);
-
+	async updateUserById(id: string, data: UpdateUserInput): Promise<SafeUser> {
 		let user: SafeUser | null = null;
 		try {
 			user = await this.prisma.user.update({
