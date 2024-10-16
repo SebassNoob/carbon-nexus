@@ -49,10 +49,6 @@ export default async function Home() {
 						</tr>
 					</tbody>
 				</table>
-				<div>
-					<Button href="/auth/signin">Sign In</Button>
-					<SignOutButton />
-				</div>
 			</div>
 		</div>
 	);

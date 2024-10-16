@@ -3,7 +3,7 @@ import { Test, type TestingModule } from "@nestjs/testing";
 import { PrismaService, LuciaService } from "@db/client";
 import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
-import type { SignUpInput, SignInInput, SessionCookie } from "@shared/common/types";
+import type { SignUpInput, SignInInput, TokenCookie } from "@shared/common/types";
 import { resetDatabase, testFetch } from "@utils/test";
 import type { INestApplication } from "@nestjs/common";
 import { faker } from "@faker-js/faker";
@@ -47,7 +47,7 @@ describe("AuthController", () => {
 				callback: (response) => {
 					expect(response.status).toBe(201);
 					expect(response.headers["set-cookie"]).toBeDefined();
-					expect(response.headers["set-cookie"][0]).toContain("sessionId=");
+					expect(response.headers["set-cookie"][0]).toContain("tokenId=");
 				},
 			});
 		});
@@ -86,7 +86,7 @@ describe("AuthController", () => {
 				callback: (response) => {
 					expect(response.status).toBe(201);
 					expect(response.headers["set-cookie"]).toBeDefined();
-					expect(response.headers["set-cookie"][0]).toContain("sessionId=");
+					expect(response.headers["set-cookie"][0]).toContain("tokenId=");
 				},
 			});
 		});
@@ -111,7 +111,7 @@ describe("AuthController", () => {
 				callback: (response) => {
 					cookie = (response.headers["set-cookie"] as unknown as string[])[0]
 						.split("; ")[0]
-						.replace("sessionId=", "");
+						.replace("tokenId=", "");
 				},
 			});
 		});
@@ -148,7 +148,7 @@ describe("AuthController", () => {
 				callback: (response) => {
 					cookie = (response.headers["set-cookie"] as unknown as string[])[0]
 						.split("; ")[0]
-						.replace("sessionId=", "");
+						.replace("tokenId=", "");
 				},
 			});
 		});
@@ -160,7 +160,7 @@ describe("AuthController", () => {
 					method: "GET",
 					options: {
 						headers: {
-							Cookie: `sessionId=${cookie}`,
+							Cookie: `tokenId=${cookie}`,
 						},
 					},
 					path: "/auth/me",

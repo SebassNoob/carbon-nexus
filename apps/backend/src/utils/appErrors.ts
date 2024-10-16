@@ -66,5 +66,10 @@ export const AppErrorTypes = {
 		code: 400,
 		cause: "OAuth provider not found",
 	},
+	InvalidToken: {
+		name: "InvalidToken",
+		code: 400,
+		cause: "Invalid token",
+	},
 	// biome-ignore lint/suspicious/noExplicitAny: allow the use of any in this context
 } as const satisfies Record<string, ((...args: any[]) => AppErrorType) | AppErrorType>;

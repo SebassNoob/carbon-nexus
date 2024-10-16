@@ -1,4 +1,7 @@
 "use client";
+
+import { useContext } from "react";
+import { AuthContext } from "@lib/providers";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,16 +17,9 @@ export function SignUpForm() {
 		resolver: zodResolver(SignUpInputSchema),
 	});
 
+	const { signUp } = useContext(AuthContext);
 	const onSubmit = handleSubmit(async (data) => {
-		const { status } = await query<void>("/auth/signup", {
-			method: "POST",
-			body: JSON.stringify(data),
-			headers: {
-				"Content-Type": "application/json",
-			},
-			credentials: "include",
-		});
-
+		const status = await signUp(data);
 		switch (status) {
 			case 201:
 				toast.success("Account created successfully");

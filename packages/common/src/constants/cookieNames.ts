@@ -1,6 +1,6 @@
 type OAuthProviders = "discord" | "google" | "github";
 
-export const sessionCookieName = "sessionId" as const;
+export const sessionCookieName = "tokenId" as const;
 
 export const oAuthCookieNames = {
 	discord: {

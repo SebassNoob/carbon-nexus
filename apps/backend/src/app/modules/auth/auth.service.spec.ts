@@ -2,7 +2,7 @@ import { expect, it, describe, beforeEach } from "bun:test";
 import { Test, type TestingModule } from "@nestjs/testing";
 import { PrismaService, LuciaService } from "@db/client";
 import { AuthService } from "./auth.service";
-import type { SignUpInput, SignInInput, SessionCookie } from "@shared/common/types";
+import type { SignUpInput, SignInInput, TokenCookie } from "@shared/common/types";
 import { AppError } from "@utils/appErrors";
 import { resetDatabase } from "@utils/test";
 import { faker } from "@faker-js/faker";
@@ -36,7 +36,7 @@ describe("AuthService", () => {
 		it("should create a new user", async () => {
 			const cookie = await service.signUp(testInput);
 			expect(cookie).toBeDefined();
-			expect(cookie.id).toBeDefined();
+			expect(cookie.value).toBeDefined();
 			expect(cookie.expiresAt).toBeDefined();
 		});
 
@@ -75,7 +75,7 @@ describe("AuthService", () => {
 
 			const cookie = await service.signIn(input);
 			expect(cookie).toBeDefined();
-			expect(cookie.id).toBeDefined();
+			expect(cookie.value).toBeDefined();
 			expect(cookie.expiresAt).toBeDefined();
 		});
 
@@ -105,13 +105,13 @@ describe("AuthService", () => {
 			password: "Password!123",
 			repeatPassword: "Password!123",
 		};
-		let cookie: SessionCookie;
+		let cookie: TokenCookie;
 		beforeEach(async () => {
 			cookie = await service.signUp(testInput);
 		});
 		it("should sign out a user", async () => {
-			await service.signOut({ sessionId: cookie.id });
-			expect(service.getUserFromSession(cookie.id)).rejects.toThrow(AppError);
+			await service.signOut({ tokenId: cookie.value });
+			expect(service.getUserFromSession(cookie.value)).rejects.toThrow(AppError);
 		});
 
 		it("should throw an error if session is not found", async () => {
@@ -126,12 +126,12 @@ describe("AuthService", () => {
 			password: "Password!123",
 			repeatPassword: "Password!123",
 		};
-		let cookie: SessionCookie;
+		let cookie: TokenCookie;
 		beforeEach(async () => {
 			cookie = await service.signUp(testInput);
 		});
 		it("should get a user", async () => {
-			const user = await service.getUserFromSession({ sessionId: cookie.id });
+			const user = await service.getUserFromSession({ tokenId: cookie.value });
 			expect(user).toBeDefined();
 			expect(user.id).toBeDefined();
 			expect(user.username).toBe(testInput.username);

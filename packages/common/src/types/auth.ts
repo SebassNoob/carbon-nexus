@@ -10,7 +10,7 @@ export type SignInInput = {
 	password: string;
 };
 
-export type SessionCookie = {
-	id: string;
+export type TokenCookie = {
+	value: string;
 	expiresAt: Date;
 };

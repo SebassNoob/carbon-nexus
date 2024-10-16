@@ -2,16 +2,18 @@
 
 import { useState, createContext, useEffect, useRef } from "react";
 import type { AuthContextProps, AuthProviderProps } from "./types";
-import type { SafeUser, Serialized } from "@shared/common/types";
+import type { SafeUser, Serialized, SignInInput, SignUpInput } from "@shared/common/types";
 import { signOut, getUser } from "@lib/actions";
 import { query } from "@utils";
 import dynamic from "next/dynamic";
 
 export const AuthContext = createContext<AuthContextProps>({
 	user: null,
-	sessionId: null,
+	tokenId: null,
 	loading: true,
-	signOut: async () => false,
+	signOut: async () => 0,
+	signIn: async () => 0,
+	signUp: async () => 0,
 	updateUser: async () => {},
 });
 
@@ -26,20 +28,22 @@ function unserializeUser(user: Serialized<SafeUser> | null): SafeUser | null {
 function _AuthProvider({ children }: AuthProviderProps) {
 	const [loading, setLoading] = useState(true);
 	const [user, setUser] = useState<SafeUser | null>(null);
-	const [sessionId, setSessionId] = useState<string | null>(null);
+	const [tokenId, setTokenId] = useState<string | null>(null);
 
 	// AbortController to cancel updateUser requests
 	const updateUserAbortController = useRef<AbortController | null>(null);
 
-	useEffect(() => {
-		getUser().then(({ status, data: reqUser, sessionId }) => {
+	function syncUser() {
+		getUser().then(({ status, data: reqUser, tokenId }) => {
 			if (status === 200) {
 				setUser(unserializeUser(reqUser));
-				setSessionId(sessionId ?? null);
+				setTokenId(tokenId ?? null);
 			}
 			setLoading(false);
 		});
-	}, []);
+	}
+
+	useEffect(syncUser, []);
 
 	async function updateUser(update: Partial<SafeUser>) {
 		if (!user || loading) return;
@@ -70,23 +74,60 @@ function _AuthProvider({ children }: AuthProviderProps) {
 		}
 	}
 
-	async function handleSignout() {
+	async function handleSignout(): Promise<number> {
 		setLoading(true);
 		const { status } = await signOut();
 
 		if (status === 204) {
 			setUser(null);
-			setSessionId(null);
-			setLoading(false);
-			return true;
+			setTokenId(null);
 		}
-		console.error("Failed to sign out");
 		setLoading(false);
-		return false;
+		return status;
+	}
+
+	async function handleSignIn(input: SignInInput): Promise<number> {
+		const { status } = await query<void>("/auth/signin", {
+			method: "POST",
+			body: JSON.stringify(input),
+			headers: {
+				"Content-Type": "application/json",
+			},
+			credentials: "include",
+		});
+		if (status === 201) {
+			syncUser();
+		}
+		return status;
+	}
+
+	async function handleSignUp(input: SignUpInput): Promise<number> {
+		const { status } = await query<void>("/auth/signup", {
+			method: "POST",
+			body: JSON.stringify(input),
+			headers: {
+				"Content-Type": "application/json",
+			},
+			credentials: "include",
+		});
+		if (status === 201) {
+			syncUser();
+		}
+		return status;
 	}
 
 	return (
-		<AuthContext.Provider value={{ user, sessionId, loading, signOut: handleSignout, updateUser }}>
+		<AuthContext.Provider
+			value={{
+				user,
+				tokenId,
+				loading,
+				signOut: handleSignout,
+				signIn: handleSignIn,
+				signUp: handleSignUp,
+				updateUser,
+			}}
+		>
 			{children}
 		</AuthContext.Provider>
 	);

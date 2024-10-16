@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import { generateIdFromEntropySize } from "lucia";
 import {
 	generateState,
 	generateCodeVerifier,
@@ -10,7 +9,7 @@ import {
 	type GoogleTokens,
 	type GitHubTokens,
 } from "arctic";
-import type { SessionCookie } from "@shared/common/types";
+import type { TokenCookie } from "@shared/common/types";
 import { validateSchema } from "@utils/validateSchema";
 import { handleDatabaseError } from "@utils/prismaErrors";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
@@ -74,15 +73,12 @@ export class OpenAuthService {
 		}
 	}
 
-	private generateUserId(): string {
-		return generateIdFromEntropySize(10);
-	}
 
-	private async makeSessionCookie(userId: string): Promise<SessionCookie> {
-		const session = await this.lucia.createSession(userId, {});
-		const sessionCookie = this.lucia.createSessionCookie(session.id);
+	private async makeSessionCookie(userId: string): Promise<TokenCookie> {
+		const token = this.lucia.generateSessionToken();
+		const session = await this.lucia.createSession(token, userId);
 		return {
-			id: sessionCookie.value,
+			value: token,
 			expiresAt: session.expiresAt,
 		};
 	}
@@ -90,7 +86,7 @@ export class OpenAuthService {
 	private async handleOAuth(
 		provider: OAuthProvider,
 		{ id, email, username }: OAuthUser,
-	): Promise<SessionCookie> {
+	): Promise<TokenCookie> {
 		// check if oauth account exists
 		const oAuthAccount = await this.prisma.oAuthAccount.findFirst({
 			where: {
@@ -132,7 +128,7 @@ export class OpenAuthService {
 		// if user does not exist, create new user, oauth account, and session
 
 		try {
-			const userId = this.generateUserId();
+			const userId = this.lucia.generateUserId();
 
 			await this.prisma.user.create({
 				data: {
@@ -181,7 +177,7 @@ export class OpenAuthService {
 		return { state, url: url.toString() };
 	}
 
-	async handleDiscordCallback(code: string | undefined): Promise<SessionCookie> {
+	async handleDiscordCallback(code: string | undefined): Promise<TokenCookie> {
 		if (code === undefined) {
 			throw new AppError(AppErrorTypes.GenericError("Missing code from OAuth provider"));
 		}
@@ -208,7 +204,7 @@ export class OpenAuthService {
 	async handleGoogleCallback(
 		code: string | undefined,
 		codeVerifier: string | undefined,
-	): Promise<SessionCookie> {
+	): Promise<TokenCookie> {
 		if (code === undefined || codeVerifier === undefined) {
 			throw new AppError(
 				AppErrorTypes.GenericError("Missing code or codeVerifier from OAuth provider"),
@@ -238,7 +234,7 @@ export class OpenAuthService {
 		});
 	}
 
-	async handleGitHubCallback(code: string | undefined): Promise<SessionCookie> {
+	async handleGitHubCallback(code: string | undefined): Promise<TokenCookie> {
 		if (code === undefined) {
 			throw new AppError(AppErrorTypes.GenericError("Missing code from OAuth provider"));
 		}

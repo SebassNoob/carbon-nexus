@@ -1,11 +1,12 @@
 "use client";
+import { useContext } from "react";
+import { AuthContext } from "@lib/providers";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInInputSchema } from "@shared/common/schemas";
 import type { SignInInput } from "@shared/common/types";
 import { Button, TextInput } from "@lib/components";
-import { query } from "@utils";
 import { toast } from "react-hot-toast";
 
 export function SignInForm() {
@@ -14,15 +15,10 @@ export function SignInForm() {
 		resolver: zodResolver(SignInInputSchema),
 	});
 
+	const { signIn } = useContext(AuthContext);
+
 	const onSubmit = handleSubmit(async (data) => {
-		const { status } = await query<void>("/auth/signin", {
-			method: "POST",
-			body: JSON.stringify(data),
-			headers: {
-				"Content-Type": "application/json",
-			},
-			credentials: "include",
-		});
+		const status = await signIn(data);
 		switch (status) {
 			case 201:
 				toast.success("Signed in successfully!");

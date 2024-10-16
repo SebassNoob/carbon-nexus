@@ -2,7 +2,7 @@ import { expect, it, describe, beforeEach, mock, afterEach, spyOn } from "bun:te
 import { Test, type TestingModule } from "@nestjs/testing";
 import { PrismaService, LuciaService } from "@db/client";
 import { OpenAuthService } from "./oauth.service";
-import type { SignUpInput, SignInInput, SessionCookie } from "@shared/common/types";
+import type { SignUpInput, SignInInput, TokenCookie } from "@shared/common/types";
 import { AppError } from "@utils/appErrors";
 import { resetDatabase } from "@utils/test";
 import { de, faker } from "@faker-js/faker";
@@ -90,7 +90,7 @@ describe("OpenAuthService", () => {
 		});
 		it("should return a session cookie", async () => {
 			const res = await service.handleDiscordCallback(faker.string.alphanumeric());
-			expect(res).toHaveProperty("id");
+			expect(res).toHaveProperty("value");
 			expect(res).toHaveProperty("expiresAt");
 		});
 
@@ -121,10 +121,10 @@ describe("OpenAuthService", () => {
 
 			const createOAuthAccount = spyOn(prismaService.oAuthAccount, "create");
 			const createAccount = spyOn(prismaService.user, "create");
-			const createSession = spyOn(prismaService.session, "create");
+			const createSession = spyOn(luciaService, "createSession");
 
 			const res = await service.handleDiscordCallback(faker.string.alphanumeric());
-			expect(res).toHaveProperty("id");
+			expect(res).toHaveProperty("value");
 			expect(res).toHaveProperty("expiresAt");
 			expect(createOAuthAccount).not.toHaveBeenCalled();
 			expect(createAccount).not.toHaveBeenCalled();
@@ -159,7 +159,7 @@ describe("OpenAuthService", () => {
 				faker.string.alphanumeric(),
 				faker.string.alphanumeric(),
 			);
-			expect(res).toHaveProperty("id");
+			expect(res).toHaveProperty("value");
 			expect(res).toHaveProperty("expiresAt");
 		});
 
@@ -190,13 +190,13 @@ describe("OpenAuthService", () => {
 
 			const createOAuthAccount = spyOn(prismaService.oAuthAccount, "create");
 			const createAccount = spyOn(prismaService.user, "create");
-			const createSession = spyOn(prismaService.session, "create");
+			const createSession = spyOn(luciaService, "createSession");
 
 			const res = await service.handleGoogleCallback(
 				faker.string.alphanumeric(),
 				faker.string.alphanumeric(),
 			);
-			expect(res).toHaveProperty("id");
+			expect(res).toHaveProperty("value");
 			expect(res).toHaveProperty("expiresAt");
 			expect(createOAuthAccount).not.toHaveBeenCalled();
 			expect(createAccount).not.toHaveBeenCalled();
@@ -228,7 +228,7 @@ describe("OpenAuthService", () => {
 
 		it("should return a session cookie", async () => {
 			const res = await service.handleGitHubCallback(faker.string.alphanumeric());
-			expect(res).toHaveProperty("id");
+			expect(res).toHaveProperty("value");
 			expect(res).toHaveProperty("expiresAt");
 		});
 
@@ -259,10 +259,10 @@ describe("OpenAuthService", () => {
 
 			const createOAuthAccount = spyOn(prismaService.oAuthAccount, "create");
 			const createAccount = spyOn(prismaService.user, "create");
-			const createSession = spyOn(prismaService.session, "create");
+			const createSession = spyOn(luciaService, "createSession");
 
 			const res = await service.handleGitHubCallback(faker.string.alphanumeric());
-			expect(res).toHaveProperty("id");
+			expect(res).toHaveProperty("value");
 			expect(res).toHaveProperty("expiresAt");
 			expect(createOAuthAccount).not.toHaveBeenCalled();
 			expect(createAccount).not.toHaveBeenCalled();

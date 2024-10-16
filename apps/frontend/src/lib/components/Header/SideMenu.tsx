@@ -15,8 +15,8 @@ export function SideMenu() {
 	const router = useRouter();
 
 	const signOutResponse = useCallback(() => {
-		signOut().then((success) => {
-			if (success) {
+		signOut().then((status) => {
+			if (status === 204) {
 				toast.success("Signed out successfully");
 			} else {
 				toast.error("Failed to sign out");

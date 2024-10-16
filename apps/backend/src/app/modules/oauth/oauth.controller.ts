@@ -2,6 +2,7 @@ import { Controller, Get, HttpCode, Res, Query, Param, Req } from "@nestjs/commo
 import type { Response, Request } from "express";
 import { ConfigService } from "@nestjs/config";
 import { OpenAuthService } from "./oauth.service";
+import { LuciaService } from "@db/client";
 import { oAuthCookieNames, sessionCookieName } from "@shared/common/constants";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
 
@@ -10,6 +11,7 @@ export class OpenAuthController {
 	constructor(
 		private readonly configService: ConfigService,
 		private readonly openAuthService: OpenAuthService,
+		private readonly luciaService: LuciaService,
 	) {}
 
 	private setCSRFCookie(res: Response, cookieName: string, state: string) {
@@ -66,14 +68,9 @@ export class OpenAuthController {
 				if (stateCookie !== state) {
 					throw new AppError(AppErrorTypes.InvalidState);
 				}
-				const { expiresAt, id } = await this.openAuthService.handleDiscordCallback(code);
+				const cookie = await this.openAuthService.handleDiscordCallback(code);
 
-				res.cookie(sessionCookieName, id, {
-					httpOnly: true,
-					secure: this.configService.get<string>("NODE_ENV") === "production",
-					sameSite: "lax",
-					expires: expiresAt,
-				});
+				this.luciaService.setSessionCookie(res, sessionCookieName, cookie);
 				return res.redirect(this.configService.get<string>("FRONTEND_URL") as string);
 			}
 
@@ -89,17 +86,9 @@ export class OpenAuthController {
 				if (stateCookie !== state) {
 					throw new AppError(AppErrorTypes.InvalidState);
 				}
-				const { expiresAt, id } = await this.openAuthService.handleGoogleCallback(
-					code,
-					codeVerifierCookie,
-				);
+				const cookie = await this.openAuthService.handleGoogleCallback(code, codeVerifierCookie);
 
-				res.cookie(sessionCookieName, id, {
-					httpOnly: true,
-					secure: this.configService.get<string>("NODE_ENV") === "production",
-					sameSite: "lax",
-					expires: expiresAt,
-				});
+				this.luciaService.setSessionCookie(res, sessionCookieName, cookie);
 				return res.redirect(this.configService.get<string>("FRONTEND_URL") as string);
 			}
 			case "github": {
@@ -112,14 +101,9 @@ export class OpenAuthController {
 				if (stateCookie !== state) {
 					throw new AppError(AppErrorTypes.InvalidState);
 				}
-				const { expiresAt, id } = await this.openAuthService.handleGitHubCallback(code);
+				const cookie = await this.openAuthService.handleGitHubCallback(code);
 
-				res.cookie(sessionCookieName, id, {
-					httpOnly: true,
-					secure: this.configService.get<string>("NODE_ENV") === "production",
-					sameSite: "lax",
-					expires: expiresAt,
-				});
+				this.luciaService.setSessionCookie(res, sessionCookieName, cookie);
 				return res.redirect(this.configService.get<string>("FRONTEND_URL") as string);
 			}
 			default:

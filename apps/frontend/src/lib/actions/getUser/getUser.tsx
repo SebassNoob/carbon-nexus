@@ -20,6 +20,6 @@ export async function getUser() {
 	return {
 		status,
 		data: body,
-		sessionId: sessionCookie,
+		tokenId: sessionCookie,
 	};
 }

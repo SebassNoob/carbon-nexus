@@ -41,8 +41,8 @@ export const SignUpInputSchema = z
 export const SignInInputSchema = z.object({
 	email: z.string().email(),
 	password: z.string(),
-}) as z.ZodType<SignInInput>;
+}) satisfies z.ZodType<SignInInput>;
 
-export const SessionIdSchema = z.object({
-	sessionId: z.string(),
-}) as z.ZodType<{ sessionId: string }>;
+export const TokenIdSchema = z.object({
+	tokenId: z.string(),
+}) satisfies z.ZodType<{ tokenId: string }>;

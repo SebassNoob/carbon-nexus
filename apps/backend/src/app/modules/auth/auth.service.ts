@@ -1,8 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { generateIdFromEntropySize } from "lucia";
 import { password as bunPassword } from "bun";
-import type { SafeUser, SessionCookie } from "@shared/common/types";
-import { SignUpInputSchema, SignInInputSchema, SessionIdSchema } from "@shared/common/schemas";
+import type { SafeUser, TokenCookie } from "@shared/common/types";
+import { SignUpInputSchema, SignInInputSchema, TokenIdSchema } from "@shared/common/schemas";
 import { validateSchema } from "@utils/validateSchema";
 import { handleDatabaseError } from "@utils/prismaErrors";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
@@ -14,9 +13,7 @@ export class AuthService {
 		private readonly prisma: PrismaService,
 		private readonly lucia: LuciaService,
 	) {}
-	private generateUserId(): string {
-		return generateIdFromEntropySize(10);
-	}
+	
 
 	private hashPassword(password: string): Promise<string> {
 		return bunPassword.hash(password, {
@@ -26,26 +23,25 @@ export class AuthService {
 		});
 	}
 
-	async signUp(input: unknown): Promise<SessionCookie> {
+	async signUp(input: unknown): Promise<TokenCookie> {
 		const data = validateSchema(SignUpInputSchema, input);
 
 		const passwordHash = await this.hashPassword(data.password);
 		try {
 			const user = await this.prisma.user.create({
 				data: {
-					id: this.generateUserId(),
+					id: this.lucia.generateUserId(),
 					username: data.username,
 					email: data.email,
 					passwordHash,
 				},
 			});
 
-			const session = await this.lucia.createSession(user.id, {});
-
-			const sessionCookie = this.lucia.createSessionCookie(session.id);
+			const token = this.lucia.generateSessionToken();
+			const session = await this.lucia.createSession(token, user.id);
 
 			return {
-				id: sessionCookie.value,
+				value: token,
 				expiresAt: session.expiresAt,
 			};
 		} catch (error: unknown) {
@@ -53,7 +49,7 @@ export class AuthService {
 		}
 	}
 
-	async signIn(input: unknown): Promise<SessionCookie> {
+	async signIn(input: unknown): Promise<TokenCookie> {
 		const data = validateSchema(SignInInputSchema, input);
 
 		const user = await this.prisma.user.findFirst({
@@ -77,52 +73,31 @@ export class AuthService {
 			throw new AppError(AppErrorTypes.InvalidCredentials);
 		}
 
-		const session = await this.lucia.createSession(user.id, {});
+		const token = this.lucia.generateSessionToken();
+		const session = await this.lucia.createSession(token, user.id);
 
-		const sessionCookie = this.lucia.createSessionCookie(session.id);
 		return {
-			id: sessionCookie.value,
+			value: token,
 			expiresAt: session.expiresAt,
 		};
 	}
 
-	async signOut(_sessionId: unknown): Promise<void> {
-		const { sessionId } = validateSchema(SessionIdSchema, _sessionId);
-		await this.lucia.invalidateSession(sessionId);
+	async signOut(_tokenId: unknown): Promise<void> {
+		const { tokenId } = validateSchema(TokenIdSchema, _tokenId);
+		const { session } = await this.lucia.validateSessionToken(tokenId);
+		if (!session) throw new AppError(AppErrorTypes.InvalidToken);
+
+		await this.lucia.invalidateSession(session.id);
 	}
 
-	async getUserFromSession(_sessionId: unknown): Promise<SafeUser> {
-		const { sessionId } = validateSchema(SessionIdSchema, _sessionId);
-		const session = await this.prisma.session.findFirst({
-			where: {
-				id: sessionId,
-			},
-		});
+	async getUserFromSession(_tokenId: unknown): Promise<SafeUser> {
+		const { tokenId } = validateSchema(TokenIdSchema, _tokenId);
 
-		if (!session) {
+		const { session, user } = await this.lucia.validateSessionToken(tokenId);
+
+		if (!session || !user) {
 			throw new AppError(AppErrorTypes.UserNotFound);
 		}
-
-		const user = await this.prisma.user.findFirst({
-			where: {
-				id: session.userId,
-			},
-			select: {
-				id: true,
-				username: true,
-				email: true,
-				createdAt: true,
-				verified: true,
-				theme: true,
-				reducedMotion: true,
-				timezone: true,
-			},
-		});
-
-		if (!user) {
-			throw new AppError(AppErrorTypes.UserNotFound);
-		}
-
 		return user;
 	}
 }
