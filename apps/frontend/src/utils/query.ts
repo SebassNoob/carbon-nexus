@@ -1,9 +1,16 @@
-import type { Prettify, Serialized } from "@shared/common/types";
+import type {
+	Prettify,
+	ErrorResponse,
+	Serialized,
+	SerializedResponsePayload,
+} from "@shared/common/types";
 
 export type QueryResult<T> = {
 	status: number;
-	body: Prettify<Serialized<T>> | null;
+	data: Prettify<Serialized<T>> | null;
+	error: Prettify<ErrorResponse> | null;
 	headers: Headers;
+	timeStamp: string;
 };
 
 export async function query<T>(input: string, init?: RequestInit): Promise<QueryResult<T>> {
@@ -18,10 +25,22 @@ export async function query<T>(input: string, init?: RequestInit): Promise<Query
 		},
 	}).then(async (res) => {
 		try {
-			const body = await res.json();
-			return { status: res.status, body, headers: res.headers };
+			const body: Prettify<SerializedResponsePayload<T>> = await res.json();
+			return {
+				status: res.status,
+				data: body.success ? body.data : null,
+				error: body.success ? null : body.error,
+				headers: res.headers,
+				timeStamp: body.timestamp,
+			};
 		} catch (error) {
-			return { status: res.status, body: null, headers: res.headers };
+			return {
+				status: res.status,
+				data: null,
+				error: { path: url, name: "Failed to parse response", cause: error },
+				headers: res.headers,
+				timeStamp: new Date().toISOString(),
+			};
 		}
 	});
 }

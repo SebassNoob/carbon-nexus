@@ -56,14 +56,14 @@ function _AuthProvider({ children }: AuthProviderProps) {
 		updateUserAbortController.current = abort;
 
 		try {
-			const { status, body } = await query<SafeUser>(`/user/${user.id}`, {
+			const { status, data } = await query<SafeUser>(`/user/${user.id}`, {
 				method: "PATCH",
 				body: JSON.stringify(update),
 				signal: abort.signal,
 			});
 
 			if (status === 200) {
-				setUser(unserializeUser(body));
+				setUser(unserializeUser(data));
 				return;
 			}
 			console.error("Failed to update user");

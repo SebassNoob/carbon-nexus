@@ -9,7 +9,7 @@ import type { OAuthButtonProps } from "./types";
 export function OAuthButton({ location, iconPath, name }: OAuthButtonProps) {
 	const router = useRouter();
 	const initOAuth = async () => {
-		const { body, status } = await query<{ url: string }>(location, {
+		const { data, status } = await query<{ url: string }>(location, {
 			method: "GET",
 			credentials: "include",
 		});
@@ -18,7 +18,7 @@ export function OAuthButton({ location, iconPath, name }: OAuthButtonProps) {
 			toast.error(`Failed to redirect to ${name} OAuth, try again later.`);
 			return;
 		}
-		const url = body?.url;
+		const url = data?.url;
 		if (!url) {
 			toast.error(`Failed to redirect to ${name} OAuth, try again later.`);
 			return;

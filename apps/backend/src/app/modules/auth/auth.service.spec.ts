@@ -40,18 +40,14 @@ describe("AuthService", () => {
 			expect(cookie.expiresAt).toBeDefined();
 		});
 
-		it("should throw an error for  is already taken", async () => {
+		it("should throw an error for duplicate account", async () => {
 			expect(service.signUp(testInput)).resolves.toBeDefined();
 			expect(service.signUp(testInput)).rejects.toThrow(AppError);
 		});
 
-		it("Invalid password should throw an error", async () => {
-			const invalidInput = { ...testInput, password: "i am invalid!" };
-			expect(service.signUp(invalidInput)).rejects.toThrow(AppError);
-		});
-
 		it("Invalid email should throw an error", async () => {
-			const invalidInput = { ...testInput, email: "invalid-email" };
+			const invalidInput = { ...testInput, email: new Date() };
+			// @ts-expect-error
 			expect(service.signUp(invalidInput)).rejects.toThrow(AppError);
 		});
 	});

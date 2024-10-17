@@ -1,6 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { AppErrorFilter } from "./exceptions.filter";
+import { LoggingInterceptor, StandardInterceptor } from "@interceptors";
 import cookieParser from "cookie-parser";
 
 export async function bootstrap() {
@@ -11,5 +12,8 @@ export async function bootstrap() {
 	});
 	app.use(cookieParser());
 	app.useGlobalFilters(new AppErrorFilter());
+	app.useGlobalInterceptors(new StandardInterceptor());
+	app.useGlobalInterceptors(new LoggingInterceptor());
+
 	await app.listen(8080, "0.0.0.0");
 }

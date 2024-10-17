@@ -51,6 +51,24 @@ describe("AuthController", () => {
 				},
 			});
 		});
+
+		it("should throw an error for invalid password", async () => {
+			await testFetch({
+				init: {
+					app,
+					method: "POST",
+					body: {
+						...testInput,
+						password: "password",
+					},
+					path: "/auth/signup",
+				},
+				callback: (response) => {
+					expect(response.status).toBe(400);
+					expect(response.body.message).toBe("FormValidationError");
+				},
+			});
+		});
 	});
 
 	describe("/signin", () => {

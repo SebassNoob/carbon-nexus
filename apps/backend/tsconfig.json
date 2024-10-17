@@ -33,6 +33,7 @@
 			"@db/*": ["./src/db/*"],
 			"@modules/*": ["./src/app/modules/*"],
 			"@middleware": ["./src/app/middleware"],
+			"@interceptors": ["./src/app/interceptors"],
 			"@pipes": ["./src/app/pipes"],
 			"@utils/*": ["./src/utils/*"],
 			"@mocks/*": ["./__mocks__/*"],
