@@ -4,8 +4,8 @@ import { PrismaService } from "@db/client";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
 import { createTransport, type Transporter } from "nodemailer";
 import { compile } from "handlebars";
-import { readdirSync, readFileSync } from "fs";
-import { randomBytes } from "crypto";
+import { readdirSync, readFileSync } from "node:fs";
+import { randomBytes } from "node:crypto";
 
 @Injectable()
 export class EmailService {
@@ -25,10 +25,8 @@ export class EmailService {
 				const templatePath = `${dir}/${template}`;
 				const templateContent = readFileSync(templatePath, "utf-8");
 				const compiledTemplate = compile(templateContent);
-				return {
-					...acc,
-					[template]: compiledTemplate,
-				};
+				acc[template] = compiledTemplate;
+				return acc;
 			},
 			{} as Record<string, HandlebarsTemplateDelegate>,
 		);

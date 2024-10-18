@@ -11,6 +11,7 @@ switch (process.env.NODE_ENV) {
 	case "test":
 		envFilePath = ".env.test";
 		break;
+	// biome-ignore lint/complexity/noUselessSwitchCase: better to be explicit
 	case "development":
 	default:
 		envFilePath = ".env.development";
@@ -30,7 +31,7 @@ const envSchema = z.object({
 	GITHUB_OAUTH_CLIENT_SECRET: z.string(),
 	GITHUB_OAUTH_REDIRECT_URI: z.string(),
 	EMAIL_HOST: z.string(),
-	EMAIL_PORT: z.string().transform((val) => parseInt(val, 10)),
+	EMAIL_PORT: z.string().transform((val) => Number.parseInt(val, 10)),
 	EMAIL_SECURE: z.string().transform((val) => val.toLowerCase() === "true"),
 	EMAIL_USER: z.string(),
 	EMAIL_PASSWORD: z.string(),

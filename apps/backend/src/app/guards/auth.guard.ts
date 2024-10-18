@@ -1,4 +1,4 @@
-import { Injectable, CanActivate, ExecutionContext, Inject, mixin } from "@nestjs/common";
+import { Injectable, CanActivate, ExecutionContext, mixin } from "@nestjs/common";
 import { Request } from "express";
 import { LuciaService } from "@db/client";
 import { sessionCookieName } from "@shared/common/constants";
@@ -40,17 +40,15 @@ export const AuthGuard = (source: RequestSource, key: string) => {
 				case "query":
 					if (typeof request.query[key] === "string") {
 						return request.query[key];
-					} else {
-						return null;
 					}
+					return null;
 				case "body":
 					return request.body[key];
 				case "headers":
 					if (typeof request.headers[key] === "string") {
 						return request.headers[key];
-					} else {
-						return null;
 					}
+					return null;
 				default:
 					return null;
 			}
