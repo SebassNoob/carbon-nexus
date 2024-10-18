@@ -14,3 +14,12 @@ export type TokenCookie = {
 	value: string;
 	expiresAt: Date;
 };
+
+export type ForgotPasswordEmail = {
+	email: string;
+};
+
+export type ForgotPasswordReset = {
+	token: string;
+	newPassword: string;
+};

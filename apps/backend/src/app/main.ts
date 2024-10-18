@@ -1,6 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { AppErrorFilter } from "./exceptions.filter";
+import { AppErrorFilter } from "@filters";
 import { LoggingInterceptor, StandardInterceptor } from "@interceptors";
 import cookieParser from "cookie-parser";
 

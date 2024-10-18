@@ -35,6 +35,7 @@
 			"@middleware": ["./src/app/middleware"],
 			"@interceptors": ["./src/app/interceptors"],
 			"@pipes": ["./src/app/pipes"],
+			"@filters": ["./src/app/filters"],
 			"@utils/*": ["./src/utils/*"],
 			"@mocks/*": ["./__mocks__/*"],
 			"@mocks": ["./__mocks__"]

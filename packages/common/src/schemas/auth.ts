@@ -1,5 +1,10 @@
 import { z } from "zod";
-import type { SignUpInput, SignInInput } from "@shared/common/types";
+import type {
+	SignUpInput,
+	SignInInput,
+	ForgotPasswordEmail,
+	ForgotPasswordReset,
+} from "@shared/common/types";
 
 const uppercaseRegex = /[A-Z]/;
 const lowercaseRegex = /[a-z]/;
@@ -44,3 +49,27 @@ export const SignInInputSchema = z.object({
 }) satisfies z.ZodType<SignInInput>;
 
 export const TokenIdSchema = z.string().length(64);
+
+export const ForgotPasswordEmailSchema = z.object({
+	email: z.string().email(),
+}) satisfies z.ZodType<ForgotPasswordEmail>;
+
+export const ForgotPasswordResetSchema = z.object({
+	token: z.string(),
+	newPassword: z
+		.string()
+		.min(8)
+		.max(100)
+		.refine((pw) => uppercaseRegex.test(pw), {
+			message: "Password must contain at least one uppercase letter",
+		})
+		.refine((pw) => lowercaseRegex.test(pw), {
+			message: "Password must contain at least one lowercase letter",
+		})
+		.refine((pw) => numberRegex.test(pw), {
+			message: "Password must contain at least one number",
+		})
+		.refine((pw) => specialCharRegex.test(pw), {
+			message: "Password must contain at least one special character",
+		}),
+}) satisfies z.ZodType<ForgotPasswordReset>;

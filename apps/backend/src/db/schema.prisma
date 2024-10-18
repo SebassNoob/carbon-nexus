@@ -17,12 +17,13 @@ model User {
   verified     Boolean  @default(false)
 
   // preferences
-  theme                  String  @default("dark")
-  reducedMotion          Boolean @default(false)
-  timezone               String  @default("UTC")
+  theme         String  @default("dark")
+  reducedMotion Boolean @default(false)
+  timezone      String  @default("UTC")
 
-  sessions     Session[]
-  oauthAccount OAuthAccount[]
+  sessions           Session[]
+  oauthAccount       OAuthAccount[]
+  passwordResetToken PasswordResetToken?
 }
 
 model Session {
@@ -39,4 +40,12 @@ model OAuthAccount {
   user           User   @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@id([providerId, providerUserId])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  token     String   @unique
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
