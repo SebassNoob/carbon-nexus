@@ -13,7 +13,7 @@ export async function bootstrap() {
 	app.use(cookieParser());
 	app.useGlobalFilters(new AppErrorFilter());
 	app.useGlobalInterceptors(new StandardInterceptor());
-	app.useGlobalInterceptors(new LoggingInterceptor());
+	if (process.env.NODE_ENV === "production") app.useGlobalInterceptors(new LoggingInterceptor());
 
 	await app.listen(8080, "0.0.0.0");
 }

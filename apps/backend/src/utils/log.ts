@@ -16,11 +16,7 @@ type LogData = {
 	timeInfo?: TimeInfo;
 };
 
-const isProduction = process.env.NODE_ENV === "production";
-
 export function log(type: LogType, { request, response, error, timeInfo }: LogData): void {
-	if (!isProduction) return;
-
 	const requestLog = {
 		url: request.url,
 		method: request.method,
