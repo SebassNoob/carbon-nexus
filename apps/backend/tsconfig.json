@@ -32,7 +32,7 @@
 			"@/*": ["./src/*"],
 			"@db/*": ["./src/db/*"],
 			"@modules/*": ["./src/app/modules/*"],
-			"@middleware": ["./src/app/middleware"],
+			"@guards": ["./src/app/guards"],
 			"@interceptors": ["./src/app/interceptors"],
 			"@pipes": ["./src/app/pipes"],
 			"@filters": ["./src/app/filters"],

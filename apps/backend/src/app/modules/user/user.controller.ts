@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Patch, Query, Req } from "@nestjs/common";
 import type { Request } from "express";
-import { sessionCookieName } from "@shared/common/constants";
+import { UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@guards";
 import { UserService } from "./user.service";
 import { ValidationPipe } from "@pipes";
 import { GetUserInputSchema, UpdateUserInputSchema } from "@shared/common/schemas";
@@ -16,13 +17,12 @@ export class UserController {
 	}
 
 	@Patch(":id")
+	@UseGuards(AuthGuard("params", "id"))
 	async updateUserById(
 		@Param("id", new ValidationPipe(GetUserInputSchema)) id: string,
 		@Body(new ValidationPipe(UpdateUserInputSchema)) data: UpdateUserInput,
 		@Req() req: Request,
 	) {
-		// const token = req.cookies[sessionCookieName] as string | undefined;
-
 		return this.userService.updateUserById(id, data);
 	}
 }

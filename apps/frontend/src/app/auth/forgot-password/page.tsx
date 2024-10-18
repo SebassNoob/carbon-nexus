@@ -5,7 +5,10 @@ export default function ForgotPassword() {
 	return (
 		<>
 			<Title order={3}>Forgot Password</Title>
-			<Text>Please enter the email you registered with to reset your password.</Text>
+			<Text>
+				Please enter the email you registered with to reset your password. If you signed up via
+				OAuth, refer to their guidelines instead.
+			</Text>
 
 			<ForgotPasswordForm />
 			<Text>
