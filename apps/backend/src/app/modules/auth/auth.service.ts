@@ -1,6 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { password as bunPassword } from "bun";
-import type { SafeUser, SignInInput, TokenCookie, SignUpInput } from "@shared/common/types";
+import type {
+	SafeUser,
+	SignInInput,
+	TokenCookie,
+	SignUpInput,
+	ForgotPasswordReset,
+} from "@shared/common/types";
 import { handleDatabaseError } from "@utils/prismaErrors";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
 import { PrismaService, LuciaService } from "@db/client";
@@ -93,5 +99,42 @@ export class AuthService {
 			throw new AppError(AppErrorTypes.UserNotFound);
 		}
 		return user;
+	}
+
+	async resetPassword(data: ForgotPasswordReset): Promise<void> {
+		// find reset password token if it exists
+		const token = await this.prisma.passwordResetToken.findFirst({
+			where: {
+				token: data.token,
+				expiresAt: {
+					gte: new Date(),
+				},
+			},
+			select: {
+				userId: true,
+			},
+		});
+
+		if (!token) {
+			throw new AppError(AppErrorTypes.InvalidToken);
+		}
+
+		const passwordHash = await this.hashPassword(data.newPassword);
+
+		await this.prisma.user.update({
+			where: {
+				id: token.userId,
+			},
+			data: {
+				passwordHash,
+			},
+		});
+
+		// delete the token
+		await this.prisma.passwordResetToken.delete({
+			where: {
+				token: data.token,
+			},
+		});
 	}
 }

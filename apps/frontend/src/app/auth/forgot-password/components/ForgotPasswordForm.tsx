@@ -2,14 +2,14 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ForgotPasswordEmailSchema } from "@shared/common/schemas";
-import type { SignInInput } from "@shared/common/types";
+import type { ForgotPasswordEmail } from "@shared/common/types";
 import { Button, TextInput } from "@lib/components";
 import { query } from "@utils";
 import { toast } from "react-hot-toast";
 import { useTransition } from "react";
 
 export function ForgotPasswordForm() {
-	const { register, handleSubmit, formState } = useForm<SignInInput>({
+	const { register, handleSubmit, formState } = useForm<ForgotPasswordEmail>({
 		resolver: zodResolver(ForgotPasswordEmailSchema),
 	});
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useTransition } from "react";
 import { AuthContext } from "@lib/providers";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -17,23 +17,26 @@ export function SignUpForm() {
 	});
 
 	const { signUp } = useContext(AuthContext);
-	const onSubmit = handleSubmit(async (data) => {
-		const status = await signUp(data);
-		switch (status) {
-			case 201:
-				toast.success("Account created successfully");
-				router.push("/");
-				break;
-			case 400:
-				toast.error("Invalid data provided");
-				break;
-			case 409:
-				toast.error("Account already exists");
-				break;
-			default:
-				toast.error("An unexpected error occurred");
-				break;
-		}
+	const [isPending, startTransition] = useTransition();
+	const onSubmit = handleSubmit((data) => {
+		startTransition(async () => {
+			const status = await signUp(data);
+			switch (status) {
+				case 201:
+					toast.success("Account created successfully");
+					router.push("/");
+					break;
+				case 400:
+					toast.error("Invalid data provided");
+					break;
+				case 409:
+					toast.error("Account already exists");
+					break;
+				default:
+					toast.error("An unexpected error occurred");
+					break;
+			}
+		});
 	});
 
 	return (
@@ -67,7 +70,9 @@ export function SignUpForm() {
 				variant={formState.errors.repeatPassword ? "error" : undefined}
 				helperText={formState.errors.repeatPassword?.message}
 			/>
-			<Button type="submit">Continue</Button>
+			<Button type="submit" disabled={isPending}>
+				Continue
+			</Button>
 		</form>
 	);
 }

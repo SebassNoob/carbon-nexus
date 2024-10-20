@@ -1,10 +1,15 @@
 import { Controller, Get, Body, Post, HttpCode, Res, Delete, Param, Req } from "@nestjs/common";
 import type { Response, Request } from "express";
-import type { SignInInput, SignUpInput } from "@shared/common/types";
+import type { ForgotPasswordReset, SignInInput, SignUpInput } from "@shared/common/types";
 import { sessionCookieName } from "@shared/common/constants";
 import { AuthService } from "./auth.service";
 import { LuciaService } from "@db/client";
-import { SignUpInputSchema, SignInInputSchema, TokenIdSchema } from "@shared/common/schemas";
+import {
+	SignUpInputSchema,
+	SignInInputSchema,
+	TokenIdSchema,
+	ForgotPasswordResetSchema,
+} from "@shared/common/schemas";
 import { ValidationPipe } from "@pipes";
 
 @Controller("auth")
@@ -47,5 +52,14 @@ export class AuthController {
 	async user(@Req() req: Request) {
 		const tokenId = req.cookies[sessionCookieName] as string | undefined;
 		return this.authService.getUserFromSession(tokenId);
+	}
+
+	@Post("reset-password")
+	@HttpCode(201)
+	async resetPassword(
+		@Body(new ValidationPipe(ForgotPasswordResetSchema)) input: ForgotPasswordReset,
+	) {
+		await this.authService.resetPassword(input);
+		return {};
 	}
 }

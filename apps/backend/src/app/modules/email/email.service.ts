@@ -99,7 +99,7 @@ export class EmailService {
 		// send email
 		await this.sendEmail(email, "Reset your password", "forgotPassword.hbs", {
 			username: user.username,
-			url: `${this.config.get<string>("FRONTEND_URL")}/reset-password/${token.token}`,
+			url: `${this.config.get<string>("FRONTEND_URL")}/auth/reset-password/${token.token}`,
 		});
 	}
 }

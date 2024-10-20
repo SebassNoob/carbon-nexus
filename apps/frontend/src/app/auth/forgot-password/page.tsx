@@ -1,5 +1,5 @@
 import { ForgotPasswordForm } from "./components";
-import { Title, Text, Link, } from "@lib/components";
+import { Title, Text, Link } from "@lib/components";
 
 export default function ForgotPassword() {
 	return (

@@ -1,5 +1,5 @@
 "use client";
-import { useContext } from "react";
+import { useContext, useTransition } from "react";
 import { AuthContext } from "@lib/providers";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -17,26 +17,30 @@ export function SignInForm() {
 
 	const { signIn } = useContext(AuthContext);
 
-	const onSubmit = handleSubmit(async (data) => {
-		const status = await signIn(data);
-		switch (status) {
-			case 201:
-				toast.success("Signed in successfully!");
-				router.push("/");
-				break;
-			case 400:
-				toast.error("Invalid data provided");
-				break;
-			case 403:
-				toast.error("Invalid credentials");
-				break;
-			case 404:
-				toast.error("User not found");
-				break;
-			default:
-				toast.error("An unexpected error occurred");
-				break;
-		}
+	const [isPending, startTransition] = useTransition();
+
+	const onSubmit = handleSubmit((data) => {
+		startTransition(async () => {
+			const status = await signIn(data);
+			switch (status) {
+				case 201:
+					toast.success("Signed in successfully!");
+					router.push("/");
+					break;
+				case 400:
+					toast.error("Invalid data provided");
+					break;
+				case 403:
+					toast.error("Invalid credentials");
+					break;
+				case 404:
+					toast.error("User not found");
+					break;
+				default:
+					toast.error("An unexpected error occurred");
+					break;
+			}
+		});
 	});
 
 	return (
@@ -55,7 +59,9 @@ export function SignInForm() {
 				variant={formState.errors.password ? "error" : undefined}
 				helperText={formState.errors.password?.message}
 			/>
-			<Button type="submit">Sign In</Button>
+			<Button type="submit" disabled={isPending}>
+				Sign In
+			</Button>
 		</form>
 	);
 }

@@ -8,5 +8,3 @@
 3. forgot password page
 4. FE testing
 5. docker full support for deploy
-6. secure backend
-- [] middleware for write requests
