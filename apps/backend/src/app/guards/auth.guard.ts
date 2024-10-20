@@ -16,8 +16,12 @@ export const AuthGuard = (source: RequestSource, key: string) => {
 			const tokenId = request.cookies[sessionCookieName] as string | undefined;
 			const userId = this.getUserIdFromRequest(request, source, key);
 
-			if (!userId || !tokenId) {
+			if (!tokenId) {
 				throw new AppError(AppErrorTypes.Unauthorized);
+			}
+
+			if (!userId) {
+				throw new AppError(AppErrorTypes.UserNotFound);
 			}
 
 			const { user } = await this.luciaService.validateSessionToken(tokenId);

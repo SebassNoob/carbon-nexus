@@ -19,7 +19,8 @@ switch (process.env.NODE_ENV) {
 
 const envSchema = z.object({
 	NODE_ENV: z.string().default("development"),
-	FRONTEND_URL: z.string(),
+	FRONTEND_URL: z.string().url(),
+	BACKEND_URL: z.string().url(),
 	DATABASE_URL: z.string(),
 	DISCORD_OAUTH_CLIENT_ID: z.string(),
 	DISCORD_OAUTH_CLIENT_SECRET: z.string(),

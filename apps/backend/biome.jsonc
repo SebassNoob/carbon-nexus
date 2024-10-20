@@ -7,6 +7,9 @@
 			"complexity": { "noForEach": "off" } // goofy ahh rule
 		}
 	},
+	"formatter": {
+		"include": ["*.hbs"]
+	},
 	"javascript": {
 		"parser": {
 			"unsafeParameterDecoratorsEnabled": true

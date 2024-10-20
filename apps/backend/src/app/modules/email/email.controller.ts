@@ -1,8 +1,9 @@
-import { Controller, Post, Body, HttpCode } from "@nestjs/common";
+import { Controller, Post, Body, HttpCode, UseGuards } from "@nestjs/common";
 import { EmailService } from "./email.service";
 import { ValidationPipe } from "@pipes";
-import { ForgotPasswordEmailSchema } from "@shared/common/schemas";
-import type { ForgotPasswordEmail } from "@shared/common/types";
+import { ForgotPasswordEmailSchema, VerifyEmailSchema } from "@shared/common/schemas";
+import type { ForgotPasswordEmail, VerifyEmail } from "@shared/common/types";
+import { AuthGuard } from "@guards";
 
 @Controller("email")
 export class EmailController {
@@ -14,6 +15,14 @@ export class EmailController {
 		@Body(new ValidationPipe(ForgotPasswordEmailSchema)) { email }: ForgotPasswordEmail,
 	) {
 		await this.emailService.sendForgotPasswordEmail(email);
+		return {};
+	}
+
+	@Post("verify")
+	@UseGuards(AuthGuard("body", "id"))
+	@HttpCode(201)
+	async sendVerificationEmail(@Body(new ValidationPipe(VerifyEmailSchema)) { id }: VerifyEmail) {
+		await this.emailService.sendVerificationEmail(id);
 		return {};
 	}
 }

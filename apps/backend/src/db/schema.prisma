@@ -23,7 +23,10 @@ model User {
 
   sessions           Session[]
   oauthAccount       OAuthAccount[]
+
+  // one time tokens
   passwordResetToken PasswordResetToken?
+  verificationToken  VerificationToken?
 }
 
 model Session {
@@ -43,6 +46,14 @@ model OAuthAccount {
 }
 
 model PasswordResetToken {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  token     String   @unique
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
   id        String   @id @default(uuid())
   userId    String   @unique
   token     String   @unique

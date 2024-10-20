@@ -102,4 +102,42 @@ export class EmailService {
 			url: `${this.config.get<string>("FRONTEND_URL")}/auth/reset-password/${token.token}`,
 		});
 	}
+
+	async sendVerificationEmail(id: string) {
+		const user = await this.prisma.user.findUnique({ where: { id } });
+		if (!user) {
+			throw new AppError(AppErrorTypes.UserNotFound);
+		}
+
+		if (!user.email) {
+			throw new AppError(AppErrorTypes.NoEmail);
+		}
+
+		if (user.verified) {
+			throw new AppError(AppErrorTypes.AlreadyVerified);
+		}
+
+		try {
+			await this.prisma.verificationToken.delete({
+				where: {
+					userId: user.id,
+				},
+			});
+		} catch (error) {
+			// ignore if token does not exist
+		}
+
+		const token = await this.prisma.verificationToken.create({
+			data: {
+				userId: user.id,
+				token: randomBytes(32).toString("hex"),
+				expiresAt: new Date(Date.now() + 1000 * 60 * 60), // 1 hour
+			},
+		});
+
+		await this.sendEmail(user.email, "Verify your email", "verify.hbs", {
+			username: user.username,
+			url: `${this.config.get<string>("BACKEND_URL")}/auth/verify/${token.token}`,
+		});
+	}
 }

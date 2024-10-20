@@ -71,5 +71,15 @@ export const AppErrorTypes = {
 		code: 400,
 		cause: "Invalid token",
 	},
+	AlreadyVerified: {
+		name: "AlreadyVerified",
+		code: 400,
+		cause: "Email already verified",
+	},
+	NoEmail: {
+		name: "NoEmail",
+		code: 400,
+		cause: "No email address set",
+	},
 	// biome-ignore lint/suspicious/noExplicitAny: allow the use of any in this context
 } as const satisfies Record<string, ((...args: any[]) => AppErrorType) | AppErrorType>;

@@ -9,22 +9,22 @@ import { ConfigModule } from "@nestjs/config";
 import { OAuth2Tokens } from "arctic";
 import type { GitHubUser, DiscordUser, GoogleUser } from "./types";
 
-
-const getMockOAuthProvider = () => class {
-  createAuthorizationURL() {
-    return new URL(`http://${faker.internet.domainName()}`);
-  }
-  async validateAuthorizationCode() {
-    return new OAuth2Tokens({
-      access_token: faker.string.alphanumeric(),
-    });
-  }
-}
+const getMockOAuthProvider = () =>
+	class {
+		createAuthorizationURL() {
+			return new URL(`http://${faker.internet.domainName()}`);
+		}
+		async validateAuthorizationCode() {
+			return new OAuth2Tokens({
+				access_token: faker.string.alphanumeric(),
+			});
+		}
+	};
 mock.module("arctic", () => ({
 	generateState: () => faker.word.noun(),
 	Discord: getMockOAuthProvider(),
-  Google: getMockOAuthProvider(),
-  GitHub: getMockOAuthProvider(),
+	Google: getMockOAuthProvider(),
+	GitHub: getMockOAuthProvider(),
 }));
 
 describe("OpenAuthService", () => {

@@ -4,6 +4,7 @@ import type {
 	SignInInput,
 	ForgotPasswordEmail,
 	ForgotPasswordReset,
+	VerifyEmail,
 } from "@shared/common/types";
 
 const uppercaseRegex = /[A-Z]/;
@@ -73,3 +74,7 @@ export const ForgotPasswordResetSchema = z.object({
 			message: "Password must contain at least one special character",
 		}),
 }) satisfies z.ZodType<ForgotPasswordReset>;
+
+export const VerifyEmailSchema = z.object({
+	id: z.string(),
+}) satisfies z.ZodType<VerifyEmail>;

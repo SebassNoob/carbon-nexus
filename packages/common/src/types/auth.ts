@@ -23,3 +23,7 @@ export type ForgotPasswordReset = {
 	token: string;
 	newPassword: string;
 };
+
+export type VerifyEmail = {
+	id: string;
+};
