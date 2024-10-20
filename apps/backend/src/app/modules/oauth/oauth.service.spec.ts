@@ -2,24 +2,29 @@ import { expect, it, describe, beforeEach, mock, afterEach, spyOn } from "bun:te
 import { Test, type TestingModule } from "@nestjs/testing";
 import { PrismaService, LuciaService } from "@db/client";
 import { OpenAuthService } from "./oauth.service";
-import type { SignUpInput, SignInInput, TokenCookie } from "@shared/common/types";
 import { AppError } from "@utils/appErrors";
 import { resetDatabase } from "@utils/test";
-import { de, faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import { ConfigModule } from "@nestjs/config";
-import { Discord, generateState } from "arctic";
+import { OAuth2Tokens } from "arctic";
 import type { GitHubUser, DiscordUser, GoogleUser } from "./types";
 
+
+const getMockOAuthProvider = () => class {
+  createAuthorizationURL() {
+    return new URL(`http://${faker.internet.domainName()}`);
+  }
+  async validateAuthorizationCode() {
+    return new OAuth2Tokens({
+      access_token: faker.string.alphanumeric(),
+    });
+  }
+}
 mock.module("arctic", () => ({
 	generateState: () => faker.word.noun(),
-	Discord: class {
-		createAuthorizationURL() {
-			return new URL(`http://${faker.internet.domainName()}`);
-		}
-		validateAuthorizationCode() {
-			return Promise.resolve({});
-		}
-	},
+	Discord: getMockOAuthProvider(),
+  Google: getMockOAuthProvider(),
+  GitHub: getMockOAuthProvider(),
 }));
 
 describe("OpenAuthService", () => {

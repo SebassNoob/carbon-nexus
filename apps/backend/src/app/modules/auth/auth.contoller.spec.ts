@@ -3,7 +3,7 @@ import { Test, type TestingModule } from "@nestjs/testing";
 import { PrismaService, LuciaService } from "@db/client";
 import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
-import type { SignUpInput, SignInInput, TokenCookie } from "@shared/common/types";
+import type { SignUpInput, SignInInput, } from "@shared/common/types";
 import { resetDatabase, testFetch } from "@utils/test";
 import type { INestApplication } from "@nestjs/common";
 import { faker } from "@faker-js/faker";
