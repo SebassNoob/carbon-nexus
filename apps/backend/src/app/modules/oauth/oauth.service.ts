@@ -5,9 +5,7 @@ import {
 	Discord,
 	Google,
 	GitHub,
-	type DiscordTokens,
-	type GoogleTokens,
-	type GitHubTokens,
+	type OAuth2Tokens,
 } from "arctic";
 import type { TokenCookie } from "@shared/common/types";
 import { validateSchema } from "@utils/validateSchema";
@@ -52,6 +50,7 @@ export class OpenAuthService {
 		this.github = new GitHub(
 			this.configService.get<string>("GITHUB_OAUTH_CLIENT_ID") as string,
 			this.configService.get<string>("GITHUB_OAUTH_CLIENT_SECRET") as string,
+			null,
 		);
 	}
 
@@ -153,26 +152,20 @@ export class OpenAuthService {
 
 	async getDiscordAuthUrl(): Promise<InitOAuthData> {
 		const state = generateState();
-		const url = await this.discord.createAuthorizationURL(state, {
-			scopes: ["identify", "email"],
-		});
+		const url = this.discord.createAuthorizationURL(state, ["identify", "email"]);
 		return { state, url: url.toString() };
 	}
 
 	async getGoogleAuthUrl(): Promise<Required<InitOAuthData>> {
 		const state = generateState();
 		const codeVerifier = generateCodeVerifier();
-		const url = await this.google.createAuthorizationURL(state, codeVerifier, {
-			scopes: ["profile", "email"],
-		});
+		const url = this.google.createAuthorizationURL(state, codeVerifier, ["profile", "email"]);
 		return { state, codeVerifier, url: url.toString() };
 	}
 
 	async getGitHubAuthUrl(): Promise<InitOAuthData> {
 		const state = generateState();
-		const url = await this.github.createAuthorizationURL(state, {
-			scopes: ["user:email"],
-		});
+		const url = this.github.createAuthorizationURL(state, ["user:email"]);
 		return { state, url: url.toString() };
 	}
 
@@ -181,7 +174,7 @@ export class OpenAuthService {
 			throw new AppError(AppErrorTypes.GenericError("Missing code from OAuth provider"));
 		}
 
-		let tokens: DiscordTokens;
+		let tokens: OAuth2Tokens;
 		try {
 			tokens = await this.discord.validateAuthorizationCode(code);
 		} catch (error) {
@@ -192,7 +185,7 @@ export class OpenAuthService {
 		const discordUser = await this.fetchUserDataFromOAuthProvider<DiscordUser>(
 			"https://discord.com/api/users/@me",
 			{
-				Authorization: `Bearer ${tokens.accessToken}`,
+				Authorization: `Bearer ${tokens.accessToken()}`,
 			},
 			DiscordUserSchema,
 		);
@@ -210,7 +203,7 @@ export class OpenAuthService {
 			);
 		}
 
-		let tokens: GoogleTokens;
+		let tokens: OAuth2Tokens;
 		try {
 			tokens = await this.google.validateAuthorizationCode(code, codeVerifier);
 		} catch (error) {
@@ -221,7 +214,7 @@ export class OpenAuthService {
 		const googleUser = await this.fetchUserDataFromOAuthProvider<GoogleUser>(
 			"https://openidconnect.googleapis.com/v1/userinfo",
 			{
-				Authorization: `Bearer ${tokens.accessToken}`,
+				Authorization: `Bearer ${tokens.accessToken()}`,
 			},
 			GoogleUserSchema,
 		);
@@ -238,7 +231,7 @@ export class OpenAuthService {
 			throw new AppError(AppErrorTypes.GenericError("Missing code from OAuth provider"));
 		}
 
-		let tokens: GitHubTokens;
+		let tokens: OAuth2Tokens;
 		try {
 			tokens = await this.github.validateAuthorizationCode(code);
 		} catch (error) {
@@ -249,7 +242,7 @@ export class OpenAuthService {
 		const githubUser = await this.fetchUserDataFromOAuthProvider<GitHubUser>(
 			"https://api.github.com/user",
 			{
-				Authorization: `Bearer ${tokens.accessToken}`,
+				Authorization: `Bearer ${tokens.accessToken()}`,
 			},
 			GitHubUserSchema,
 		);
