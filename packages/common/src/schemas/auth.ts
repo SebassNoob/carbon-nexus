@@ -78,3 +78,5 @@ export const ForgotPasswordResetSchema = z.object({
 export const VerifyEmailSchema = z.object({
 	id: z.string(),
 }) satisfies z.ZodType<VerifyEmail>;
+
+export const EmailVerificationTokenSchema = z.string() satisfies z.ZodType<string>;

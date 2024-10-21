@@ -9,14 +9,17 @@ import {
 	SignInInputSchema,
 	TokenIdSchema,
 	ForgotPasswordResetSchema,
+  EmailVerificationTokenSchema,
 } from "@shared/common/schemas";
 import { ValidationPipe } from "@pipes";
+import { ConfigService } from "@nestjs/config";
 
 @Controller("auth")
 export class AuthController {
 	constructor(
 		private readonly authService: AuthService,
 		private readonly luciaService: LuciaService,
+    private readonly configService: ConfigService,
 	) {}
 
 	@Post("signup")
@@ -62,4 +65,10 @@ export class AuthController {
 		await this.authService.resetPassword(input);
 		return {};
 	}
+
+  @Get("verify/:token")
+  async verifyEmail(@Param("token", new ValidationPipe(EmailVerificationTokenSchema)) token: string, @Res({passthrough: true}) res: Response) {
+    await this.authService.verifyEmail(token);
+    return res.redirect(this.configService.get<string>("FRONTEND_URL") as string);
+  }
 }

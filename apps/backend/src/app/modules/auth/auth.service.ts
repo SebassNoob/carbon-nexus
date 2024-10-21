@@ -137,4 +137,37 @@ export class AuthService {
 			},
 		});
 	}
+
+  async verifyEmail(token: string): Promise<void> {
+    const emailVerificationToken = await this.prisma.verificationToken.findFirst({
+      where: {
+        token,
+        expiresAt: {
+          gte: new Date(),
+        },
+      },
+      select: {
+        userId: true,
+      },
+    });
+
+    if (!emailVerificationToken) {
+      throw new AppError(AppErrorTypes.InvalidToken);
+    }
+
+    await this.prisma.user.update({
+      where: {
+        id: emailVerificationToken.userId,
+      },
+      data: {
+        verified: true,
+      },
+    });
+
+    await this.prisma.verificationToken.delete({
+      where: {
+        token,
+      },
+    });
+  }
 }
