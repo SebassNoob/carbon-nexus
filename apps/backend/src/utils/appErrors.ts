@@ -81,5 +81,10 @@ export const AppErrorTypes = {
 		code: 400,
 		cause: "No email address set",
 	},
+	RateLimitExceeded: (limit: number, ttl: number, timetoBlockExpire: number) => ({
+		name: "RateLimitExceeded",
+		code: 429,
+		cause: `Rate limit exceeded. Try again in ${timetoBlockExpire}s. Limit: ${limit} request${limit === 1 ? "" : "s"} per ${ttl}s.`,
+	}),
 	// biome-ignore lint/suspicious/noExplicitAny: allow the use of any in this context
 } as const satisfies Record<string, ((...args: any[]) => AppErrorType) | AppErrorType>;

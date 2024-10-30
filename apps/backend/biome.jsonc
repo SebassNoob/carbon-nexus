@@ -8,7 +8,7 @@
 		}
 	},
 	"formatter": {
-		"include": ["*.hbs"]
+		"include": ["*.hbs", "*.json", "*.jsonc", "*.ts"]
 	},
 	"javascript": {
 		"parser": {

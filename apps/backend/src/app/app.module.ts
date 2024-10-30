@@ -1,5 +1,8 @@
 import { Module } from "@nestjs/common";
+import { ThrottlerModule } from "@nestjs/throttler";
+import { APP_GUARD } from "@nestjs/core";
 import { AuthModule, OpenAuthModule, UserModule, EmailModule } from "./modules";
+import { RateLimitGuard } from "@guards";
 import { ConfigModule } from "@nestjs/config";
 import { z } from "zod";
 
@@ -52,6 +55,19 @@ const envSchema = z.object({
 				return parsedConfig;
 			},
 		}),
+    // temporary until we have more established endpoints and separate throttling for them
+		ThrottlerModule.forRoot([
+			{
+				ttl: 1000, // 1 second
+				limit: 20, // 20 requests
+			},
+		]),
+	],
+	providers: [
+		{
+			provide: APP_GUARD,
+			useClass: RateLimitGuard,
+		},
 	],
 })
 export class AppModule {}
