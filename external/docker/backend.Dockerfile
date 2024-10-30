@@ -1,6 +1,7 @@
-FROM oven/bun:1.1.30
+FROM imbios/bun-node:1.1.33-22.10.0-debian
 WORKDIR /usr/local
 
+ENV NODE_ENV=production
 COPY package.json .
 COPY turbo.json .
 COPY ./apps/backend ./apps/backend

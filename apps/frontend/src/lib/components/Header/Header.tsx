@@ -2,11 +2,12 @@
 import { useRouter } from "next/navigation";
 import { Logo, Image } from "@lib/components";
 import { useContext } from "react";
-import { ClientContext } from "@lib/providers";
+import { ClientContext, AuthContext } from "@lib/providers";
 import { SideMenu } from "./SideMenu";
 export function Header() {
 	const router = useRouter();
 	const { theme, setTheme } = useContext(ClientContext);
+  const { updateUser } = useContext(AuthContext);
 
 	return (
 		<header className="flex items-center justify-between p-4">
@@ -19,7 +20,10 @@ export function Header() {
 			</div>
 			<div className="flex gap-2">
 				<button
-					onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+					onClick={() => {
+            setTheme(theme === "light" ? "dark" : "light");
+            updateUser({ theme: theme === "light" ? "dark" : "light" });
+          }}
 					className="p-2 rounded bg-slate-200 dark:bg-slate-800"
 					data-testid="theme-toggle"
 					tabIndex={-1}

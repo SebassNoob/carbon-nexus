@@ -3,6 +3,8 @@ import { useState, useLayoutEffect, useEffect, useContext, useRef } from "react"
 import { AuthContext } from "@lib/providers";
 import type { Theme } from "./types";
 
+// source of truth: user setting > local storage > system theme
+
 export function useTheme() {
 	const { user, loading, updateUser } = useContext(AuthContext);
 	const [theme, setTheme] = useState<Theme>(() => {
@@ -17,7 +19,13 @@ export function useTheme() {
 		return systemTheme;
 	});
 
-	const prevThemeRef = useRef<Theme | null>(null);
+  // if the user has a theme preference, use that
+  useEffect(() => {
+    if (!loading && user && user.theme) {
+      setTheme(user.theme as Theme);
+    }
+  }, [user]);
+
 
 	// on initial render, set the theme class on the html element
 	useLayoutEffect(() => {
@@ -33,24 +41,6 @@ export function useTheme() {
 		localStorage.setItem("theme", theme);
 	}, [theme]);
 
-	// if the user is not loaded yet, do nothing
-	// if the user is loaded, set the theme to the user's theme
-	useEffect(() => {
-		if (loading || !user) return;
-
-		setTheme(user.theme as Theme);
-	}, [loading, user]);
-
-	// if the theme has changed, update the user
-	useEffect(() => {
-		if (loading || !user) return;
-
-		// Only update the backend if the theme has changed
-		if (prevThemeRef.current !== theme) {
-			updateUser({ theme });
-			prevThemeRef.current = theme;
-		}
-	}, [theme, loading, user, updateUser]);
 
 	return {
 		theme,

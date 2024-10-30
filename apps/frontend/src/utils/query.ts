@@ -14,7 +14,10 @@ export type QueryResult<T> = {
 };
 
 export async function query<T>(input: string, init?: RequestInit): Promise<QueryResult<T>> {
-	const baseURL = process.env.NEXT_PUBLIC_API_URL;
+	const isSSR = typeof window === "undefined";
+	const baseURL = isSSR
+		? process.env.NEXT_PUBLIC_API_URL_SERVER
+		: process.env.NEXT_PUBLIC_API_URL_CLIENT;
 	const url = input.startsWith("/") ? baseURL + input : input;
 	return fetch(url, {
 		...init,

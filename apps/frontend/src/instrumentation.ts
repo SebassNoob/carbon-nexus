@@ -1,4 +1,9 @@
 import type { Instrumentation } from "next";
+import { query } from "@utils";
+
+export async function register() {
+	const { status } = await query("/");
+}
 
 export const onRequestError: Instrumentation.onRequestError = async (error, request, context) => {
 	if (process.env.NODE_ENV === "production" && process.env.NEXT_RUNTIME !== "edge") {

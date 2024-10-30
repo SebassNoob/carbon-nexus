@@ -1,5 +1,6 @@
 services:
   backend:
+    container_name: carbon-nexus-backend
     build: 
       context: .
       dockerfile: ./external/docker/backend.Dockerfile
@@ -9,6 +10,7 @@ services:
       - carbon-nexus-network
     
   frontend:
+    container_name: carbon-nexus-frontend
     build: 
       context: .
       dockerfile: ./external/docker/frontend.Dockerfile
