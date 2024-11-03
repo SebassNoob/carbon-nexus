@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { PrismaService } from "@db/client";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
 import { createTransport, type Transporter } from "nodemailer";
-import { compile } from "handlebars";
+import { compile, type TemplateDelegate } from "handlebars";
 import { readdirSync, readFileSync } from "node:fs";
 import { randomBytes } from "node:crypto";
 
@@ -16,7 +16,7 @@ export class EmailService {
 
 	private transporter!: Transporter;
 	private emailFrom!: string;
-	private emailTemplates!: Record<string, HandlebarsTemplateDelegate>;
+	private emailTemplates!: Record<string, TemplateDelegate>;
 
 	private compileTemplatesFromDir(dir: string) {
 		const templates = readdirSync(dir);
@@ -28,7 +28,7 @@ export class EmailService {
 				acc[template] = compiledTemplate;
 				return acc;
 			},
-			{} as Record<string, HandlebarsTemplateDelegate>,
+			{} as Record<string, TemplateDelegate>,
 		);
 	}
 
@@ -82,7 +82,7 @@ export class EmailService {
 					userId: user.id,
 				},
 			});
-		} catch (error) {
+		} catch {
 			// ignore if token does not exist
 		}
 
@@ -123,7 +123,7 @@ export class EmailService {
 					userId: user.id,
 				},
 			});
-		} catch (error) {
+		} catch {
 			// ignore if token does not exist
 		}
 

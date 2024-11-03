@@ -55,7 +55,7 @@ const envSchema = z.object({
 				return parsedConfig;
 			},
 		}),
-    // temporary until we have more established endpoints and separate throttling for them
+		// temporary until we have more established endpoints and separate throttling for them
 		ThrottlerModule.forRoot([
 			{
 				ttl: 1000, // 1 second

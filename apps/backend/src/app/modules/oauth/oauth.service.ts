@@ -150,6 +150,36 @@ export class OpenAuthService {
 		}
 	}
 
+	private async getOAuthTokens(
+		provider: OAuthProvider,
+		code?: string,
+		codeVerifier?: string,
+	): Promise<OAuth2Tokens> {
+		if (code === undefined) {
+			throw new AppError(AppErrorTypes.GenericError("Missing code from OAuth provider"));
+		}
+		try {
+			switch (provider) {
+				case "discord":
+					return await this.discord.validateAuthorizationCode(code);
+				case "google":
+					if (codeVerifier === undefined) {
+						throw new AppError(
+							AppErrorTypes.GenericError("Missing codeVerifier from OAuth provider"),
+						);
+					}
+					return await this.google.validateAuthorizationCode(code, codeVerifier);
+				case "github":
+					return await this.github.validateAuthorizationCode(code);
+				default:
+					throw new AppError(AppErrorTypes.GenericError("Unsupported OAuth provider"));
+			}
+		} catch (error) {
+			let msg = "Failed to validate authorization code";
+			if (error instanceof Error) msg += `: ${error.message}`;
+			throw new AppError(AppErrorTypes.GenericError(msg));
+		}
+	}
 	async getDiscordAuthUrl(): Promise<InitOAuthData> {
 		const state = generateState();
 		const url = this.discord.createAuthorizationURL(state, ["identify", "email"]);
@@ -170,16 +200,7 @@ export class OpenAuthService {
 	}
 
 	async handleDiscordCallback(code: string | undefined): Promise<TokenCookie> {
-		if (code === undefined) {
-			throw new AppError(AppErrorTypes.GenericError("Missing code from OAuth provider"));
-		}
-
-		let tokens: OAuth2Tokens;
-		try {
-			tokens = await this.discord.validateAuthorizationCode(code);
-		} catch (error) {
-			throw new AppError(AppErrorTypes.GenericError("Failed to validate authorization code"));
-		}
+		const tokens = await this.getOAuthTokens("discord", code);
 
 		// get user info from discord
 		const discordUser = await this.fetchUserDataFromOAuthProvider<DiscordUser>(
@@ -197,18 +218,7 @@ export class OpenAuthService {
 		code: string | undefined,
 		codeVerifier: string | undefined,
 	): Promise<TokenCookie> {
-		if (code === undefined || codeVerifier === undefined) {
-			throw new AppError(
-				AppErrorTypes.GenericError("Missing code or codeVerifier from OAuth provider"),
-			);
-		}
-
-		let tokens: OAuth2Tokens;
-		try {
-			tokens = await this.google.validateAuthorizationCode(code, codeVerifier);
-		} catch (error) {
-			throw new AppError(AppErrorTypes.GenericError("Failed to validate authorization code"));
-		}
+		const tokens = await this.getOAuthTokens("google", code, codeVerifier);
 
 		// get user info from google
 		const googleUser = await this.fetchUserDataFromOAuthProvider<GoogleUser>(
@@ -227,17 +237,7 @@ export class OpenAuthService {
 	}
 
 	async handleGitHubCallback(code: string | undefined): Promise<TokenCookie> {
-		if (code === undefined) {
-			throw new AppError(AppErrorTypes.GenericError("Missing code from OAuth provider"));
-		}
-
-		let tokens: OAuth2Tokens;
-		try {
-			tokens = await this.github.validateAuthorizationCode(code);
-		} catch (error) {
-			throw new AppError(AppErrorTypes.GenericError("Failed to validate authorization code"));
-		}
-
+		const tokens = await this.getOAuthTokens("github", code);
 		// get user info from github
 		const githubUser = await this.fetchUserDataFromOAuthProvider<GitHubUser>(
 			"https://api.github.com/user",

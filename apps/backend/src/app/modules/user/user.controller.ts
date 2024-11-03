@@ -1,5 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Query, Req } from "@nestjs/common";
-import type { Request } from "express";
+import { Body, Controller, Get, Param, Patch, Query } from "@nestjs/common";
 import { UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@guards";
 import { UserService } from "./user.service";
@@ -21,7 +20,6 @@ export class UserController {
 	async updateUserById(
 		@Param("id", new ValidationPipe(GetUserInputSchema)) id: string,
 		@Body(new ValidationPipe(UpdateUserInputSchema)) data: UpdateUserInput,
-		@Req() req: Request,
 	) {
 		return this.userService.updateUserById(id, data);
 	}

@@ -5,7 +5,7 @@ import { ZodSchema } from "zod";
 export class ValidationPipe<T> implements PipeTransform {
 	constructor(private readonly schema: ZodSchema<T>) {}
 
-	transform(value: unknown, metadata: ArgumentMetadata) {
+	transform(value: unknown, _metadata: ArgumentMetadata) {
 		const parsed = validateSchema(this.schema, value);
 		return parsed;
 	}
