@@ -28,7 +28,6 @@ function _AuthProvider({ children }: AuthProviderProps) {
 
 	function syncUser() {
 		getUser().then(({ status, data: reqUser, tokenId }) => {
-			console.log("syncUser", reqUser, tokenId);
 			if (status === 200) {
 				setUser(reqUser);
 				setTokenId(tokenId ?? null);

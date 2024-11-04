@@ -15,7 +15,7 @@ export const UpdateUserInputSchema = z.object({
 export const SafeUserSchema = z.object({
 	id: z.string(),
 	username: z.string(),
-	email: z.string().email(),
+	email: z.string().email().nullable(),
 	verified: z.boolean(),
 	theme: z.string(),
 	reducedMotion: z.boolean(),

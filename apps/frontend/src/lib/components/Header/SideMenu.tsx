@@ -18,11 +18,12 @@ export function SideMenu() {
 		signOut().then((status) => {
 			if (status === 204) {
 				toast.success("Signed out successfully");
+				router.refresh();
 			} else {
 				toast.error("Failed to sign out");
 			}
 		});
-	}, [signOut]);
+	}, [signOut, router]);
 
 	const renderAuthButton = useCallback(() => {
 		if (loading) return null;
