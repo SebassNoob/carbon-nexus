@@ -30,7 +30,6 @@ export class AuthController {
 	) {
 		const tokenCookie = await this.authService.signUp(input);
 		this.luciaService.setSessionCookie(res, sessionCookieName, tokenCookie);
-		return {};
 	}
 
 	@Post("signin")
@@ -41,14 +40,12 @@ export class AuthController {
 	) {
 		const tokenCookie = await this.authService.signIn(input);
 		this.luciaService.setSessionCookie(res, sessionCookieName, tokenCookie);
-		return {};
 	}
 
 	@Delete("signout/:tokenId")
 	@HttpCode(204)
 	async signOut(@Param("tokenId", new ValidationPipe(TokenIdSchema)) tokenId: string) {
 		this.authService.signOut(tokenId);
-		return {};
 	}
 
 	@Get("me")
@@ -63,7 +60,6 @@ export class AuthController {
 		@Body(new ValidationPipe(ForgotPasswordResetSchema)) input: ForgotPasswordReset,
 	) {
 		await this.authService.resetPassword(input);
-		return {};
 	}
 
 	@Get("verify/:token")

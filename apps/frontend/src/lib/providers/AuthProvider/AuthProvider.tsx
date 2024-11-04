@@ -2,7 +2,8 @@
 
 import { useState, createContext, useEffect, useRef } from "react";
 import type { AuthContextProps, AuthProviderProps } from "./types";
-import type { SafeUser, Serialized, SignInInput, SignUpInput } from "@shared/common/types";
+import type { SafeUser, SignInInput, SignUpInput } from "@shared/common/types";
+import { NullSchema, SafeUserSchema } from "@shared/common/schemas";
 import { signOut, getUser } from "@lib/actions";
 import { query } from "@utils";
 import dynamic from "next/dynamic";
@@ -17,14 +18,6 @@ export const AuthContext = createContext<AuthContextProps>({
 	updateUser: async () => {},
 });
 
-function unserializeUser(user: Serialized<SafeUser> | null): SafeUser | null {
-	if (user === null) return null;
-	return {
-		...user,
-		createdAt: new Date(user.createdAt),
-	};
-}
-
 function _AuthProvider({ children }: AuthProviderProps) {
 	const [loading, setLoading] = useState(true);
 	const [user, setUser] = useState<SafeUser | null>(null);
@@ -35,8 +28,9 @@ function _AuthProvider({ children }: AuthProviderProps) {
 
 	function syncUser() {
 		getUser().then(({ status, data: reqUser, tokenId }) => {
+			console.log("syncUser", reqUser, tokenId);
 			if (status === 200) {
-				setUser(unserializeUser(reqUser));
+				setUser(reqUser);
 				setTokenId(tokenId ?? null);
 			}
 			setLoading(false);
@@ -56,14 +50,18 @@ function _AuthProvider({ children }: AuthProviderProps) {
 		updateUserAbortController.current = abort;
 
 		try {
-			const { status, data } = await query<SafeUser>(`/user/${user.id}`, {
-				method: "PATCH",
-				body: JSON.stringify(update),
-				signal: abort.signal,
+			const { status, data } = await query({
+				path: `/user/${user.id}`,
+				init: {
+					method: "PATCH",
+					body: JSON.stringify(update),
+					signal: abort.signal,
+				},
+				validator: SafeUserSchema,
 			});
 
 			if (status === 200) {
-				setUser(unserializeUser(data));
+				setUser(data);
 				return;
 			}
 			console.error("Failed to update user");
@@ -87,14 +85,15 @@ function _AuthProvider({ children }: AuthProviderProps) {
 	}
 
 	async function handleSignIn(input: SignInInput): Promise<number> {
-		const { status } = await query<void>("/auth/signin", {
-			method: "POST",
-			body: JSON.stringify(input),
-			headers: {
-				"Content-Type": "application/json",
+		const { status } = await query({
+			path: "/auth/signin",
+			init: {
+				method: "POST",
+				body: JSON.stringify(input),
 			},
-			credentials: "include",
+			validator: NullSchema,
 		});
+
 		if (status === 201) {
 			syncUser();
 		}
@@ -102,13 +101,13 @@ function _AuthProvider({ children }: AuthProviderProps) {
 	}
 
 	async function handleSignUp(input: SignUpInput): Promise<number> {
-		const { status } = await query<void>("/auth/signup", {
-			method: "POST",
-			body: JSON.stringify(input),
-			headers: {
-				"Content-Type": "application/json",
+		const { status } = await query({
+			path: "/auth/signup",
+			init: {
+				method: "POST",
+				body: JSON.stringify(input),
 			},
-			credentials: "include",
+			validator: NullSchema,
 		});
 		if (status === 201) {
 			syncUser();

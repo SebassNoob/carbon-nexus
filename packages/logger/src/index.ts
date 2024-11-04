@@ -8,7 +8,7 @@ if (!existsSync(logDirectory)) {
 	mkdirSync(logDirectory);
 }
 
-function getFileName(time: Date | number | null, index?: number): string {
+function getFileName(time: Date | number | null): string {
 	if (typeof time === "number" || time === null) {
 		return `${logDirectory}/access.log`;
 	}

@@ -1,7 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ForgotPasswordResetSchema } from "@shared/common/schemas";
+import { ForgotPasswordResetSchema, NullSchema } from "@shared/common/schemas";
 import type { ForgotPasswordReset } from "@shared/common/types";
 import { Button, TextInput } from "@lib/components";
 import { query } from "@utils";
@@ -23,9 +23,13 @@ export function ResetPasswordForm({ token }: { token: string }) {
 	const onSubmit = handleSubmit((data) => {
 		startTransition(async () => {
 			// Send the email to the backend
-			const { status } = await query<void>("/auth/reset-password", {
-				method: "POST",
-				body: JSON.stringify(data),
+			const { status } = await query({
+				path: "/auth/reset-password",
+				init: {
+					method: "POST",
+					body: JSON.stringify(data),
+				},
+				validator: NullSchema,
 			});
 
 			switch (status) {

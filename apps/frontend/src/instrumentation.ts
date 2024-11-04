@@ -1,8 +1,7 @@
 import type { Instrumentation } from "next";
-import { query } from "@utils";
 
 export async function register() {
-	const { status } = await query("/");
+	// const { status } = await query("/");
 }
 
 export const onRequestError: Instrumentation.onRequestError = async (error, request, context) => {

@@ -1,14 +1,14 @@
-import type { ResponsePayload, ErrorResponse } from "@shared/common/types";
+import type { ResponsePayload, ErrorResponse, JSONStructure } from "@shared/common/types";
 
 type ConstructResponseData = {
-	data?: Record<string, unknown>;
+	data?: JSONStructure;
 	error?: ErrorResponse;
 };
 
 export function constructResponse({
 	data,
 	error,
-}: ConstructResponseData): ResponsePayload<unknown> {
+}: ConstructResponseData): ResponsePayload<JSONStructure> {
 	return {
 		success: !error,
 		data: data ?? null,

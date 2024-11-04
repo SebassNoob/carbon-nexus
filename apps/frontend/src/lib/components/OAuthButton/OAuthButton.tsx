@@ -5,13 +5,17 @@ import { Button, Image } from "@lib/components";
 import { useRouter } from "next/navigation";
 import { query } from "@utils";
 import type { OAuthButtonProps } from "./types";
+import { OpenAuthUrlSchema } from "@shared/common/schemas";
 
 export function OAuthButton({ location, iconPath, name }: OAuthButtonProps) {
 	const router = useRouter();
 	const initOAuth = async () => {
-		const { data, status } = await query<{ url: string }>(location, {
-			method: "GET",
-			credentials: "include",
+		const { data, status } = await query({
+			path: location,
+			init: {
+				method: "GET",
+			},
+			validator: OpenAuthUrlSchema,
 		});
 
 		if (status !== 200) {

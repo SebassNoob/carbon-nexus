@@ -23,4 +23,9 @@ export class UserController {
 	) {
 		return this.userService.updateUserById(id, data);
 	}
+
+	@Get("test")
+	async test() {
+		return {};
+	}
 }

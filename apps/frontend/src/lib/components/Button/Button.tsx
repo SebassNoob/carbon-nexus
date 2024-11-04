@@ -1,4 +1,5 @@
 import type { ButtonProps } from "./types";
+import type { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 import { twButtonStyles, twDisabledButtonStyles, buttonRawColors } from "./constants";
 import { Loader } from "@lib/components";
@@ -28,7 +29,7 @@ export function Button({
 		</div>
 	);
 
-	const wrapWithLink = (element: JSX.Element) => {
+	const wrapWithLink = (element: ReactNode) => {
 		return href ? (
 			<NextLink href={href} tabIndex={-1}>
 				{element}

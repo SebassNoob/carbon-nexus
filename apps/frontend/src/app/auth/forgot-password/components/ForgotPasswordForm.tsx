@@ -1,7 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ForgotPasswordEmailSchema } from "@shared/common/schemas";
+import { ForgotPasswordEmailSchema, NullSchema } from "@shared/common/schemas";
 import type { ForgotPasswordEmail } from "@shared/common/types";
 import { Button, TextInput } from "@lib/components";
 import { query } from "@utils";
@@ -18,11 +18,14 @@ export function ForgotPasswordForm() {
 	const onSubmit = handleSubmit((data) => {
 		startTransition(async () => {
 			// Send the email to the backend
-			const { status } = await query<void>("/email/forgot-password", {
-				method: "POST",
-				body: JSON.stringify(data),
+			const { status } = await query({
+				path: "/email/forgot-password",
+				init: {
+					method: "POST",
+					body: JSON.stringify(data),
+				},
+				validator: NullSchema,
 			});
-
 			switch (status) {
 				case 201:
 					toast.success("Check your email for a password reset link!");

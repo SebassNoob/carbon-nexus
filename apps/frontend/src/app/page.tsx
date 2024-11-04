@@ -43,7 +43,7 @@ export default async function Home() {
 								<Text>CreatedAt:</Text>
 							</td>
 							<td className="px-4 py-2 ">
-								<Text>{data?.createdAt ?? "null"}</Text>
+								<Text>{data?.createdAt.toISOString() ?? "null"}</Text>
 							</td>
 						</tr>
 					</tbody>

@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { ClientProvider, AuthProvider } from "@lib/providers";
-import "./globals.css";
 import { Footer, Header } from "@lib/components";
+import type { ReactNode } from "react";
+import "./globals.css";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -17,7 +18,7 @@ const inter = Inter({
 export default function RootLayout({
 	children,
 }: Readonly<{
-	children: React.ReactNode;
+	children: ReactNode;
 }>) {
 	return (
 		<html lang="en">

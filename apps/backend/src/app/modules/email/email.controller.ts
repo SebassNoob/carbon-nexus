@@ -15,7 +15,6 @@ export class EmailController {
 		@Body(new ValidationPipe(ForgotPasswordEmailSchema)) { email }: ForgotPasswordEmail,
 	) {
 		await this.emailService.sendForgotPasswordEmail(email);
-		return {};
 	}
 
 	@Post("verify")
@@ -23,6 +22,5 @@ export class EmailController {
 	@HttpCode(201)
 	async sendVerificationEmail(@Body(new ValidationPipe(VerifyEmailSchema)) { id }: VerifyEmail) {
 		await this.emailService.sendVerificationEmail(id);
-		return {};
 	}
 }

@@ -6,7 +6,7 @@ import type { Theme } from "./types";
 // source of truth: user setting > local storage > system theme
 
 export function useTheme() {
-	const { user, loading, updateUser } = useContext(AuthContext);
+	const { user, loading } = useContext(AuthContext);
 	const [theme, setTheme] = useState<Theme>(() => {
 		const localStorageTheme = localStorage.getItem("theme");
 
