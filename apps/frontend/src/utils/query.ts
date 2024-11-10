@@ -66,7 +66,7 @@ export async function query<T = void>({
 				timeStamp: parsed.timestamp,
 			};
 		} catch (error) {
-			console.warn("Reject", error);
+			console.warn("Failed fetch call:", error);
 			return {
 				status: res.status,
 				data: null,

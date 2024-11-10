@@ -82,7 +82,7 @@ describe("OpenAuthService", () => {
 						JSON.stringify({
 							id: faker.string.numeric({ length: 15 }),
 							email: faker.internet.email(),
-							username: faker.internet.userName(),
+							username: faker.internet.username(),
 						} satisfies DiscordUser),
 					),
 			);
@@ -147,7 +147,7 @@ describe("OpenAuthService", () => {
 						JSON.stringify({
 							sub: faker.string.numeric({ length: 15 }),
 							email: faker.internet.email(),
-							name: faker.internet.userName(),
+							name: faker.internet.username(),
 						} satisfies GoogleUser),
 					),
 			);
@@ -219,7 +219,7 @@ describe("OpenAuthService", () => {
 						JSON.stringify({
 							id: Number(faker.string.numeric({ length: 15 })),
 							email: faker.internet.email(),
-							login: faker.internet.userName(),
+							login: faker.internet.username(),
 						} satisfies GitHubUser),
 					),
 			);

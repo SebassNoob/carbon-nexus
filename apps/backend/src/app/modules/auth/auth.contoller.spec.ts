@@ -32,7 +32,7 @@ describe("AuthController", () => {
 	describe("/signup", () => {
 		const testInput: SignUpInput = {
 			email: faker.internet.email(),
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: "Password!123",
 			repeatPassword: "Password!123",
 		};
@@ -74,7 +74,7 @@ describe("AuthController", () => {
 	describe("/signin", () => {
 		const testInput: SignUpInput = {
 			email: faker.internet.email(),
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: "Password!123",
 			repeatPassword: "Password!123",
 		};
@@ -113,7 +113,7 @@ describe("AuthController", () => {
 	describe("/signout", () => {
 		const testInput: SignUpInput = {
 			email: faker.internet.email(),
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: "Password!123",
 			repeatPassword: "Password!123",
 		};
@@ -150,7 +150,7 @@ describe("AuthController", () => {
 	describe("/me", () => {
 		const testInput: SignUpInput = {
 			email: faker.internet.email(),
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: "Password!123",
 			repeatPassword: "Password!123",
 		};

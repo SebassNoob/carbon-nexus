@@ -28,7 +28,7 @@ describe("AuthService", () => {
 	describe("signUp", () => {
 		const testInput: SignUpInput = {
 			email: faker.internet.email(),
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: "Password!123",
 			repeatPassword: "Password!123",
 		};
@@ -55,7 +55,7 @@ describe("AuthService", () => {
 	describe("signIn", () => {
 		const testInput: SignUpInput = {
 			email: faker.internet.email(),
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: "Password!123",
 			repeatPassword: "Password!123",
 		};
@@ -97,7 +97,7 @@ describe("AuthService", () => {
 	describe("signOut", () => {
 		const testInput: SignUpInput = {
 			email: faker.internet.email(),
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: "Password!123",
 			repeatPassword: "Password!123",
 		};
@@ -118,7 +118,7 @@ describe("AuthService", () => {
 	describe("getUser", () => {
 		const testInput: SignUpInput = {
 			email: faker.internet.email(),
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			password: "Password!123",
 			repeatPassword: "Password!123",
 		};
