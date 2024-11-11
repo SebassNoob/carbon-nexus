@@ -15,3 +15,4 @@ export * from "./Image";
 export * from "./TextInput";
 export * from "./Logo";
 export * from "./OAuthButton";
+export * from "./Tabs";

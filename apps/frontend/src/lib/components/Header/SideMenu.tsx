@@ -66,7 +66,7 @@ export function SideMenu() {
 					<SideMenuButton
 						icon="/common/settings.svg"
 						text="Settings"
-						onClick={() => router.push("/")}
+						onClick={() => router.push("/settings")}
 					/>
 					{renderAuthButton()}
 				</div>
