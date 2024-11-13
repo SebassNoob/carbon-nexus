@@ -1,5 +1,6 @@
 "use client";
-import { Tabs } from "@lib/components";
+import { Tabs, Toggle } from "@lib/components";
+import { Account } from "./components";
 
 export default function SettingsPage() {
 	return (
@@ -14,7 +15,7 @@ export default function SettingsPage() {
 				<h2>General settings</h2>
 			</Tabs.TabPanel>
 			<Tabs.TabPanel>
-				<h2>Security settings</h2>
+				<Account />
 			</Tabs.TabPanel>
 			<Tabs.TabPanel>
 				<h2>Notification settings</h2>
