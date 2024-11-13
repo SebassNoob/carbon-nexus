@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Text, Toggle } from "@lib/components";
+import { Text, } from "@lib/components";
 import { TextField } from "./TextField";
 import { z } from "zod";
 
@@ -25,6 +25,7 @@ export function Account() {
 							await new Promise((r) => {
 								setTimeout(r, 1000);
 							});
+              // biome-ignore lint/suspicious/noConsole: todo
 							console.log(a);
 						}}
 						zodSchema={z.string().email()}
