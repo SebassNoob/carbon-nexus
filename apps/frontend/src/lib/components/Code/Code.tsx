@@ -2,7 +2,7 @@ import type { CodeProps } from "./types";
 import { twMerge } from "tailwind-merge";
 
 const defaultStyle = `
-  text-slate-800 dark:text-white
+  text-zinc-800 dark:text-white
   !bg-transparent
 `;
 

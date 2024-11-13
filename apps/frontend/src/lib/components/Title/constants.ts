@@ -1,6 +1,6 @@
 import type { TitleOrder } from "./types";
 
-export const defaultStyles = "text-slate-900 dark:text-white";
+export const defaultStyles = "text-zinc-900 dark:text-white";
 export const twTitleTextSizing: Record<TitleOrder, string> = {
 	1: "text-5xl",
 	2: "text-4xl",

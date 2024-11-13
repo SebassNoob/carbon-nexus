@@ -74,7 +74,7 @@ export function SideMenu() {
 		>
 			<button
 				onClick={() => setOpen((value) => !value)}
-				className="p-2 rounded bg-slate-200 dark:bg-slate-800"
+				className="p-2 rounded bg-zinc-200 dark:bg-zinc-800"
 				data-testid="theme-toggle"
 				tabIndex={-1}
 				type="button"

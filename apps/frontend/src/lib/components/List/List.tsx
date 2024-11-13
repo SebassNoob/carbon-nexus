@@ -1,7 +1,7 @@
 import type { ListItemProps, OrderedListProps, UnorderedListProps } from "./types";
 import { twMerge } from "tailwind-merge";
 
-const defaultListItemStyles = "text-slate-600 dark:text-slate-300";
+const defaultListItemStyles = "text-zinc-600 dark:text-zinc-300";
 const defaultUnorderedListStyles = "list-disc pl-4";
 const defaultOrderedListStyles = "list-decimal pl-4";
 

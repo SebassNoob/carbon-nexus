@@ -1,4 +1,3 @@
-"use client";
 import {
 	Tab as ExternalTab,
 	Tabs as ExternalTabs,
@@ -11,7 +10,8 @@ import type { TabProps, TabsProps, TabListProps, TabPanelProps } from "./types";
 import type { ComponentType } from "react";
 import { motion } from "framer-motion";
 
-const defaultTabStyles = "px-4 py-2 border-b-2 cursor-pointer dark:border-gray-600 dark:text-gray-300";
+const defaultTabStyles =
+	"px-4 py-2 border-b-2 cursor-pointer dark:border-gray-600 dark:text-gray-300";
 const defaultActiveTabStyles = "h-1 bg-blue-500";
 const defaultTabListStyles = "flex border-b dark:border-gray-600";
 const defaultTabsStyles = "w-full";
@@ -30,20 +30,28 @@ function withComponentRole<T extends object>(
 export class Tabs {
 	static Tab: ReactTabsFunctionComponent<TabProps> = withComponentRole(
 		"Tab",
-		({ children, className, selected, selectedClassName, reducedMotion = false, ...rest }: TabProps) => {
+		({
+			children,
+			className,
+			selected,
+			selectedClassName,
+			reducedMotion = false,
+			...rest
+		}: TabProps) => {
 			const styles = twMerge(defaultTabStyles, className);
-      const activeStyles = twMerge(defaultActiveTabStyles, selectedClassName);
+			const activeStyles = twMerge(defaultActiveTabStyles, selectedClassName);
 
-      const renderActiveBar = () => reducedMotion ? (
-        <div className={activeStyles} />
-      ):(
-        <motion.div layoutId="underline" className={activeStyles}/>
-      )
+			const renderActiveBar = () =>
+				reducedMotion ? (
+					<div className={activeStyles} />
+				) : (
+					<motion.div layoutId="underline" className={activeStyles} />
+				);
 
 			return (
 				<ExternalTab className={styles} {...rest}>
 					{children}
-          {selected && renderActiveBar()}
+					{selected && renderActiveBar()}
 				</ExternalTab>
 			);
 		},
@@ -65,13 +73,7 @@ export class Tabs {
 	static TabPanel: ReactTabsFunctionComponent<TabPanelProps> = withComponentRole(
 		"TabPanel",
 		({ children, ...rest }: TabPanelProps) => {
-			
-
-			return (
-				<ExternalTabPanel  {...rest}>
-					{children}
-				</ExternalTabPanel>
-			);
+			return <ExternalTabPanel {...rest}>{children}</ExternalTabPanel>;
 		},
 	);
 

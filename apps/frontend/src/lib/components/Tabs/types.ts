@@ -8,7 +8,7 @@ import type {
 
 export interface TabProps extends ReactTabsTabProps {
 	children: ReactNode;
-  reducedMotion?: boolean;
+	reducedMotion?: boolean;
 	className?: string;
 }
 

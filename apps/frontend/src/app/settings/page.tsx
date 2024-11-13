@@ -4,10 +4,10 @@ import { Tabs } from "@lib/components";
 export default function SettingsPage() {
 	return (
 		<Tabs.Tabs>
-			<Tabs.TabList>
-				<Tabs.Tab>General</Tabs.Tab>
-				<Tabs.Tab>Security</Tabs.Tab>
-				<Tabs.Tab>Notifications</Tabs.Tab>
+			<Tabs.TabList className="overflow-x-scroll">
+				<Tabs.Tab>Preferences</Tabs.Tab>
+				<Tabs.Tab>Account</Tabs.Tab>
+				<Tabs.Tab>Profile</Tabs.Tab>
 			</Tabs.TabList>
 
 			<Tabs.TabPanel>

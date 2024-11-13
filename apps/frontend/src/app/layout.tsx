@@ -25,14 +25,14 @@ export default function RootLayout({
 			<body className={inter.className}>
 				<AuthProvider>
 					<ClientProvider>
-						<main className="bg-slate-50 dark:bg-black min-h-screen w-full transition-all sm:p-8 xs:p-4 p-2">
+						<main className="bg-zinc-50 dark:bg-black min-h-screen w-full transition-all sm:p-8 xs:p-4 p-2">
 							<Header />
 							<section className="p-4">{children}</section>
 							<Footer />
 							<Toaster
 								position="bottom-right"
 								toastOptions={{
-									className: "!bg-slate-100 !text-slate-900 dark:!bg-slate-900 dark:!text-white",
+									className: "!bg-zinc-100 !text-zinc-900 dark:!bg-zinc-900 dark:!text-white",
 								}}
 							/>
 						</main>
