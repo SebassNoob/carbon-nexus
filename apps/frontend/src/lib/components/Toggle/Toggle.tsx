@@ -14,7 +14,7 @@ export function Toggle({ className, ...rest }: HTMLAttributes<HTMLInputElement>)
 	return (
 		<label className="inline-flex items-center cursor-pointer">
 			<input type="checkbox" className="sr-only peer" {...rest} />
-			<div className={styles}/>
+			<div className={styles} />
 		</label>
 	);
 }

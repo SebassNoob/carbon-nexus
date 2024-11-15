@@ -17,3 +17,4 @@ export * from "./Logo";
 export * from "./OAuthButton";
 export * from "./Tabs";
 export * from "./Toggle";
+export * from "./Modal";

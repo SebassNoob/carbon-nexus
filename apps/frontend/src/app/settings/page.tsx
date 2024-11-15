@@ -1,5 +1,5 @@
 "use client";
-import { Tabs, } from "@lib/components";
+import { Tabs } from "@lib/components";
 import { Account } from "./components";
 
 export default function SettingsPage() {
