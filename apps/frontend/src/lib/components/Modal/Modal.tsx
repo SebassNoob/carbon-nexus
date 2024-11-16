@@ -23,39 +23,40 @@ export function Modal({
 	onClose,
 	modalClassName,
 }: ModalProps) {
-	const [modalRef, animate] = useAnimate();
+	const [modalRef, animate] = useAnimate<HTMLDialogElement>();
 	const modalStyles = twMerge(modalDefaultStyles, modalClassName);
 	const styles = twMerge(defaultStyles, className);
 
+	// always show modal if isOpen is true
+	// parent handles unmounting
 	useEffect(() => {
-		const closeOnClickOutside = (event: MouseEvent) => {
-			if (event.target === modalRef.current) {
-				reducedMotion
-					? modalRef.current.close()
-					: animate(modalRef.current, { opacity: 0, scale: 0.95 }).then(() =>
-							modalRef.current.close(),
-						);
-			}
-		};
-
-		modalRef.current?.addEventListener("mousedown", closeOnClickOutside);
-		modalRef.current?.addEventListener("close", onClose);
-
-		return () => {
-			modalRef.current?.removeEventListener("mousedown", closeOnClickOutside);
-			modalRef.current?.removeEventListener("close", onClose);
-		};
-	}, [onClose, modalRef, animate, reducedMotion]);
-
-	useEffect(() => {
-		if (modalRef.current) {
-			if (isOpen) {
-				modalRef.current.showModal();
+		const close = () => {
+			if (reducedMotion) {
+				onClose();
 			} else {
-				modalRef.current.close();
+				animate(modalRef.current, { opacity: 0, scale: 0.95 }).then(onClose);
 			}
+		};
+
+		if (modalRef.current && isOpen) {
+			modalRef.current.showModal();
+			modalRef.current.addEventListener("close", close);
+			// close on click outside
+			modalRef.current.addEventListener("click", (e) => {
+				if (e.target === modalRef.current) {
+					close();
+				}
+			});
 		}
-	}, [isOpen, modalRef]);
+		return () => {
+			modalRef.current?.removeEventListener("close", close);
+			modalRef.current?.removeEventListener("click", (e) => {
+				if (e.target === modalRef.current) {
+					close();
+				}
+			});
+		};
+	}, [isOpen, modalRef, reducedMotion, animate, onClose]);
 
 	return (
 		<>

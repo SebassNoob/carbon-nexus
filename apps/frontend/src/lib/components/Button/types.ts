@@ -4,7 +4,6 @@ export type ButtonColor = "info" | "danger" | "warning" | "success";
 
 export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
 	children: ReactNode;
-	onClick?: () => void;
 	href?: string;
 	className?: string;
 	type?: "button" | "submit" | "reset";

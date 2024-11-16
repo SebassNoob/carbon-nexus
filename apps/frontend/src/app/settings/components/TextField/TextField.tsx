@@ -10,7 +10,7 @@ export function TextField<T extends string>({
 	fieldKey,
 	label,
 	value,
-	onChange,
+	onSubmit,
 	placeholder,
 	zodSchema,
 }: TextFieldProps<T>) {
@@ -26,14 +26,14 @@ export function TextField<T extends string>({
 		} as DefaultValues<Record<T, string>>,
 	});
 
-	const onSubmit = (data: Record<T, string>) => {
+	const submitCb = (data: Record<T, string>) => {
 		startTransition(async () => {
-			await onChange(data);
+			await onSubmit(data);
 		});
 	};
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
-			<div className="flex gap-4 w-full items-center">
+		<form onSubmit={handleSubmit(submitCb)}>
+			<div className="flex flex-col sm:flex-row gap-4 w-full items-center">
 				<TextInput
 					label={label}
 					disabled={isPending}
@@ -41,10 +41,10 @@ export function TextField<T extends string>({
 					{...register(fieldKey as unknown as Path<Record<T, string>>)}
 					variant={formState.errors[fieldKey] ? "error" : undefined}
 					helperText={formState.errors[fieldKey]?.message as string}
-					className="w-full"
+					className="w-full sm:w-72 md:w-96"
 				/>
 				<Button disabled={isPending} type="submit" className="grow-0">
-					Submit
+					Save
 				</Button>
 			</div>
 		</form>

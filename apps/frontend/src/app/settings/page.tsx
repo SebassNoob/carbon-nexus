@@ -1,25 +1,17 @@
-"use client";
-import { Tabs } from "@lib/components";
-import { Account } from "./components";
+import { Title } from "@lib/components";
+import { Account, SettingsTabs, type SettingsTabsProps } from "./components";
+
+const tabs = [
+	{ name: "Preferences", element: <h2>General settings</h2> },
+	{ name: "Account", element: <Account /> },
+	{ name: "Profile", element: <h2>Notification settings</h2> },
+] as const satisfies SettingsTabsProps["tabs"];
 
 export default function SettingsPage() {
 	return (
-		<Tabs.Tabs>
-			<Tabs.TabList className="overflow-x-scroll">
-				<Tabs.Tab>Preferences</Tabs.Tab>
-				<Tabs.Tab>Account</Tabs.Tab>
-				<Tabs.Tab>Profile</Tabs.Tab>
-			</Tabs.TabList>
-
-			<Tabs.TabPanel>
-				<h2>General settings</h2>
-			</Tabs.TabPanel>
-			<Tabs.TabPanel>
-				<Account />
-			</Tabs.TabPanel>
-			<Tabs.TabPanel>
-				<h2>Notification settings</h2>
-			</Tabs.TabPanel>
-		</Tabs.Tabs>
+		<div className="flex flex-col gap-2">
+			<Title order={1}>Settings</Title>
+			<SettingsTabs tabs={tabs} />
+		</div>
 	);
 }

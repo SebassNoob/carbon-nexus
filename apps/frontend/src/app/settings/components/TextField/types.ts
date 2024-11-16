@@ -6,5 +6,5 @@ export interface TextFieldProps<T extends string> {
 	zodSchema: ZodString;
 	value?: string;
 	placeholder?: string;
-	onChange: (value: Record<T, string>) => Promise<void>;
+	onSubmit: (value: Record<T, string>) => Promise<void>;
 }

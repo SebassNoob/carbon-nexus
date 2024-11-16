@@ -1,4 +1,4 @@
-import type { HTMLAttributes } from "react";
+import type { InputHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 
 const defaultClassName = `relative w-11 h-6 
@@ -8,7 +8,7 @@ const defaultClassName = `relative w-11 h-6
   after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all 
   dark:border-gray-600 peer-checked:bg-blue-600`;
 
-export function Toggle({ className, ...rest }: HTMLAttributes<HTMLInputElement>) {
+export function Toggle({ className, ...rest }: InputHTMLAttributes<HTMLInputElement>) {
 	const styles = twMerge(defaultClassName, className);
 
 	return (

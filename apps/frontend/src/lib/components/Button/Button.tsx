@@ -7,7 +7,7 @@ import { default as NextLink } from "next/link";
 
 export function Button({
 	children,
-	onClick,
+
 	className,
 	color = "info",
 	type = "button",
@@ -39,13 +39,7 @@ export function Button({
 		);
 	};
 	return wrapWithLink(
-		<button
-			type={type}
-			onClick={onClick}
-			className={mergedStyles}
-			disabled={isNotClickable}
-			{...rest}
-		>
+		<button type={type} className={mergedStyles} disabled={isNotClickable} {...rest}>
 			{loading ? styledLoader : children}
 		</button>,
 	);
