@@ -58,8 +58,7 @@ export function SideMenu() {
 		<Popover
 			isOpen={open}
 			positions={["bottom", "left"]}
-			onClickOutside={() => setOpen((value) => !value)}
-			containerClassName="transition-all"
+			onClickOutside={() => setOpen(false)}
 			align="end"
 			padding={5}
 			content={

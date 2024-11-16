@@ -7,6 +7,7 @@ export function TextInput({
 	helperText,
 	disabled,
 	className,
+	icon,
 	...rest
 }: TextInputProps) {
 	const inputClasses = twMerge(
@@ -27,10 +28,18 @@ export function TextInput({
 	);
 
 	return (
-		<div className={twMerge("flex flex-col items-start", className)}>
+		<div className={twMerge("flex flex-col items-start relative", className)}>
 			{/* biome-ignore lint/a11y/noLabelWithoutControl: htmlFor is not available as id is a prop */}
+
 			{label && <label className={helperTextClasses}>{label}</label>}
-			<input className={inputClasses} disabled={disabled} {...rest} />
+			<div className="relative w-full">
+				<input className={inputClasses} disabled={disabled} {...rest} />
+				{icon && (
+					<div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+						{icon}
+					</div>
+				)}
+			</div>
 			{helperText && <p className={helperTextClasses}>{helperText}</p>}
 		</div>
 	);
