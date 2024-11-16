@@ -1,7 +1,7 @@
 "use client";
 import { Popover } from "react-tiny-popover";
 import { motion } from "framer-motion";
-import { useState, useDeferredValue, useEffect, useRef } from "react";
+import { useState, useDeferredValue, useRef } from "react";
 import { TextInput, Text } from "@lib/components";
 import { AutocompleteChoice } from "./AutocompleteChoice";
 import type { AutocompleteProps } from "./types";
@@ -17,7 +17,7 @@ export function Autocomplete({
 	const [search, setSearch] = useState(initialValue ?? "");
 	const deferredSearch = useDeferredValue(search);
 	const isPending = deferredSearch !== search;
-  const ref = useRef<HTMLInputElement>(null);
+	const ref = useRef<HTMLInputElement>(null);
 
 	const filteredItems = items.filter((item) => item.toLowerCase().includes(search.toLowerCase()));
 
@@ -31,13 +31,13 @@ export function Autocomplete({
 			}}
 			align="start"
 			padding={5}
-      ref={ref}
+			ref={ref}
 			content={
 				<motion.div
 					className="bg-white dark:bg-zinc-900 rounded-md shadow-md p-2 min-w-fit overflow-y-auto max-h-60"
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-          style={{ width: ref.current?.clientWidth }}
+					style={{ width: ref.current?.clientWidth }}
 				>
 					{filteredItems.length !== 0 ? (
 						filteredItems.map((item) => (

@@ -30,7 +30,6 @@ export function TextInput({
 	return (
 		<div className={twMerge("flex flex-col items-start relative", className)}>
 			{/* biome-ignore lint/a11y/noLabelWithoutControl: htmlFor is not available as id is a prop */}
-
 			{label && <label className={helperTextClasses}>{label}</label>}
 			<div className="relative w-full">
 				<input className={inputClasses} disabled={disabled} {...rest} />

@@ -7,7 +7,7 @@ export function AutocompleteChoice({ item, onSelect, isPending }: AutocompleteCh
 			className="w-full p-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
 			onClick={() => onSelect(item)}
 			disabled={isPending}
-      type="button"
+			type="button"
 		>
 			<Text order="sm" className={isPending ? "text-gray-600 dark:text-gray-500" : ""}>
 				{item}
