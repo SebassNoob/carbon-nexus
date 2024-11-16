@@ -5,6 +5,7 @@ import { Text, Button, Modal, Title } from "@lib/components";
 import { TextField } from "../TextField";
 
 export function TextSettingsRow({
+	fieldKey,
 	label,
 	value,
 	schema,
@@ -66,7 +67,7 @@ export function TextSettingsRow({
 				</div>
 				{description && <Text order="sm">{description}</Text>}
 				<TextField
-					fieldKey={label}
+					fieldKey={fieldKey}
 					placeholder={`No ${label} provided`}
 					value={value}
 					onSubmit={async (val) => onSubmit(val).then(() => setOpen(false))}

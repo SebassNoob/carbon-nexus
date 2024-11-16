@@ -1,10 +1,10 @@
 import { Title } from "@lib/components";
-import { Account, SettingsTabs, type SettingsTabsProps } from "./components";
+import { Account, Preferences, Profile, SettingsTabs, type SettingsTabsProps } from "./components";
 
 const tabs = [
-	{ name: "Preferences", element: <h2>General settings</h2> },
+	{ name: "Preferences", element: <Preferences /> },
 	{ name: "Account", element: <Account /> },
-	{ name: "Profile", element: <h2>Notification settings</h2> },
+	{ name: "Profile", element: <Profile /> },
 ] as const satisfies SettingsTabsProps["tabs"];
 
 export default function SettingsPage() {
