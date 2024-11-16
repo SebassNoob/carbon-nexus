@@ -1,5 +1,6 @@
 "use client";
 import { TextInput, Button } from "@lib/components";
+import { useKeybinds } from "@lib/hooks";
 import { useTransition } from "react";
 import { useForm, type DefaultValues, type Path } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +15,11 @@ export function TextField<T extends string>({
 	placeholder,
 	zodSchema,
 }: TextFieldProps<T>) {
+	useKeybinds({
+		Enter: () => {
+			handleSubmit(submitCb)();
+		},
+	});
 	const [isPending, startTransition] = useTransition();
 	const { register, handleSubmit, formState } = useForm<Record<typeof fieldKey, string>>({
 		resolver: zodResolver(

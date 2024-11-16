@@ -4,12 +4,13 @@ import { AuthContext, ClientContext } from "@lib/providers";
 import { Image } from "@lib/components";
 import { toast } from "react-hot-toast";
 import { Popover } from "react-tiny-popover";
+import { motion } from "framer-motion";
 import { SideMenuButton } from "./SideMenuButton";
 import { useRouter } from "next/navigation";
 
 export function SideMenu() {
 	const { user, loading, signOut } = useContext(AuthContext);
-	const { theme } = useContext(ClientContext);
+	const { theme, reducedMotion } = useContext(ClientContext);
 	const [open, setOpen] = useState(false);
 
 	const router = useRouter();
@@ -62,14 +63,19 @@ export function SideMenu() {
 			align="end"
 			padding={5}
 			content={
-				<div className="max-w-lg bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+				<motion.div
+					initial={reducedMotion ? false : { opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.2 }}
+					className="max-w-lg bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+				>
 					<SideMenuButton
 						icon="/common/settings.svg"
 						text="Settings"
 						onClick={() => router.push("/settings")}
 					/>
 					{renderAuthButton()}
-				</div>
+				</motion.div>
 			}
 		>
 			<button

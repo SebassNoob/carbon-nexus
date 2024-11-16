@@ -16,7 +16,7 @@ export function SettingsTabs({ tabs }: SettingsTabsProps) {
 				return (
 					<Tabs.TabPanel key={tab.name}>
 						<motion.div
-							initial={{ opacity: 0, y: 20 }}
+							initial={{ opacity: 0.7, y: 2 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.2 }}
 							className="pt-2"

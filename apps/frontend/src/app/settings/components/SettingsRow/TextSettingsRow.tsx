@@ -50,6 +50,7 @@ export function TextSettingsRow({
 					<Button
 						className="w-8 h-8 p-0 flex items-center justify-center border-none rounded-full bg-transparent hover:bg-gray-100 hover:dark:bg-gray-800 hover:text-zinc-700 text-zinc-900 hover:dark:text-zinc-200 dark:text-zinc-100 transition-colors duration-200"
 						onClick={() => setOpen(false)}
+						tabIndex={-1}
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"

@@ -24,14 +24,6 @@ export function Account() {
 				onSubmit={_simulateApiCall}
 				schema={UpdateUserInputSchema.required().shape.email}
 			/>
-			<TextSettingsRow
-				fieldKey="username"
-				label="Password"
-				value="********"
-				description="Your username is used for login and display."
-				onSubmit={_simulateApiCall}
-				schema={UpdateUserInputSchema.required().shape.username}
-			/>
 			<ButtonSettingsRow label="Change Password" buttonLabel="Change" onClick={() => {}} />
 			<ButtonSettingsRow label="Verify Email" buttonLabel="Verify" onClick={() => {}} />
 			<ButtonSettingsRow
