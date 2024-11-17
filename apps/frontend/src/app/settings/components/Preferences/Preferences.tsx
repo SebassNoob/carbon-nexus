@@ -1,17 +1,10 @@
 "use client";
-import { BooleanSettingsRow } from "..";
-import { useState } from "react";
-import { Autocomplete } from "@lib/components";
+import { AutocompleteSettingsRow, BooleanSettingsRow } from "..";
 
 // TODO: add data fetching
 const timezones = Intl.supportedValuesOf("timeZone");
 
 export function Preferences() {
-	const [selectedTimezone, setSelectedTimezone] = useState("");
-
-	const handleTimezoneChange = (timezone: string) => {
-		setSelectedTimezone(timezone);
-	};
 	return (
 		<div className="space-y-4">
 			<BooleanSettingsRow label="Dark Mode" value={true} onChange={(value) => console.log(value)} />
@@ -21,12 +14,16 @@ export function Preferences() {
 				value={true}
 				onChange={(value) => console.log(value)}
 			/>
-			<Autocomplete
+
+			<AutocompleteSettingsRow
+				fieldKey="timezone"
+				label="Timezone"
+				value={"UTC"}
 				items={timezones}
-				handleChange={handleTimezoneChange}
-				initialValue={selectedTimezone}
-				label="Search Timezone"
-				placeholder="Enter timezone"
+				onSubmit={async (_value) => {
+					// artificial delay
+					await new Promise((resolve) => setTimeout(resolve, 1000));
+				}}
 			/>
 		</div>
 	);

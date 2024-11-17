@@ -33,11 +33,7 @@ export function TextInput({
 			{label && <label className={helperTextClasses}>{label}</label>}
 			<div className="relative w-full">
 				<input className={inputClasses} disabled={disabled} {...rest} />
-				{icon && (
-					<div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-						{icon}
-					</div>
-				)}
+				{icon && <div className="absolute inset-y-0 right-0 pr-3 flex items-center ">{icon}</div>}
 			</div>
 			{helperText && <p className={helperTextClasses}>{helperText}</p>}
 		</div>

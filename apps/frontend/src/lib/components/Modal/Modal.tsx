@@ -1,8 +1,8 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { twMerge } from "tailwind-merge";
 import type { ModalProps } from "./types";
-import { motion, useAnimate } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 const modalDefaultStyles = `
 !m-0 !translate-x-[-50%] !translate-y-[-50%] top-1/2 left-1/2
@@ -23,47 +23,41 @@ export function Modal({
 	onClose,
 	modalClassName,
 }: ModalProps) {
-	const [modalRef, animate] = useAnimate<HTMLDialogElement>();
+	const modalRef = useRef<HTMLDialogElement>(null);
 	const modalStyles = twMerge(modalDefaultStyles, modalClassName);
 	const styles = twMerge(defaultStyles, className);
 
 	// always show modal if isOpen is true
 	// parent handles unmounting
 	useEffect(() => {
-		const close = () => {
-			if (reducedMotion) {
-				onClose();
-			} else {
-				animate(modalRef.current, { opacity: 0, scale: 0.95 }).then(onClose);
-			}
-		};
-
 		if (modalRef.current && isOpen) {
 			modalRef.current.showModal();
-			modalRef.current.addEventListener("close", close);
+			modalRef.current.addEventListener("close", onClose);
 			// close on click outside
 			modalRef.current.addEventListener("click", (e) => {
 				if (e.target === modalRef.current) {
-					close();
+					onClose();
 				}
 			});
 		}
 		return () => {
-			modalRef.current?.removeEventListener("close", close);
+			modalRef.current?.removeEventListener("close", onClose);
 			modalRef.current?.removeEventListener("click", (e) => {
 				if (e.target === modalRef.current) {
-					close();
+					onClose();
 				}
 			});
 		};
-	}, [isOpen, modalRef, reducedMotion, animate, onClose]);
+	}, [isOpen, onClose]);
 
 	return (
-		<>
+		<AnimatePresence>
 			{isOpen && (
 				<motion.dialog
 					initial={reducedMotion ? false : { opacity: 0, scale: 0.95 }}
 					animate={{ opacity: 1, scale: 1 }}
+					exit={reducedMotion ? false : { opacity: 0, scale: 0.95 }}
+					transition={{ duration: 0.1 }}
 					key="modal"
 					ref={modalRef}
 					className={modalStyles}
@@ -71,6 +65,6 @@ export function Modal({
 					<div className={styles}>{children}</div>
 				</motion.dialog>
 			)}
-		</>
+		</AnimatePresence>
 	);
 }

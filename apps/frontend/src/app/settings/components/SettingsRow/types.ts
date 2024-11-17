@@ -22,3 +22,11 @@ export interface TextSettingsRowProps {
 	onSubmit: (value: Record<string, string>) => Promise<void>;
 	reducedMotion?: boolean;
 }
+
+export interface AutocompleteSettingsRowProps {
+	fieldKey: string;
+	label: string;
+	value?: string;
+	items: string[];
+	onSubmit: (value: Record<string, string>) => Promise<void>;
+}
