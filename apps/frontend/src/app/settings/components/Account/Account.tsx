@@ -1,6 +1,8 @@
 "use client";
 import { UpdateUserInputSchema } from "@shared/common/schemas";
 import { ButtonSettingsRow, TextSettingsRow } from "..";
+import { useState } from "react";
+import { DeleteAccountModal } from "./DeleteAccountModal";
 
 // TODO: add data fetching
 
@@ -14,6 +16,7 @@ function _simulateApiCall(data: any) {
 }
 
 export function Account() {
+	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 	return (
 		<div className="space-y-4">
 			<TextSettingsRow
@@ -29,8 +32,13 @@ export function Account() {
 			<ButtonSettingsRow
 				label="Delete Account"
 				buttonLabel="Delete"
-				onClick={() => {}}
+				onClick={() => setDeleteModalOpen(true)}
 				buttonColor="danger"
+			/>
+			<DeleteAccountModal
+				isOpen={deleteModalOpen}
+				onClose={() => setDeleteModalOpen(false)}
+				onSubmit={(d) => console.log(d)}
 			/>
 		</div>
 	);

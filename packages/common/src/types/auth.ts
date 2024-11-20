@@ -1,3 +1,4 @@
+export type OAuthProvider = "discord" | "google" | "github";
 export type SignUpInput = {
 	username: string;
 	email: string;
@@ -26,4 +27,10 @@ export type ForgotPasswordReset = {
 
 export type VerifyEmail = {
 	id: string;
+};
+
+export type ChangePasswordInput = {
+	oldPassword: string;
+	newPassword: string;
+	repeatPassword: string;
 };

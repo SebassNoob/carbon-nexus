@@ -1,4 +1,4 @@
-type OAuthProviders = "discord" | "google" | "github";
+import type { OAuthProvider } from "@shared/common/types";
 
 export const sessionCookieName = "tokenId" as const;
 
@@ -14,7 +14,7 @@ export const oAuthCookieNames = {
 		state: "githubOauthState",
 	},
 } as const satisfies {
-	[key in OAuthProviders]: {
+	[key in OAuthProvider]: {
 		state: string;
 		codeVerifier?: string;
 	};

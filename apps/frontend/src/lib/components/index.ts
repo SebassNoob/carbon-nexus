@@ -19,3 +19,4 @@ export * from "./Tabs";
 export * from "./Toggle";
 export * from "./Modal";
 export * from "./Autocomplete";
+export * from "./ModalCloseButton";
