@@ -7,6 +7,7 @@ import { AppError } from "@utils/appErrors";
 import { resetDatabase } from "@utils/test";
 import { faker } from "@faker-js/faker";
 import { ConfigModule } from "@nestjs/config";
+import { UserModule, UserService } from "../user";
 
 describe("AuthService", () => {
 	let service: AuthService;
@@ -14,7 +15,7 @@ describe("AuthService", () => {
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			imports: [ConfigModule],
-			providers: [AuthService, PrismaService, LuciaService],
+			providers: [AuthService, PrismaService, LuciaService, UserService],
 		}).compile();
 
 		service = module.get<AuthService>(AuthService);

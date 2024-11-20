@@ -10,7 +10,7 @@ import type {
 import { handleDatabaseError } from "@utils/prismaErrors";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
 import { PrismaService, LuciaService } from "@db/client";
-import { UserService } from "@modules/user/user.service";
+import { UserService } from "@modules/user";
 
 @Injectable()
 export class AuthService {

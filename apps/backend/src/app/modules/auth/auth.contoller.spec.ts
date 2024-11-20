@@ -9,6 +9,7 @@ import type { INestApplication } from "@nestjs/common";
 import { faker } from "@faker-js/faker";
 import { ConfigModule } from "@nestjs/config";
 import cookieParser from "cookie-parser";
+import { UserService } from "../user";
 
 describe("AuthController", () => {
 	let app: INestApplication;
@@ -16,7 +17,7 @@ describe("AuthController", () => {
 	beforeAll(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			imports: [ConfigModule],
-			providers: [AuthService, PrismaService, LuciaService],
+			providers: [AuthService, PrismaService, LuciaService, UserService],
 			controllers: [AuthController],
 		}).compile();
 
