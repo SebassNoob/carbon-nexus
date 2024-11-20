@@ -3,7 +3,7 @@ import { PrismaService } from "@db/client";
 import type { OAuthProvider, SafeUser, UpdateUserInput } from "@shared/common/types";
 import { handleDatabaseError } from "@utils/prismaErrors";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
-import type { Prisma, User } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
 @Injectable()
 export class UserService {

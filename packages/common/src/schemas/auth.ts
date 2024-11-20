@@ -71,7 +71,7 @@ export const EmailVerificationTokenSchema = z.string() satisfies z.ZodType<strin
 
 export const ChangePasswordInputSchema = z
 	.object({
-		oldPassword: z.string(),
+		oldPassword: z.string().optional(),
 		newPassword: passwordSchema,
 		repeatPassword: z.string(),
 	})

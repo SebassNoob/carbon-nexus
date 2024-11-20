@@ -30,7 +30,7 @@ export type VerifyEmail = {
 };
 
 export type ChangePasswordInput = {
-	oldPassword: string;
+	oldPassword?: string;
 	newPassword: string;
 	repeatPassword: string;
 };

@@ -1,12 +1,5 @@
 "use client";
-import {
-	Modal,
-	TextInput,
-	Title,
-	Text,
-	Button,
-	ModalCloseButton,
-} from "@lib/components";
+import { Modal, TextInput, Title, Text, Button, ModalCloseButton } from "@lib/components";
 import { useContext } from "react";
 import { AuthContext } from "@lib/providers";
 import { useForm } from "react-hook-form";
@@ -17,7 +10,7 @@ import { twMerge } from "tailwind-merge";
 import type { ChangePasswordModalProps } from "./types";
 
 export function ChangePasswordModal(props: ChangePasswordModalProps) {
-	const { loading } = useContext(AuthContext);
+	const { user, loading } = useContext(AuthContext);
 	const { register, handleSubmit, formState } = useForm<ChangePasswordInput>({
 		resolver: zodResolver(ChangePasswordInputSchema),
 	});
@@ -30,35 +23,48 @@ export function ChangePasswordModal(props: ChangePasswordModalProps) {
 			</div>
 
 			<Text order="sm">
-				Enter your username (case-sensitive) to confirm. There's no going back!
+				{user?.hasPassword
+					? "You can change your password here."
+					: "Since you do not have a password, please set one."}
 			</Text>
 			<form onSubmit={handleSubmit(props.onSubmit)} className="flex flex-col justify-center gap-4">
+				{user?.hasPassword ? (
+					<TextInput
+						label="Old Password"
+						placeholder="Enter your previous password"
+						disabled={loading}
+						{...register("oldPassword")}
+						variant={formState.errors.oldPassword ? "error" : undefined}
+						helperText={formState.errors.oldPassword?.message as string}
+					/>
+				) : (
+					<TextInput
+						type="hidden"
+						className="hidden"
+						disabled={true}
+						value={undefined}
+						{...register("oldPassword")}
+					/>
+				)}
+
 				<TextInput
-					label="Username"
-					placeholder="Enter your username"
-					disabled={loading}
-					{...register("oldPassword")}
-					variant={formState.errors.oldPassword ? "error" : undefined}
-					helperText={formState.errors.oldPassword?.message as string}
-				/>
-				<TextInput
-					label="Username"
-					placeholder="Enter your username"
+					label="New Password"
+					placeholder="Enter a new password"
 					disabled={loading}
 					{...register("newPassword")}
 					variant={formState.errors.newPassword ? "error" : undefined}
 					helperText={formState.errors.newPassword?.message as string}
 				/>
 				<TextInput
-					label="Username"
-					placeholder="Enter your username"
+					label="Repeat New Password"
+					placeholder="Repeat your new password"
 					disabled={loading}
 					{...register("repeatPassword")}
 					variant={formState.errors.repeatPassword ? "error" : undefined}
 					helperText={formState.errors.repeatPassword?.message as string}
 				/>
-				<Button type="submit" color="danger">
-					Delete Account
+				<Button type="submit" >
+					Submit
 				</Button>
 			</form>
 		</Modal>

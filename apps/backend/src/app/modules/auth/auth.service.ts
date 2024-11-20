@@ -6,7 +6,6 @@ import type {
 	TokenCookie,
 	SignUpInput,
 	ForgotPasswordReset,
-	OAuthProvider,
 } from "@shared/common/types";
 import { handleDatabaseError } from "@utils/prismaErrors";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
@@ -18,7 +17,7 @@ export class AuthService {
 	constructor(
 		private readonly prisma: PrismaService,
 		private readonly lucia: LuciaService,
-    private readonly userService: UserService,
+		private readonly userService: UserService,
 	) {}
 
 	private hashPassword(password: string): Promise<string> {
@@ -101,7 +100,7 @@ export class AuthService {
 		if (!session || !user) {
 			throw new AppError(AppErrorTypes.UserNotFound);
 		}
-    return this.userService.getUserById(user.id);
+		return this.userService.getUserById(user.id);
 	}
 
 	async resetPassword(data: ForgotPasswordReset): Promise<void> {

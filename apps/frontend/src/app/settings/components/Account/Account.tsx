@@ -3,6 +3,7 @@ import { UpdateUserInputSchema } from "@shared/common/schemas";
 import { ButtonSettingsRow, TextSettingsRow } from "..";
 import { useState } from "react";
 import { DeleteAccountModal } from "./DeleteAccountModal";
+import { ChangePasswordModal } from "./ChangePasswordModal";
 
 // TODO: add data fetching
 
@@ -17,6 +18,7 @@ function _simulateApiCall(data: any) {
 
 export function Account() {
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+	const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
 	return (
 		<div className="space-y-4">
 			<TextSettingsRow
@@ -27,7 +29,11 @@ export function Account() {
 				onSubmit={_simulateApiCall}
 				schema={UpdateUserInputSchema.required().shape.email}
 			/>
-			<ButtonSettingsRow label="Change Password" buttonLabel="Change" onClick={() => {}} />
+			<ButtonSettingsRow
+				label="Change Password"
+				buttonLabel="Change"
+				onClick={() => setChangePasswordModalOpen(true)}
+			/>
 			<ButtonSettingsRow label="Verify Email" buttonLabel="Verify" onClick={() => {}} />
 			<ButtonSettingsRow
 				label="Delete Account"
@@ -38,6 +44,11 @@ export function Account() {
 			<DeleteAccountModal
 				isOpen={deleteModalOpen}
 				onClose={() => setDeleteModalOpen(false)}
+				onSubmit={(d) => console.log(d)}
+			/>
+			<ChangePasswordModal
+				isOpen={changePasswordModalOpen}
+				onClose={() => setChangePasswordModalOpen(false)}
 				onSubmit={(d) => console.log(d)}
 			/>
 		</div>

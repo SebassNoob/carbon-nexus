@@ -1,12 +1,5 @@
 "use client";
-import {
-	Modal,
-	TextInput,
-	Title,
-	Text,
-	Button,
-	ModalCloseButton,
-} from "@lib/components";
+import { Modal, TextInput, Title, Text, Button, ModalCloseButton } from "@lib/components";
 import { useContext } from "react";
 import { AuthContext } from "@lib/providers";
 import { useForm } from "react-hook-form";

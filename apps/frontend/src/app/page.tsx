@@ -3,7 +3,6 @@ import { getUser } from "@lib/actions";
 
 export default async function Home() {
 	const { data } = await getUser();
-  console.log(data);
 
 	return (
 		<div>
