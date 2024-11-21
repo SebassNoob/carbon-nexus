@@ -85,4 +85,22 @@ export class UserService {
 			handleDatabaseError(error);
 		}
 	}
+
+	async deleteUserById(id: string, confirmUsername: string): Promise<void> {
+		const user = await this.prisma.user.findUnique({
+			where: { id, username: confirmUsername },
+		});
+
+		if (!user) {
+			throw new AppError(AppErrorTypes.UserNotFound);
+		}
+
+		try {
+			await this.prisma.user.delete({
+				where: { id },
+			});
+		} catch (error: unknown) {
+			handleDatabaseError(error);
+		}
+	}
 }

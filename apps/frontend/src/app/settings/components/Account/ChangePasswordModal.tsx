@@ -1,6 +1,6 @@
 "use client";
 import { Modal, TextInput, Title, Text, Button, ModalCloseButton } from "@lib/components";
-import { useContext } from "react";
+import { useContext, useTransition } from "react";
 import { AuthContext } from "@lib/providers";
 import { useForm } from "react-hook-form";
 import { ChangePasswordInputSchema } from "@shared/common/schemas";
@@ -15,10 +15,15 @@ export function ChangePasswordModal(props: ChangePasswordModalProps) {
 		resolver: zodResolver(ChangePasswordInputSchema),
 	});
 
+	const [isPending, startTransition] = useTransition();
+
 	return (
-		<Modal className={twMerge("flex-col flex gap-2 w-80 sm:w-full", props.className)} {...props}>
+		<Modal
+			className={twMerge("flex-col flex gap-2 min-w-72 sm:min-w-96", props.className)}
+			{...props}
+		>
 			<div className="flex justify-between">
-				<Title order={5}>Delete Account</Title>
+				<Title order={5}>Change Password</Title>
 				<ModalCloseButton onClick={props.onClose} />
 			</div>
 
@@ -27,7 +32,10 @@ export function ChangePasswordModal(props: ChangePasswordModalProps) {
 					? "You can change your password here."
 					: "Since you do not have a password, please set one."}
 			</Text>
-			<form onSubmit={handleSubmit(props.onSubmit)} className="flex flex-col justify-center gap-4">
+			<form
+				onSubmit={handleSubmit((args) => startTransition(() => props.onSubmit(args)))}
+				className="flex flex-col justify-center gap-4"
+			>
 				{user?.hasPassword ? (
 					<TextInput
 						label="Old Password"
@@ -63,7 +71,9 @@ export function ChangePasswordModal(props: ChangePasswordModalProps) {
 					variant={formState.errors.repeatPassword ? "error" : undefined}
 					helperText={formState.errors.repeatPassword?.message as string}
 				/>
-				<Button type="submit">Submit</Button>
+				<Button type="submit" disabled={isPending}>
+					Submit
+				</Button>
 			</form>
 		</Modal>
 	);

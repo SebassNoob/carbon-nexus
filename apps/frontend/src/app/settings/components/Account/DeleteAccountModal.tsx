@@ -1,6 +1,6 @@
 "use client";
 import { Modal, TextInput, Title, Text, Button, ModalCloseButton } from "@lib/components";
-import { useContext } from "react";
+import { useContext, useTransition } from "react";
 import { AuthContext } from "@lib/providers";
 import { useForm } from "react-hook-form";
 import { DeleteUserInputSchema } from "@shared/common/schemas";
@@ -25,8 +25,13 @@ export function DeleteAccountModal(props: DeleteAccountModalProps) {
 		),
 	});
 
+	const [isPending, startTransition] = useTransition();
+
 	return (
-		<Modal className={twMerge("flex-col flex gap-2 w-80 sm:w-full", props.className)} {...props}>
+		<Modal
+			className={twMerge("flex-col flex gap-2 min-w-72 sm:min-w-96", props.className)}
+			{...props}
+		>
 			<div className="flex justify-between">
 				<Title order={5}>Delete Account</Title>
 				<ModalCloseButton onClick={props.onClose} />
@@ -35,7 +40,10 @@ export function DeleteAccountModal(props: DeleteAccountModalProps) {
 			<Text order="sm">
 				Enter your username (case-sensitive) to confirm. There's no going back!
 			</Text>
-			<form onSubmit={handleSubmit(props.onSubmit)} className="flex flex-col justify-center gap-4">
+			<form
+				onSubmit={handleSubmit((args) => startTransition(() => props.onSubmit(args)))}
+				className="flex flex-col justify-center gap-4"
+			>
 				<TextInput
 					label="Username"
 					placeholder="Enter your username"
@@ -44,7 +52,7 @@ export function DeleteAccountModal(props: DeleteAccountModalProps) {
 					variant={formState.errors.username ? "error" : undefined}
 					helperText={formState.errors.username?.message as string}
 				/>
-				<Button type="submit" color="danger">
+				<Button type="submit" color="danger" disabled={isPending}>
 					Delete Account
 				</Button>
 			</form>

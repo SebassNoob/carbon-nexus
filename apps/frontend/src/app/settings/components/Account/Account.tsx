@@ -34,7 +34,11 @@ export function Account() {
 				buttonLabel="Change"
 				onClick={() => setChangePasswordModalOpen(true)}
 			/>
-			<ButtonSettingsRow label="Verify Email" buttonLabel="Verify" onClick={() => {}} />
+			<ButtonSettingsRow
+				label="Verify Email"
+				buttonLabel="Verify"
+				onClick={() => _simulateApiCall(undefined)}
+			/>
 			<ButtonSettingsRow
 				label="Delete Account"
 				buttonLabel="Delete"
@@ -44,12 +48,12 @@ export function Account() {
 			<DeleteAccountModal
 				isOpen={deleteModalOpen}
 				onClose={() => setDeleteModalOpen(false)}
-				onSubmit={(d) => console.log(d)}
+				onSubmit={_simulateApiCall}
 			/>
 			<ChangePasswordModal
 				isOpen={changePasswordModalOpen}
 				onClose={() => setChangePasswordModalOpen(false)}
-				onSubmit={(d) => console.log(d)}
+				onSubmit={_simulateApiCall}
 			/>
 		</div>
 	);

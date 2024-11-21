@@ -5,6 +5,7 @@ import type {
 	TokenCookie,
 	SignUpInput,
 	ForgotPasswordReset,
+	ChangePasswordInput,
 } from "@shared/common/types";
 import { handleDatabaseError } from "@utils/prismaErrors";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
@@ -85,6 +86,48 @@ export class AuthService {
 		if (!session) throw new AppError(AppErrorTypes.InvalidToken);
 
 		await this.lucia.invalidateSession(session.id);
+	}
+
+	async changePassword(userId: string, data: ChangePasswordInput): Promise<void> {
+		const { oldPassword, newPassword, repeatPassword } = data;
+		if (newPassword !== repeatPassword) {
+			throw new AppError(
+				AppErrorTypes.FormValidationError({
+					repeatPassword: "Passwords do not match",
+				}),
+			);
+		}
+		const user = await this.prisma.user.findUnique({
+			where: { id: userId },
+			select: {
+				passwordHash: true,
+			},
+		});
+
+		if (!user) {
+			throw new AppError(AppErrorTypes.UserNotFound);
+		}
+
+		// if user has no password, check it
+		if (!user.passwordHash && oldPassword) {
+			throw new AppError(AppErrorTypes.InvalidCredentials);
+		}
+
+		// if user has password, verify it
+		if (user.passwordHash && oldPassword) {
+			const isValidPassword = await bunPassword.verify(oldPassword, user.passwordHash);
+			if (!isValidPassword) {
+				throw new AppError(AppErrorTypes.InvalidCredentials);
+			}
+		}
+
+		// hash the new password
+		const passwordHash = await this.hashPassword(newPassword);
+
+		await this.prisma.user.update({
+			where: { id: userId },
+			data: { passwordHash },
+		});
 	}
 
 	async resetPassword(data: ForgotPasswordReset): Promise<void> {

@@ -1,6 +1,21 @@
-import { Controller, Get, Body, Post, HttpCode, Res, Delete, Param } from "@nestjs/common";
+import {
+	Controller,
+	Get,
+	Body,
+	Post,
+	HttpCode,
+	Res,
+	Delete,
+	Param,
+	UseGuards,
+} from "@nestjs/common";
 import type { Response } from "express";
-import type { ForgotPasswordReset, SignInInput, SignUpInput } from "@shared/common/types";
+import type {
+	ForgotPasswordReset,
+	SignInInput,
+	SignUpInput,
+	ChangePasswordInput,
+} from "@shared/common/types";
 import { sessionCookieName } from "@shared/common/constants";
 import { AuthService } from "./auth.service";
 import { LuciaService } from "@db/client";
@@ -10,9 +25,11 @@ import {
 	TokenIdSchema,
 	ForgotPasswordResetSchema,
 	EmailVerificationTokenSchema,
+	ChangePasswordInputSchema,
 } from "@shared/common/schemas";
 import { ValidationPipe } from "@pipes";
 import { ConfigService } from "@nestjs/config";
+import { AuthGuard } from "@guards";
 
 @Controller("auth")
 export class AuthController {
@@ -45,7 +62,17 @@ export class AuthController {
 	@Delete("signout/:tokenId")
 	@HttpCode(204)
 	async signOut(@Param("tokenId", new ValidationPipe(TokenIdSchema)) tokenId: string) {
-		this.authService.signOut(tokenId);
+		await this.authService.signOut(tokenId);
+	}
+
+	@Post("change-password/:id")
+	@UseGuards(AuthGuard("params", "id"))
+	@HttpCode(201)
+	async changePassword(
+		@Param("id", new ValidationPipe(TokenIdSchema)) id: string,
+		@Body(new ValidationPipe(ChangePasswordInputSchema)) input: ChangePasswordInput,
+	) {
+		await this.authService.changePassword(id, input);
 	}
 
 	@Post("reset-password")
