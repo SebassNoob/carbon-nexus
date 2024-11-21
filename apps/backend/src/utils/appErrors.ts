@@ -12,7 +12,7 @@ export class AppError extends HttpException {
 interface AppErrorType {
 	name: string;
 	code: number;
-	cause: string | Record<string, unknown>;
+	cause: string;
 }
 
 export const AppErrorTypes = {
@@ -21,7 +21,7 @@ export const AppErrorTypes = {
 		code: 500,
 		cause,
 	}),
-	FormValidationError: (cause: Record<string, unknown>) => ({
+	FormValidationError: (cause: string) => ({
 		name: "FormValidationError",
 		code: 400,
 		cause,

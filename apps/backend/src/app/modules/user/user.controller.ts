@@ -5,12 +5,8 @@ import { UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@guards";
 import { UserService } from "./user.service";
 import { ValidationPipe } from "@pipes";
-import {
-	GetUserInputSchema,
-	UpdateUserInputSchema,
-	DeleteUserInputSchema,
-} from "@shared/common/schemas";
-import type { UpdateUserInput, DeleteUserInput } from "@shared/common/types";
+import { GetUserInputSchema, UpdateUserInputSchema } from "@shared/common/schemas";
+import type { UpdateUserInput } from "@shared/common/types";
 
 @Controller("user")
 export class UserController {
@@ -38,10 +34,7 @@ export class UserController {
 
 	@Delete(":id")
 	@UseGuards(AuthGuard("params", "id"))
-	async deleteUserById(
-		@Param("id", new ValidationPipe(GetUserInputSchema)) id: string,
-		@Body(new ValidationPipe(DeleteUserInputSchema)) data: DeleteUserInput,
-	) {
-		return await this.userService.deleteUserById(id, data.username);
+	async deleteUserById(@Param("id", new ValidationPipe(GetUserInputSchema)) id: string) {
+		return await this.userService.deleteUserById(id);
 	}
 }

@@ -26,6 +26,7 @@ import {
 	ForgotPasswordResetSchema,
 	EmailVerificationTokenSchema,
 	ChangePasswordInputSchema,
+	UserIdSchema,
 } from "@shared/common/schemas";
 import { ValidationPipe } from "@pipes";
 import { ConfigService } from "@nestjs/config";
@@ -69,7 +70,7 @@ export class AuthController {
 	@UseGuards(AuthGuard("params", "id"))
 	@HttpCode(201)
 	async changePassword(
-		@Param("id", new ValidationPipe(TokenIdSchema)) id: string,
+		@Param("id", new ValidationPipe(UserIdSchema)) id: string,
 		@Body(new ValidationPipe(ChangePasswordInputSchema)) input: ChangePasswordInput,
 	) {
 		await this.authService.changePassword(id, input);

@@ -24,7 +24,7 @@ function getBaseValidator<T>(validator: ZodType<T>) {
 			.object({
 				path: z.string(),
 				name: z.string(),
-				cause: z.any(),
+				cause: z.string(),
 			})
 			.nullable(),
 	});
@@ -34,7 +34,7 @@ export async function query<T = void>({
 	path,
 	init,
 	validator,
-}: QueryParams<T>): Promise<QueryResult<T>> {
+}: QueryParams<T>): Promise<Prettify<QueryResult<T>>> {
 	// check if we are rendering on the server or the client
 	const isSSR = typeof window === "undefined";
 	// if on the server, we must communcate with the api container using docker networking
@@ -70,7 +70,7 @@ export async function query<T = void>({
 			return {
 				status: res.status,
 				data: null,
-				error: { path: url, name: "Failed to parse response", cause: error },
+				error: { path: url, name: "Failed to parse response", cause: JSON.stringify(error) },
 				headers: res.headers,
 				timeStamp: new Date().toISOString(),
 			};

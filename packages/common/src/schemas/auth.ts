@@ -52,6 +52,8 @@ export const SignInInputSchema = z.object({
 	password: z.string(),
 }) satisfies z.ZodType<SignInInput>;
 
+export const UserIdSchema = z.string();
+
 export const TokenIdSchema = z.string().length(64);
 
 export const ForgotPasswordEmailSchema = z.object({

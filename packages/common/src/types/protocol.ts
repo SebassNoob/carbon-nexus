@@ -3,7 +3,7 @@ import type { Serialized } from "./utils";
 export type ErrorResponse = {
 	path: string;
 	name: string;
-	cause?: unknown;
+	cause: string;
 };
 
 type JSONPrimitive = string | number | boolean | null;

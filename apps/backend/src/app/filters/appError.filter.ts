@@ -16,7 +16,7 @@ export class AppErrorFilter implements ExceptionFilter {
 				error: {
 					path: request.url,
 					name: exception.name,
-					cause: exception.cause,
+					cause: exception.cause as string,
 				},
 			}),
 		);

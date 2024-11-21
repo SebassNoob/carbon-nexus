@@ -12,7 +12,16 @@ export function validateSchema<T extends ZodTypeAny>(schema: T, data: unknown) {
 			...flattened.fieldErrors,
 		};
 
-		throw new AppError(AppErrorTypes.FormValidationError(errors));
+		// convert to a list of strings showing: [field]: [error]
+		const prettyErrors: string[] = Object.entries(errors)
+			.map(([field, error]) => {
+				if (error === undefined) return undefined;
+
+				return `${field}: ${error.join(", ")}`;
+			})
+			.filter((error) => error !== undefined);
+
+		throw new AppError(AppErrorTypes.FormValidationError(prettyErrors.join("\n")));
 	}
 
 	return res.data as z.infer<typeof schema>;

@@ -92,9 +92,7 @@ export class AuthService {
 		const { oldPassword, newPassword, repeatPassword } = data;
 		if (newPassword !== repeatPassword) {
 			throw new AppError(
-				AppErrorTypes.FormValidationError({
-					repeatPassword: "Passwords do not match",
-				}),
+				AppErrorTypes.FormValidationError("New password and repeat password do not match"),
 			);
 		}
 		const user = await this.prisma.user.findUnique({

@@ -86,9 +86,9 @@ export class UserService {
 		}
 	}
 
-	async deleteUserById(id: string, confirmUsername: string): Promise<void> {
+	async deleteUserById(id: string): Promise<void> {
 		const user = await this.prisma.user.findUnique({
-			where: { id, username: confirmUsername },
+			where: { id },
 		});
 
 		if (!user) {

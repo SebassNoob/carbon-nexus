@@ -16,6 +16,7 @@ export const AuthContext = createContext<AuthContextProps>({
 	signIn: async () => 0,
 	signUp: async () => 0,
 	updateUser: async () => {},
+	syncUser: () => {},
 });
 
 function _AuthProvider({ children }: AuthProviderProps) {
@@ -27,6 +28,7 @@ function _AuthProvider({ children }: AuthProviderProps) {
 	const updateUserAbortController = useRef<AbortController | null>(null);
 
 	function syncUser() {
+		setLoading(true);
 		getUser().then(({ status, data: reqUser, tokenId }) => {
 			if (status === 200) {
 				setUser(reqUser);
@@ -124,6 +126,7 @@ function _AuthProvider({ children }: AuthProviderProps) {
 				signIn: handleSignIn,
 				signUp: handleSignUp,
 				updateUser,
+				syncUser,
 			}}
 		>
 			{children}
