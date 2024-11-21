@@ -23,7 +23,7 @@ function _simulateApiCall(data: any) {
 export function Account() {
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 	const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
-	const { user, loading, syncUser } = useContext(AuthContext);
+	const { user, loading, updateUser } = useContext(AuthContext);
 	const router = useRouter();
 
 	if (loading || !user) {
@@ -37,7 +37,6 @@ export function Account() {
 				toast.error(error.cause);
 				return;
 			}
-			syncUser();
 			toast.success("Account deleted successfully");
 			router.push("/");
 		});
@@ -67,15 +66,25 @@ export function Account() {
 		});
 	}
 
+	async function changeEmailCallback(id: string, email: string) {
+		updateUser({ id, email }).then(({ error }) => {
+			if (error) {
+				toast.error(error);
+				return;
+			}
+			toast.success("Email changed successfully");
+		});
+	}
+
 	return (
 		<>
 			<div className="space-y-4">
 				<TextSettingsRow
 					fieldKey="email"
 					label="Email"
-					value="placeholder@gmail.com"
+					value={user.email ?? undefined}
 					description="Your email is used for login and notifications."
-					onSubmit={_simulateApiCall}
+					onSubmit={({ email }) => changeEmailCallback(user.id, email)}
 					schema={UpdateUserInputSchema.required().shape.email}
 				/>
 				<ButtonSettingsRow

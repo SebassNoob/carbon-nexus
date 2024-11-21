@@ -8,7 +8,7 @@ export interface AuthContextProps {
 	signOut: () => Promise<number>;
 	signIn: (data: SignInInput) => Promise<number>;
 	signUp: (data: SignUpInput) => Promise<number>;
-	updateUser: (user: Partial<SafeUser>) => Promise<void>;
+	updateUser: (user: Partial<SafeUser>) => Promise<{ error: string | null }>;
 	syncUser: () => void;
 }
 

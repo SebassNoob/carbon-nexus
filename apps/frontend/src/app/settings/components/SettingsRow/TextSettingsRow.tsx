@@ -20,7 +20,7 @@ export function TextSettingsRow({
 			<Text order="lg">{label}</Text>
 
 			<div className="flex gap-2 items-center">
-				<Text order="sm">{!value ? `No ${label} provided` : value}</Text>
+				<Text order="sm">{!value ? `No ${label.toLowerCase()} provided` : value}</Text>
 				<Button
 					aria-label={`Update ${label}`}
 					className="w-8 h-8 flex items-center justify-center border-none rounded-full bg-transparent hover:bg-gray-100 hover:dark:bg-gray-900 hover:text-zinc-700 text-zinc-900 hover:dark:text-zinc-200 dark:text-zinc-100 transition-colors duration-200"
@@ -52,7 +52,7 @@ export function TextSettingsRow({
 				{description && <Text order="sm">{description}</Text>}
 				<TextField
 					fieldKey={fieldKey}
-					placeholder={`No ${label} provided`}
+					placeholder={`No ${label.toLowerCase()} provided`}
 					value={value}
 					onSubmit={async (val) => onSubmit(val).then(() => setOpen(false))}
 					zodSchema={schema}

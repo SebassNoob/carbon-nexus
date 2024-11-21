@@ -15,7 +15,7 @@ export const AuthContext = createContext<AuthContextProps>({
 	signOut: async () => 0,
 	signIn: async () => 0,
 	signUp: async () => 0,
-	updateUser: async () => {},
+	updateUser: async () => ({ error: null }),
 	syncUser: () => {},
 });
 
@@ -41,7 +41,7 @@ function _AuthProvider({ children }: AuthProviderProps) {
 	useEffect(syncUser, []);
 
 	async function updateUser(update: Partial<SafeUser>) {
-		if (!user || loading) return;
+		if (!user || loading) return { error: "User not loaded" };
 
 		// Cancel previous update request
 		if (updateUserAbortController.current) {
@@ -51,7 +51,7 @@ function _AuthProvider({ children }: AuthProviderProps) {
 		updateUserAbortController.current = abort;
 
 		try {
-			const { status, data } = await query({
+			const { status, data, error } = await query({
 				path: `/user/${user.id}`,
 				init: {
 					method: "PATCH",
@@ -61,13 +61,24 @@ function _AuthProvider({ children }: AuthProviderProps) {
 				validator: SafeUserSchema,
 			});
 
+
 			if (status === 200) {
 				setUser(data);
-				return;
+				return { error: null };
 			}
-			console.error("Failed to update user");
+
+      return { error: error?.cause ?? "Failed to update user" };
+      
 		} catch (error) {
-			console.error(error);
+      
+			console.error("Failed to update user", error);
+			if (error instanceof Error) {
+				if (error.name === "AbortError") {
+					return { error: null };
+				}
+				return { error: error.message };
+			}
+			return { error: "Failed to update user" };
 		} finally {
 			updateUserAbortController.current = null;
 		}
