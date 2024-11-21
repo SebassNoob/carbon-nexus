@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "@db/client";
+import { LuciaService, PrismaService } from "@db/client";
 import type { OAuthProvider, SafeUser, UpdateUserInput } from "@shared/common/types";
 import { handleDatabaseError } from "@utils/prismaErrors";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
@@ -7,7 +7,10 @@ import type { Prisma } from "@prisma/client";
 
 @Injectable()
 export class UserService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(
+		private readonly prisma: PrismaService,
+		private readonly lucia: LuciaService,
+	) {}
 
 	private rawUserFindFields = {
 		id: true,
@@ -41,6 +44,20 @@ export class UserService {
 			oAuthProviders: oAuthProviders,
 			hasPassword: !!data.passwordHash,
 		};
+	}
+
+	async getUserBySessionId(tokenId: string | undefined): Promise<SafeUser> {
+		if (!tokenId) {
+			throw new AppError(AppErrorTypes.InvalidToken);
+		}
+
+		const { session, user } = await this.lucia.validateSessionToken(tokenId);
+
+		if (!session || !user) {
+			throw new AppError(AppErrorTypes.InvalidToken);
+		}
+
+		return this.getUserById(user.id);
 	}
 
 	async getUserById(id: string): Promise<SafeUser> {

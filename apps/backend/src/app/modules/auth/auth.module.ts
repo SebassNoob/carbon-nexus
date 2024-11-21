@@ -5,7 +5,7 @@ import { DbClientModule, LuciaService, PrismaService } from "@db/client";
 import { UserModule } from "../user";
 
 @Module({
-	imports: [DbClientModule, UserModule],
+	imports: [DbClientModule],
 	controllers: [AuthController],
 	providers: [AuthService, LuciaService, PrismaService],
 })

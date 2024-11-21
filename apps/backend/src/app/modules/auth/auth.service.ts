@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { password as bunPassword } from "bun";
 import type {
-	SafeUser,
 	SignInInput,
 	TokenCookie,
 	SignUpInput,
@@ -10,14 +9,12 @@ import type {
 import { handleDatabaseError } from "@utils/prismaErrors";
 import { AppError, AppErrorTypes } from "@utils/appErrors";
 import { PrismaService, LuciaService } from "@db/client";
-import { UserService } from "@modules/user";
 
 @Injectable()
 export class AuthService {
 	constructor(
 		private readonly prisma: PrismaService,
 		private readonly lucia: LuciaService,
-		private readonly userService: UserService,
 	) {}
 
 	private hashPassword(password: string): Promise<string> {
@@ -88,19 +85,6 @@ export class AuthService {
 		if (!session) throw new AppError(AppErrorTypes.InvalidToken);
 
 		await this.lucia.invalidateSession(session.id);
-	}
-
-	async getUserFromSession(tokenId: string | undefined): Promise<SafeUser> {
-		if (!tokenId) {
-			throw new AppError(AppErrorTypes.InvalidToken);
-		}
-
-		const { session, user } = await this.lucia.validateSessionToken(tokenId);
-
-		if (!session || !user) {
-			throw new AppError(AppErrorTypes.UserNotFound);
-		}
-		return this.userService.getUserById(user.id);
 	}
 
 	async resetPassword(data: ForgotPasswordReset): Promise<void> {

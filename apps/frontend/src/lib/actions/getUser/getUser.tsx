@@ -10,7 +10,7 @@ export async function getUser() {
 	const sessionCookie = cookieStore.get(sessionCookieName)?.value;
 
 	const { status, data } = await query({
-		path: "/auth/me",
+		path: "/user/me",
 		init: {
 			method: "GET",
 			headers: {

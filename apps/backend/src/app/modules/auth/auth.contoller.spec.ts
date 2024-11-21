@@ -148,6 +148,9 @@ describe("AuthController", () => {
 			});
 		});
 	});
+
+	// moved to user module
+	/*
 	describe("/me", () => {
 		const testInput: SignUpInput = {
 			email: faker.internet.email(),
@@ -182,7 +185,7 @@ describe("AuthController", () => {
 							Cookie: `tokenId=${cookie}`,
 						},
 					},
-					path: "/auth/me",
+					path: "/user/me",
 				},
 				callback: (response) => {
 					expect(response.status).toBe(200);
@@ -191,4 +194,5 @@ describe("AuthController", () => {
 			});
 		});
 	});
+  */
 });

@@ -63,9 +63,7 @@ export function ChangePasswordModal(props: ChangePasswordModalProps) {
 					variant={formState.errors.repeatPassword ? "error" : undefined}
 					helperText={formState.errors.repeatPassword?.message as string}
 				/>
-				<Button type="submit" >
-					Submit
-				</Button>
+				<Button type="submit">Submit</Button>
 			</form>
 		</Modal>
 	);

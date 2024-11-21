@@ -1,5 +1,5 @@
-import { Controller, Get, Body, Post, HttpCode, Res, Delete, Param, Req } from "@nestjs/common";
-import type { Response, Request } from "express";
+import { Controller, Get, Body, Post, HttpCode, Res, Delete, Param } from "@nestjs/common";
+import type { Response } from "express";
 import type { ForgotPasswordReset, SignInInput, SignUpInput } from "@shared/common/types";
 import { sessionCookieName } from "@shared/common/constants";
 import { AuthService } from "./auth.service";
@@ -46,12 +46,6 @@ export class AuthController {
 	@HttpCode(204)
 	async signOut(@Param("tokenId", new ValidationPipe(TokenIdSchema)) tokenId: string) {
 		this.authService.signOut(tokenId);
-	}
-
-	@Get("me")
-	async user(@Req() req: Request) {
-		const tokenId = req.cookies[sessionCookieName] as string | undefined;
-		return this.authService.getUserFromSession(tokenId);
 	}
 
 	@Post("reset-password")

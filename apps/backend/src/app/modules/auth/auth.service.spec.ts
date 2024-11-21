@@ -7,18 +7,19 @@ import { AppError } from "@utils/appErrors";
 import { resetDatabase } from "@utils/test";
 import { faker } from "@faker-js/faker";
 import { ConfigModule } from "@nestjs/config";
-import { UserModule, UserService } from "../user";
 
 describe("AuthService", () => {
 	let service: AuthService;
+	let lucia: LuciaService;
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			imports: [ConfigModule],
-			providers: [AuthService, PrismaService, LuciaService, UserService],
+			providers: [AuthService, PrismaService, LuciaService],
 		}).compile();
 
 		service = module.get<AuthService>(AuthService);
+		lucia = module.get<LuciaService>(LuciaService);
 		await resetDatabase();
 	});
 
@@ -108,7 +109,7 @@ describe("AuthService", () => {
 		});
 		it("should sign out a user", async () => {
 			await service.signOut(cookie.value);
-			expect(service.getUserFromSession(cookie.value)).rejects.toThrow(AppError);
+			expect(lucia.validateSessionToken(cookie.value)).resolves.toHaveProperty("session", null);
 		});
 
 		it("should throw an error if session is not found", async () => {
@@ -128,14 +129,15 @@ describe("AuthService", () => {
 			cookie = await service.signUp(testInput);
 		});
 		it("should get a user", async () => {
-			const user = await service.getUserFromSession(cookie.value);
-			expect(user).toBeDefined();
-			expect(user.id).toBeDefined();
-			expect(user.username).toBe(testInput.username);
+			const { user } = await lucia.validateSessionToken(cookie.value);
+			expect(user).not.toBeNull();
+
+			expect(user?.id).toBeDefined();
+			expect(user?.username).toBe(testInput.username);
 		});
 
-		it("should throw an error if session is not found", async () => {
-			expect(service.getUserFromSession("invalid-id")).rejects.toThrow(AppError);
+		it("should return null if session is not found", async () => {
+			expect(lucia.validateSessionToken("invalid-id")).resolves.toHaveProperty("session", null);
 		});
 	});
 });

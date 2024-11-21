@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Param, Patch, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Query, Req } from "@nestjs/common";
+import type { Request } from "express";
+import { sessionCookieName } from "@shared/common/constants";
 import { UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@guards";
 import { UserService } from "./user.service";
@@ -9,6 +11,12 @@ import type { UpdateUserInput } from "@shared/common/types";
 @Controller("user")
 export class UserController {
 	constructor(private readonly userService: UserService) {}
+
+	@Get("me")
+	async user(@Req() req: Request) {
+		const tokenId = req.cookies[sessionCookieName] as string | undefined;
+		return this.userService.getUserBySessionId(tokenId);
+	}
 
 	@Get()
 	async getUserById(@Query("id", new ValidationPipe(GetUserInputSchema)) id: string) {
