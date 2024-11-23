@@ -61,16 +61,13 @@ function _AuthProvider({ children }: AuthProviderProps) {
 				validator: SafeUserSchema,
 			});
 
-
 			if (status === 200) {
 				setUser(data);
 				return { error: null };
 			}
 
-      return { error: error?.cause ?? "Failed to update user" };
-      
+			return { error: error?.cause ?? "Failed to update user" };
 		} catch (error) {
-      
 			console.error("Failed to update user", error);
 			if (error instanceof Error) {
 				if (error.name === "AbortError") {

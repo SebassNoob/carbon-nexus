@@ -9,16 +9,6 @@ import { changePassword, sendVerifyEmail, deleteAccount } from "./actions";
 import { toast } from "react-hot-toast";
 import type { ChangePasswordInput } from "@shared/common/types";
 import { useRouter } from "next/navigation";
-// TODO: add data fetching
-
-// biome-ignore lint/suspicious/noExplicitAny: todo
-function _simulateApiCall(data: any) {
-	return new Promise<void>((r) => {
-		// biome-ignore lint/suspicious/noConsole: todo
-		console.log(data);
-		setTimeout(r, 1000);
-	});
-}
 
 export function Account() {
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
