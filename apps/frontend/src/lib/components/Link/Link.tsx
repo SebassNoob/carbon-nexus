@@ -6,7 +6,7 @@ const defaultStyles = `
 text-teal-500 dark:text-teal-400 
 visited:text-violet-700 dark:visited:text-violet-500 
 underline sm:no-underline underline-offset-2
-hover:sm:underline
+sm:hover:underline
 hover:text-teal-600 dark:hover:text-teal-300 
 hover:visited:text-violet-800 dark:hover:visited:text-violet-600
 focus:text-teal-600 dark:focus:text-teal-300 

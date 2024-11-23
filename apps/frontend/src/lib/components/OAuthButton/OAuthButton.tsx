@@ -36,7 +36,7 @@ export function OAuthButton({ location, iconPath, name }: OAuthButtonProps) {
 	return (
 		<Button
 			onClick={() => startTransition(initOAuth)}
-			className="flex gap-1 items-center p-2 text-xs flex-grow"
+			className="flex gap-1 items-center p-2 text-xs grow"
 			disabled={isPending}
 		>
 			<Image src={iconPath} alt="icon" width={24} height={24} />

@@ -32,7 +32,7 @@ export default function RootLayout({
 							<Toaster
 								position="bottom-right"
 								toastOptions={{
-									className: "!bg-zinc-100 !text-zinc-900 dark:!bg-zinc-900 dark:!text-white",
+									className: "bg-zinc-100! text-zinc-900! dark:bg-zinc-900! dark:text-white!",
 								}}
 							/>
 						</main>
