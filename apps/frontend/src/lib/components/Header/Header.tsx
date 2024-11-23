@@ -22,7 +22,6 @@ export function Header() {
 				<button
 					onClick={() => {
 						setTheme(theme === "light" ? "dark" : "light");
-						updateUser({ theme: theme === "light" ? "dark" : "light" });
 					}}
 					className="p-2 rounded bg-zinc-200 dark:bg-zinc-800"
 					data-testid="theme-toggle"

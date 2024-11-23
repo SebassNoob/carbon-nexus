@@ -11,8 +11,7 @@ export type SafeUser = {
 	hasPassword: boolean;
 
 	// User preferences
-	theme: string;
-	reducedMotion: boolean;
+	allowMarketing: boolean;
 	timezone: string;
 };
 

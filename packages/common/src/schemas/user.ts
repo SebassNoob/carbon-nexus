@@ -28,8 +28,7 @@ export const SafeUserSchema = z.object({
 	verified: z.boolean(),
 	oAuthProviders: z.enum(["discord", "google", "github"]).array(),
 	hasPassword: z.boolean(),
-	theme: z.string(),
-	reducedMotion: z.boolean(),
+	allowMarketing: z.boolean(),
 	timezone: z.string(),
 	createdAt: z.coerce.date(),
 }) satisfies z.ZodType<SafeUser>;

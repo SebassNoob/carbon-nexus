@@ -1,41 +1,30 @@
 "use client";
-import { useContext, useEffect, useRef, useState } from "react";
-import { AuthContext } from "@lib/providers";
+import { useState, useLayoutEffect, useEffect } from "react";
 
 export function useReducedMotion() {
-	const { user, loading, updateUser } = useContext(AuthContext);
 	const [reducedMotion, setReducedMotion] = useState(() => {
-		return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-	});
-
-	const prevReducedMotionRef = useRef<boolean | null>(null);
-
-	useEffect(() => {
-		if (loading || user?.reducedMotion === undefined) return;
-
-		if (user.reducedMotion !== reducedMotion) {
-			setReducedMotion(user.reducedMotion);
+		// get the value from local storage
+		const localStorageReducedMotion = localStorage.getItem("reducedMotion");
+		if (localStorageReducedMotion === null) {
+			return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 		}
-	}, [loading, user, reducedMotion]);
+		return localStorageReducedMotion === "true";
+	});
 
 	// class to disable animations and transitions
 	const reducedMotionClass = "!animate-none !transition-none";
 
-	useEffect(() => {
-		if (loading || !user) return;
-
-		// Only update the backend if the reducedMotion has changed
-		if (prevReducedMotionRef.current !== reducedMotion) {
-			updateUser({ reducedMotion });
-			prevReducedMotionRef.current = reducedMotion;
-		}
-
+	useLayoutEffect(() => {
 		if (reducedMotion) {
-			document.documentElement.classList.add(...reducedMotionClass.split(" "));
+			document.documentElement.classList.add(reducedMotionClass);
 		} else {
-			document.documentElement.classList.remove(...reducedMotionClass.split(" "));
+			document.documentElement.classList.remove(reducedMotionClass);
 		}
-	}, [reducedMotion, loading, user, updateUser]);
+	}, [reducedMotion]);
+
+	useEffect(() => {
+		localStorage.setItem("reducedMotion", String(reducedMotion));
+	}, [reducedMotion]);
 
 	return {
 		reducedMotion,

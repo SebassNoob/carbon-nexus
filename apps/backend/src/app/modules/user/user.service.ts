@@ -18,8 +18,7 @@ export class UserService {
 		email: true,
 		createdAt: true,
 		verified: true,
-		theme: true,
-		reducedMotion: true,
+		allowMarketing: true,
 		timezone: true,
 		passwordHash: true,
 		oauthAccount: {

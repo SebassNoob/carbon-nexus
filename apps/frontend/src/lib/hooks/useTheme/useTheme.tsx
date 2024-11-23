@@ -1,12 +1,8 @@
 "use client";
-import { useState, useLayoutEffect, useEffect, useContext } from "react";
-import { AuthContext } from "@lib/providers";
+import { useState, useLayoutEffect, useEffect } from "react";
 import type { Theme } from "./types";
 
-// source of truth: user setting > local storage > system theme
-
 export function useTheme() {
-	const { user, loading } = useContext(AuthContext);
 	const [theme, setTheme] = useState<Theme>(() => {
 		const localStorageTheme = localStorage.getItem("theme");
 
@@ -18,13 +14,6 @@ export function useTheme() {
 			: "light";
 		return systemTheme;
 	});
-
-	// if the user has a theme preference, use that
-	useEffect(() => {
-		if (!loading && user && user.theme) {
-			setTheme(user.theme as Theme);
-		}
-	}, [user, loading]);
 
 	// on initial render, set the theme class on the html element
 	useLayoutEffect(() => {

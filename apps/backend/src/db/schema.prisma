@@ -17,12 +17,11 @@ model User {
   verified     Boolean  @default(false)
 
   // preferences
-  theme         String  @default("dark")
-  reducedMotion Boolean @default(false)
-  timezone      String  @default("UTC")
+  timezone       String  @default("UTC")
+  allowMarketing Boolean @default(false)
 
-  sessions           Session[]
-  oauthAccount       OAuthAccount[]
+  sessions     Session[]
+  oauthAccount OAuthAccount[]
 
   // one time tokens
   passwordResetToken PasswordResetToken?
