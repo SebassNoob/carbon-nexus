@@ -28,15 +28,14 @@ export function AutocompleteSettingsRow({
 	};
 
 	return (
-		<div className="flex flex-col sm:flex-row gap-4 p-2 items-center justify-between">
+		<div className="flex gap-4 p-2 items-center justify-between">
 			<Text order="lg">{label}</Text>
-			<div className="flex items-center gap-2 w-full sm:w-auto">
+			<div className="flex items-center gap-2">
 				<Autocomplete
 					items={items}
 					handleChange={(value) => setSearch(value)}
 					value={search}
 					placeholder={`Enter ${label}`}
-					className="flex-grow"
 					disabled={isPending}
 				/>
 			</div>

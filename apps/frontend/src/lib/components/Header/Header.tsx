@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { Logo, Image } from "@lib/components";
 import { useContext } from "react";
-import { ClientContext, } from "@lib/providers";
+import { ClientContext } from "@lib/providers";
 import { SideMenu } from "./SideMenu";
 export function Header() {
 	const router = useRouter();

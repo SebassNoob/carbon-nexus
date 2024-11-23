@@ -16,9 +16,9 @@ export function useReducedMotion() {
 
 	useLayoutEffect(() => {
 		if (reducedMotion) {
-			document.documentElement.classList.add(reducedMotionClass);
+			document.documentElement.classList.add(...reducedMotionClass.split(" "));
 		} else {
-			document.documentElement.classList.remove(reducedMotionClass);
+			document.documentElement.classList.remove(...reducedMotionClass.split(" "));
 		}
 	}, [reducedMotion]);
 
