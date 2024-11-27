@@ -17,7 +17,7 @@
 		".": "./src/index.ts"
 	},
 	"scripts": {
-		"biome:format": "bunx biome format --write .",
-		"biome:lint": "bunx biome lint --write ./src"
+		"format": "bunx biome format --write .",
+		"lint": "bunx biome lint --write ./src"
 	}
 }

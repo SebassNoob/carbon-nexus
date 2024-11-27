@@ -7,7 +7,7 @@
 		"access": "public"
 	},
 	"scripts": {
-		"biome:format": "bunx biome format --write .",
-		"biome:lint": "bunx biome lint --write ."
+		"format": "bunx biome format --write .",
+		"lint": "bunx biome lint --write ."
 	}
 }

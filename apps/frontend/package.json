@@ -5,8 +5,8 @@
 		"dev": "dotenv -e .env.local -e .env.development -- next dev --turbo -H 0.0.0.0 -p 3000",
 		"build": "dotenv -e .env.local -e .env.production -- next build",
 		"start": "dotenv -e .env.local -e .env.production -- next start -H 0.0.0.0",
-		"biome:format": "bunx biome format --write .",
-		"biome:lint": "bunx biome lint --write ./src"
+		"format": "bunx biome format --write .",
+		"lint": "bunx biome lint --write ./src"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.9.1",

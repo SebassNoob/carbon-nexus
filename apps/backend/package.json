@@ -8,8 +8,8 @@
 		"start": "NODE_ENV=production bun run ./dist/index.js",
 		"test": "NODE_ENV=test bun test --coverage",
 		"prisma:resetDb": "dotenv -e .env.test -- prisma db push --force-reset --schema src/db/schema.prisma",
-		"biome:format": "bunx biome format --write .",
-		"biome:lint": "bunx biome lint --write ./src",
+		"format": "bunx biome format --write .",
+		"lint": "bunx biome lint --write ./src",
 		"prisma:generate": "dotenv -e .env.development -- prisma generate --schema src/db/schema.prisma",
 		"prisma:migrate": "dotenv -e .env.development -- prisma migrate dev --schema src/db/schema.prisma",
 		"prisma:format": "prisma format --schema src/db/schema.prisma"

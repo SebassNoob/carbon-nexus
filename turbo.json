@@ -19,13 +19,13 @@
 			"inputs": ["src/**"],
 			"outputs": ["coverage/**"]
 		},
-		"biome:format": {
-			"dependsOn": ["^biome:format"],
+		"format": {
+			"dependsOn": ["^format"],
 			"inputs": ["src/**"],
 			"outputs": ["src/**"]
 		},
-		"biome:lint": {
-			"dependsOn": ["^biome:lint"],
+		"lint": {
+			"dependsOn": ["^lint"],
 			"inputs": ["src/**"],
 			"outputs": ["src/**"]
 		}
