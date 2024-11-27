@@ -4,6 +4,11 @@ const nextConfig: NextConfig = {
 	experimental: {
 		reactCompiler: true,
 	},
+	/*
+  watchOptions: {
+    pollIntervalMs: 1000,
+  }, 
+  */
 	async headers() {
 		return [
 			{

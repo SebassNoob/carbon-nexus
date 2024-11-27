@@ -23,8 +23,8 @@
 			},
 			"correctness": {
 				"noUnusedImports": "error",
-        "noUndeclaredVariables": "error",
-        "noUnusedVariables": "error"
+				"noUndeclaredVariables": "error",
+				"noUnusedVariables": "error"
 			}
 		}
 	},

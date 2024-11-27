@@ -1,4 +1,4 @@
-FROM imbios/bun-node:1.1.33-22.10.0-debian
+FROM imbios/bun-node:1.1.37-22.11.0-debian
 WORKDIR /usr/local
 
 ENV NODE_ENV=production

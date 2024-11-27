@@ -20,3 +20,4 @@ export * from "./Toggle";
 export * from "./Modal";
 export * from "./Autocomplete";
 export * from "./ModalCloseButton";
+export * from "./Gauge";
