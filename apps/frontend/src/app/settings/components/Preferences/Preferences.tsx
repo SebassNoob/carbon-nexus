@@ -21,7 +21,7 @@ export function Preferences() {
 				toast.error(error);
 				return;
 			}
-			toast.success("Timezone changed to " + timezone);
+			toast.success(`Timezone changed to ${timezone}`);
 		});
 	}
 
@@ -31,7 +31,7 @@ export function Preferences() {
 				toast.error(error);
 				return;
 			}
-			toast.success("Allow Marketing Emails changed to " + allowMarketing);
+			toast.success(`Allow Marketing Emails changed to ${allowMarketing}`);
 		});
 	}
 
@@ -59,10 +59,7 @@ export function Preferences() {
 				label="Timezone"
 				value={"UTC"}
 				items={timezones}
-				onSubmit={async (_value) => {
-					// artificial delay
-					await new Promise((resolve) => setTimeout(resolve, 1000));
-				}}
+				onSubmit={({ timezone }) => changeTimezoneCallback(user.id, timezone)}
 			/>
 		</div>
 	);

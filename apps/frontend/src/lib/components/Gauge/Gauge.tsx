@@ -17,6 +17,7 @@ export function Gauge({ progress, className, children, color = "info" }: GaugePr
 	return (
 		<div className={twMerge("relative size-36", className)}>
 			<svg className="rotate-[135deg] size-" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+				<title>Gauge</title>
 				<circle
 					cx="18"
 					cy="18"
@@ -26,7 +27,7 @@ export function Gauge({ progress, className, children, color = "info" }: GaugePr
 					strokeWidth="3"
 					strokeDasharray="75 100"
 					strokeLinecap="round"
-				></circle>
+				/>
 
 				<circle
 					cx="18"
@@ -37,7 +38,7 @@ export function Gauge({ progress, className, children, color = "info" }: GaugePr
 					strokeWidth="3"
 					strokeDasharray={`${(progress / 100) * 75} 100`}
 					strokeLinecap="round"
-				></circle>
+				/>
 			</svg>
 
 			<div className="absolute top-1/2 start-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">

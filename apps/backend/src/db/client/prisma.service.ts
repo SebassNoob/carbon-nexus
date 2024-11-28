@@ -1,4 +1,5 @@
 import { Injectable, type OnModuleInit, type OnModuleDestroy } from "@nestjs/common";
+import { AppError, AppErrorTypes } from "@utils/appErrors";
 import { ConfigService } from "@nestjs/config";
 import { PrismaClient } from "@prisma/client";
 import { createClient } from "@libsql/client";
@@ -15,7 +16,15 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
 		const dbUrl = configService.get<string>("DATABASE_URL");
 		const dbToken = configService.get<string>("DATABASE_TOKEN");
 
-		const client = createClient({ url: dbUrl!, authToken: dbToken! });
+    if (!dbUrl) {
+      throw new AppError(AppErrorTypes.Panic('DATABASE_URL is not set'));
+    } 
+    if (!dbToken) {
+      throw new AppError(AppErrorTypes.Panic('DATABASE_TOKEN is not set'));
+    }
+
+
+		const client = createClient({ url: dbUrl, authToken: dbToken });
 
 		super({
 			adapter: new PrismaLibSQL(client),
