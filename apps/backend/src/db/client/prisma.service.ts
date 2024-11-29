@@ -11,18 +11,17 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
 		const isProduction = configService.get<string>("NODE_ENV") === "production";
 		if (!isProduction) {
 			super();
-      return;
+			return;
 		}
 		const dbUrl = configService.get<string>("DATABASE_URL");
 		const dbToken = configService.get<string>("DATABASE_TOKEN");
 
-    if (!dbUrl) {
-      throw new AppError(AppErrorTypes.Panic('DATABASE_URL is not set'));
-    } 
-    if (!dbToken) {
-      throw new AppError(AppErrorTypes.Panic('DATABASE_TOKEN is not set'));
-    }
-
+		if (!dbUrl) {
+			throw new AppError(AppErrorTypes.Panic("DATABASE_URL is not set"));
+		}
+		if (!dbToken) {
+			throw new AppError(AppErrorTypes.Panic("DATABASE_TOKEN is not set"));
+		}
 
 		const client = createClient({ url: dbUrl, authToken: dbToken });
 
