@@ -20,10 +20,11 @@ export function Link({
 	className,
 	href,
 	external = false,
+	unstyled = false,
 	...rest
 }: LinkProps) {
 	const textSize = `text-${order}` as const;
-	const mergedStyles = twMerge(defaultStyles, textSize, className);
+	const mergedStyles = twMerge(unstyled ? "" : defaultStyles, textSize, className);
 
 	return (
 		<NextLink href={href} className={mergedStyles} {...rest}>

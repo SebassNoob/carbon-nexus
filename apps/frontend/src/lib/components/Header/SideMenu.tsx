@@ -7,10 +7,11 @@ import { Popover } from "react-tiny-popover";
 import { motion } from "framer-motion";
 import { SideMenuButton } from "./SideMenuButton";
 import { useRouter } from "next/navigation";
+import type { SideMenuProps } from "./types";
 
-export function SideMenu() {
+export function SideMenu({ navLinks }: SideMenuProps) {
 	const { user, loading, signOut } = useContext(AuthContext);
-	const { theme, reducedMotion } = useContext(ClientContext);
+	const { theme, reducedMotion, isMobile } = useContext(ClientContext);
 	const [open, setOpen] = useState(false);
 
 	const router = useRouter();
@@ -26,7 +27,23 @@ export function SideMenu() {
 		});
 	}, [signOut, router]);
 
-	const renderAuthButton = useCallback(() => {
+	const renderNavButtons = useCallback(() => {
+		if (!isMobile) return null;
+		return (
+			<>
+				{navLinks.map((link) => (
+					<SideMenuButton
+						key={link.title}
+						icon="/common/link.svg"
+						text={link.title}
+						onClick={() => router.push(link.href)}
+					/>
+				))}
+			</>
+		);
+	}, [navLinks, isMobile, router]);
+
+	const renderAuthButtons = useCallback(() => {
 		if (loading) return null;
 		if (!user)
 			return (
@@ -68,12 +85,13 @@ export function SideMenu() {
 					transition={{ duration: 0.2 }}
 					className="max-w-lg bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 				>
+					{renderNavButtons()}
 					<SideMenuButton
 						icon="/common/settings.svg"
 						text="Settings"
 						onClick={() => router.push("/settings")}
 					/>
-					{renderAuthButton()}
+					{renderAuthButtons()}
 				</motion.div>
 			}
 		>

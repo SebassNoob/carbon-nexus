@@ -19,4 +19,5 @@ export interface LinkProps extends HTMLAttributes<HTMLAnchorElement> {
 	className?: string;
 	href: string;
 	external?: boolean;
+	unstyled?: boolean;
 }

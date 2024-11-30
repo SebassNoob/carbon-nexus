@@ -25,9 +25,9 @@ export default function RootLayout({
 			<body className={inter.className}>
 				<AuthProvider>
 					<ClientProvider>
-						<main className="bg-zinc-50 dark:bg-black min-h-screen w-full transition-all sm:p-6 p-1">
+						<main className="bg-zinc-50 dark:bg-black min-h-screen w-full transition-all">
 							<Header />
-							<section className="p-4">{children}</section>
+							<section>{children}</section>
 							<Footer />
 							<Toaster
 								position="bottom-right"

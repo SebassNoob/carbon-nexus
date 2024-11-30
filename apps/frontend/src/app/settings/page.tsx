@@ -9,7 +9,7 @@ const tabs = [
 
 export default function SettingsPage() {
 	return (
-		<div className="flex flex-col gap-2">
+		<div className="flex flex-col gap-2 sm:p-8 p-4">
 			<Title order={1}>Settings</Title>
 			<SettingsTabs tabs={tabs} />
 		</div>

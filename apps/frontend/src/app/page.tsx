@@ -1,15 +1,14 @@
-import { Text, Code, Title } from "@lib/components";
+import { Text, } from "@lib/components";
 import { getUser } from "@lib/actions";
+import { Hero } from "./components";
 
 export default async function Home() {
 	const { data } = await getUser();
 
 	return (
-		<div>
-			<Title order={1}>Hello!</Title>
-			<Text order="lg">
-				Welcome to your new app. Edit <Code>apps/frontend/src/page.tsx</Code> to get started!
-			</Text>
+		<div className="relative">
+			<Hero />
+
 			<div className="mt-4 flex flex-col gap-2">
 				<Text>Built in authentication:</Text>
 				<table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
