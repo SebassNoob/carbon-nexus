@@ -38,7 +38,15 @@ export function Gauge({ progress, className, children, color = "info" }: GaugePr
 					strokeWidth="3"
 					strokeDasharray={`${(progress / 100) * 75} 100`}
 					strokeLinecap="round"
-				/>
+				>
+					<animate
+						attributeName="stroke-dasharray"
+						from="0 100"
+						to={`${(progress / 100) * 75} 100`}
+						dur={(progress / 100) * 1}
+						fill="freeze"
+					/>
+				</circle>
 			</svg>
 
 			<div className="absolute top-1/2 start-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">

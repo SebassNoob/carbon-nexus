@@ -8,12 +8,6 @@ export function Logo(props: LogoProps) {
 			<div className="relative h-8 w-8">
 				<Image src="/logo.svg" alt="Logo" />
 			</div>
-			<Title
-				order={1}
-				className="text-2xl bg-gradient-to-r from-purple-500 to-blue-700 bg-clip-text text-transparent dark:text-transparent hidden sm:inline-block"
-			>
-				Carbon Nexus
-			</Title>
 		</div>
 	);
 }

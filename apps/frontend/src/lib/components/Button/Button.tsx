@@ -7,7 +7,6 @@ import { default as NextLink } from "next/link";
 
 export function Button({
 	children,
-
 	className,
 	color = "info",
 	type = "button",

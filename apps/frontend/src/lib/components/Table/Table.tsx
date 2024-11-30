@@ -8,11 +8,11 @@ import type {
 } from "./types";
 import { twMerge } from "tailwind-merge";
 
-const defaultTableCellStyles = "px-4 py-2 border dark:bg-gray-800 text-gray-700 dark:text-gray-300";
+const defaultTableCellStyles = "px-4 py-2 border-2 dark:border-gray-700 dark:bg-gray-950 text-gray-700 dark:text-gray-300";
 const defaultTableHeaderStyles =
 	"px-4 py-2 border bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300";
-const defaultTableRowStyles = "border-t-2 dark:border-gray-700";
-const defaultTableStyles = "w-full table-auto dark:bg-gray-800";
+const defaultTableRowStyles = "border-2 dark:border-gray-700";
+const defaultTableStyles = "w-full table-auto dark:bg-gray-950";
 
 export class Table {
 	static TableCell = ({ children, className, ...rest }: TableCellProps) => {

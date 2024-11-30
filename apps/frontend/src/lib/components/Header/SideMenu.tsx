@@ -3,6 +3,7 @@ import { useState, useCallback, useContext } from "react";
 import { AuthContext, ClientContext } from "@lib/providers";
 import { Image } from "@lib/components";
 import { toast } from "react-hot-toast";
+import { twMerge } from "tailwind-merge";
 import { Popover } from "react-tiny-popover";
 import { motion } from "framer-motion";
 import { SideMenuButton } from "./SideMenuButton";
@@ -75,6 +76,7 @@ export function SideMenu({ navLinks }: SideMenuProps) {
 		<Popover
 			isOpen={open}
 			positions={["bottom", "left"]}
+			containerClassName="z-50"
 			onClickOutside={() => setOpen(false)}
 			align="end"
 			padding={5}
@@ -102,17 +104,13 @@ export function SideMenu({ navLinks }: SideMenuProps) {
 				tabIndex={-1}
 				type="button"
 			>
-				{theme === "light" ? (
-					<Image src="/common/user.svg" alt="menu" className="h-6 w-6" height={24} width={24} />
-				) : (
-					<Image
-						src="/common/user.svg"
-						alt="menu"
-						className="h-6 w-6 invert"
-						height={24}
-						width={24}
-					/>
-				)}
+				<Image
+					src="/common/user.svg"
+					alt="menu"
+					className={twMerge("h6 w-6", theme === "light" ? undefined : "invert")}
+					height={24}
+					width={24}
+				/>
 			</button>
 		</Popover>
 	);
