@@ -21,7 +21,7 @@ export function TechStack() {
 		<article className="flex flex-col gap-4 items-center mt-32">
 			<Title order={2}>Built With</Title>
 			{reducedMotion || isMobile ? (
-				<div className="flex flex-col gap-4 items-center overflow-scroll">
+				<div className="flex flex-col gap-4 items-center overflow-scroll w-full">
 					<div className="flex gap-4">
 						{techStack.map((src) => (
 							<Image key={src} src={relPath + src} alt={src} width={100} height={100} />
@@ -29,7 +29,7 @@ export function TechStack() {
 					</div>
 				</div>
 			) : (
-				<div className="relative flex overflow-x-hidden">
+				<div className="relative flex overflow-x-hidden w-full">
 					<div className="py-12 animate-marquee whitespace-nowrap flex">
 						{techStack.map((src) => (
 							<Image
