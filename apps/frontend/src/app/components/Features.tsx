@@ -33,9 +33,9 @@ export function Features() {
 	};
 
 	return (
-		<section className="flex flex-col gap-32">
+		<section className="flex flex-col gap-10 sm:gap-32">
 			<motion.div
-				className="flex items-center justify-between w-full px-12 gap-8"
+				className="flex flex-col sm:flex-row items-center justify-between w-full px-12 gap-8"
 				initial={{ opacity: 0 }}
 				whileInView={{ opacity: 1, transition: { duration: 0.5 } }}
 				viewport={{ once: true }}
@@ -48,7 +48,7 @@ export function Features() {
 						application.
 					</Text>
 				</div>
-				<div className="flex gap-2 flex-col items-center rounded-md border-2 border-zinc-800/20 dark:border-zinc-200/20 p-4 w-3/5 dark:bg-gray-950">
+				<div className="flex gap-2 flex-col items-center rounded-md border-2 border-zinc-800/20 dark:border-zinc-200/20 p-4 w-full sm:w-3/5 dark:bg-gray-950">
 					<Autocomplete
 						items={["React", "Vue", "Angular", "Svelte", "Ember", "Preact"]}
 						handleChange={() => null}
@@ -60,7 +60,7 @@ export function Features() {
 							<Text>{gaugeFullness}%</Text>
 						</Gauge>
 					</motion.div>
-					<div className="flex gap-2">
+					<div className="flex gap-2 flex-col sm:flex-row">
 						<Button>Info</Button>
 						<Button color="danger">Danger</Button>
 						<Button color="warning">Warning</Button>
@@ -68,7 +68,7 @@ export function Features() {
 				</div>
 			</motion.div>
 			<motion.div
-				className="flex items-center justify-between w-full px-12 gap-8"
+				className="flex flex-col-reverse sm:flex-row items-center justify-between w-full px-12 gap-8"
 				initial={{ opacity: 0 }}
 				whileInView={{ opacity: 1, transition: { duration: 0.5 } }}
 				viewport={{ once: true }}
@@ -86,7 +86,7 @@ export function Features() {
 						</Table.TableRow>
 						<Table.TableRow>
 							<Table.TableCell>Created At</Table.TableCell>
-							<Table.TableCell>{user?.createdAt.toISOString() ?? "null"}</Table.TableCell>
+							<Table.TableCell>{user?.createdAt.toLocaleString() ?? "null"}</Table.TableCell>
 						</Table.TableRow>
 					</Table.TableBody>
 				</Table.Table>
@@ -99,7 +99,7 @@ export function Features() {
 				</div>
 			</motion.div>
 			<motion.div
-				className="flex items-center justify-between w-full px-12 gap-8"
+				className="flex flex-col sm:flex-row items-center justify-between w-full px-12 gap-8"
 				initial={{ opacity: 0 }}
 				whileInView={{ opacity: 1, transition: { duration: 0.5 } }}
 				viewport={{ once: true }}
@@ -112,7 +112,7 @@ export function Features() {
 						communicate with the backend.
 					</Text>
 				</div>
-				<div className="flex gap-2 flex-col items-center rounded-md border-2 border-zinc-800/20 dark:border-zinc-200/20 p-4 w-3/5 dark:bg-gray-950">
+				<div className="flex gap-2 flex-col items-center rounded-md border-2 border-zinc-800/20 dark:border-zinc-200/20 p-4 w-full sm:w-3/5 dark:bg-gray-950">
 					<Button onClick={handleTestEndpointCall} color="danger">
 						Click me
 					</Button>
