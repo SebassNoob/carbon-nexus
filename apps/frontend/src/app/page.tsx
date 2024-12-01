@@ -1,15 +1,11 @@
-import { Text } from "@lib/components";
-import { getUser } from "@lib/actions";
-import { Features, Hero } from "./components";
+import { Features, Hero, TechStack } from "./components";
 
 export default async function Home() {
-	const { data } = await getUser();
-	console.info("logged in user", data);
-
 	return (
 		<div>
 			<Hero />
 			<Features />
+			<TechStack />
 		</div>
 	);
 }

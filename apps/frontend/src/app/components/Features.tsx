@@ -2,34 +2,35 @@
 import { motion } from "framer-motion";
 import { Title, Text, Autocomplete, Gauge, Button, Table } from "@lib/components";
 import { useEffect, useState, useContext } from "react";
-import { AuthContext } from "@lib/providers";
+import { AuthContext, ClientContext } from "@lib/providers";
 import { query } from "@utils";
 import { z } from "zod";
-import { toast } from 'react-hot-toast'
+import { toast } from "react-hot-toast";
 
 export function Features() {
 	const [gaugeFullness, setGaugeFullness] = useState(75);
 	const { user } = useContext(AuthContext);
+	const { reducedMotion } = useContext(ClientContext);
 
 	useEffect(() => {
+		if (reducedMotion) return;
 		const id = setInterval(() => {
 			setGaugeFullness(Math.floor(Math.random() * 100));
-		}, 1000);
+		}, 10000);
 
 		return () => clearInterval(id);
-	}, []);
+	}, [reducedMotion]);
 
-  const handleTestEndpointCall = async () => {
-    const {error} = await query({
-      path: "/test",
-      init: { method: "GET" },
-      validator: z.null()
-    });
-    if (error) {
-      toast.error('The server returned an error');
-    }
-  }
-
+	const handleTestEndpointCall = async () => {
+		const { error } = await query({
+			path: "/test",
+			init: { method: "GET" },
+			validator: z.null(),
+		});
+		if (error) {
+			toast.error("The server returned an error");
+		}
+	};
 
 	return (
 		<section className="flex flex-col gap-32">
@@ -38,13 +39,13 @@ export function Features() {
 				initial={{ opacity: 0 }}
 				whileInView={{ opacity: 1, transition: { duration: 0.5 } }}
 				viewport={{ once: true }}
-        margin='-50px 0px 0px 0px'
+				margin="-50px 0px 0px 0px"
 			>
 				<div className="flex flex-col gap-4">
 					<Title order={2}>Custom Tailwind Components</Title>
 					<Text>
-						Contains a variety of custom Tailwind components that can be used to build
-						your application.
+						Contains a variety of custom Tailwind components that can be used to build your
+						application.
 					</Text>
 				</div>
 				<div className="flex gap-2 flex-col items-center rounded-md border-2 border-zinc-800/20 dark:border-zinc-200/20 p-4 w-3/5 dark:bg-gray-950">
@@ -71,7 +72,7 @@ export function Features() {
 				initial={{ opacity: 0 }}
 				whileInView={{ opacity: 1, transition: { duration: 0.5 } }}
 				viewport={{ once: true }}
-        margin='-50px 0px 0px 0px'
+				margin="-50px 0px 0px 0px"
 			>
 				<Table.Table>
 					<Table.TableBody>
@@ -92,29 +93,32 @@ export function Features() {
 				<div className="flex flex-col gap-4">
 					<Title order={2}>Built-in Authentication</Title>
 					<Text>
-						Comes with built-in password login and OAuth2 authentication. Includes
-						email integration, user settings, and more.
+						Comes with built-in password login and OAuth2 authentication. Includes email
+						integration, user settings, and more.
 					</Text>
 				</div>
 			</motion.div>
-      <motion.div
-        className="flex items-center justify-between w-full px-12 gap-8"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1, transition: { duration: 0.5 } }}
-        viewport={{ once: true }}
-        margin='-50px 0px 0px 0px'
-      >
-        <div className="flex flex-col gap-4">
-          <Title order={2}>Validation & Error Handling</Title>
-          <Text>
-            Has end-to-end type-safe validation and error handling. Use pre-defined protocols to communicate with the backend.
-          </Text>
-        </div>
-        <div className="flex gap-2 flex-col items-center rounded-md border-2 border-zinc-800/20 dark:border-zinc-200/20 p-4 w-3/5 dark:bg-gray-950">
-          <Button onClick={handleTestEndpointCall} color="danger">Click me</Button>
-          <Text>Open the network inspector tab →</Text>
-        </div>
-      </motion.div>
+			<motion.div
+				className="flex items-center justify-between w-full px-12 gap-8"
+				initial={{ opacity: 0 }}
+				whileInView={{ opacity: 1, transition: { duration: 0.5 } }}
+				viewport={{ once: true }}
+				margin="-50px 0px 0px 0px"
+			>
+				<div className="flex flex-col gap-4">
+					<Title order={2}>Validation & Error Handling</Title>
+					<Text>
+						Has end-to-end type-safe validation and error handling. Use pre-defined protocols to
+						communicate with the backend.
+					</Text>
+				</div>
+				<div className="flex gap-2 flex-col items-center rounded-md border-2 border-zinc-800/20 dark:border-zinc-200/20 p-4 w-3/5 dark:bg-gray-950">
+					<Button onClick={handleTestEndpointCall} color="danger">
+						Click me
+					</Button>
+					<Text>Open the network inspector tab →</Text>
+				</div>
+			</motion.div>
 		</section>
 	);
 }

@@ -1,4 +1,4 @@
-import { Image, Title } from "@lib/components";
+import { Image } from "@lib/components";
 import { twMerge } from "tailwind-merge";
 import type { LogoProps } from "./types";
 
