@@ -12,6 +12,7 @@ const uppercaseRegex = /[A-Z]/;
 const lowercaseRegex = /[a-z]/;
 const numberRegex = /[0-9]/;
 const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+const whitespaceRegex = /\s/;
 
 const passwordSchema = z
 	.string()
@@ -28,6 +29,9 @@ const passwordSchema = z
 	})
 	.refine((pw) => specialCharRegex.test(pw), {
 		message: "Password must contain at least one special character",
+	})
+	.refine((pw) => !whitespaceRegex.test(pw), {
+		message: "Password must not contain any whitespace",
 	});
 
 export const SignUpInputSchema = z
