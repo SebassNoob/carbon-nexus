@@ -63,12 +63,20 @@ export function SideMenu({ navLinks }: SideMenuProps) {
 			);
 
 		return (
-			<SideMenuButton
-				icon="/common/signin.svg"
-				imageClassname="-scale-x-100"
-				text="Sign Out"
-				onClick={signOutResponse}
-			/>
+			<>
+				<SideMenuButton
+					icon="/common/settings.svg"
+					text="Settings"
+					onClick={() => router.push("/settings")}
+				/>
+
+				<SideMenuButton
+					icon="/common/signin.svg"
+					imageClassname="-scale-x-100"
+					text="Sign Out"
+					onClick={signOutResponse}
+				/>
+			</>
 		);
 	}, [user, loading, signOutResponse, router]);
 
@@ -88,11 +96,7 @@ export function SideMenu({ navLinks }: SideMenuProps) {
 					className="max-w-lg bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 				>
 					{renderNavButtons()}
-					<SideMenuButton
-						icon="/common/settings.svg"
-						text="Settings"
-						onClick={() => router.push("/settings")}
-					/>
+
 					{renderAuthButtons()}
 				</motion.div>
 			}
