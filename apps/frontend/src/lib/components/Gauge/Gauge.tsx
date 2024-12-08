@@ -1,5 +1,6 @@
 import type { GaugeProps } from "./types";
 import { twMerge } from "tailwind-merge";
+import { motion } from "framer-motion";
 
 const infoStyles = "text-blue-600 dark:text-blue-500";
 const dangerStyles = "text-red-600 dark:text-red-500";
@@ -16,7 +17,11 @@ export function Gauge({ progress, className, children, color = "info" }: GaugePr
 
 	return (
 		<div className={twMerge("relative size-36", className)}>
-			<svg className="rotate-[135deg] size-" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+			<svg
+				className="rotate-[135deg] size-full"
+				viewBox="0 0 36 36"
+				xmlns="http://www.w3.org/2000/svg"
+			>
 				<title>Gauge</title>
 				<circle
 					cx="18"
@@ -29,24 +34,18 @@ export function Gauge({ progress, className, children, color = "info" }: GaugePr
 					strokeLinecap="round"
 				/>
 
-				<circle
+				<motion.circle
 					cx="18"
 					cy="18"
 					r="16"
 					fill="none"
 					className={`stroke-current ${colorStyles[color]}`}
 					strokeWidth="3"
-					strokeDasharray={`${(progress / 100) * 75} 100`}
 					strokeLinecap="round"
-				>
-					<animate
-						attributeName="stroke-dasharray"
-						from="0 100"
-						to={`${(progress / 100) * 75} 100`}
-						dur={(progress / 100) * 1}
-						fill="freeze"
-					/>
-				</circle>
+					initial={{ strokeDasharray: "0 100" }}
+					animate={{ strokeDasharray: `${(progress / 100) * 75} 100` }}
+					transition={{ type: "spring", damping: 10, stiffness: 100 }}
+				/>
 			</svg>
 
 			<div className="absolute top-1/2 start-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">

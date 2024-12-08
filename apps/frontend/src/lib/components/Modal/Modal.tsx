@@ -56,7 +56,7 @@ export function Modal({
 				<motion.dialog
 					initial={reducedMotion ? false : { opacity: 0, scale: 0.95 }}
 					animate={{ opacity: 1, scale: 1 }}
-					exit={reducedMotion ? false : { opacity: 0, scale: 0.95 }}
+					exit={reducedMotion ? undefined : { opacity: 0, scale: 0.95 }}
 					transition={{ duration: 0.1 }}
 					key="modal"
 					ref={modalRef}

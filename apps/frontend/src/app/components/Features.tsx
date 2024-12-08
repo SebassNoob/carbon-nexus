@@ -16,7 +16,7 @@ export function Features() {
 		if (reducedMotion) return;
 		const id = setInterval(() => {
 			setGaugeFullness(Math.floor(Math.random() * 100));
-		}, 10000);
+		}, 1000);
 
 		return () => clearInterval(id);
 	}, [reducedMotion]);
@@ -38,8 +38,7 @@ export function Features() {
 				className="flex flex-col sm:flex-row items-center justify-between w-full px-12 gap-8"
 				initial={{ opacity: 0 }}
 				whileInView={{ opacity: 1, transition: { duration: 0.5 } }}
-				viewport={{ once: true }}
-				margin="-50px 0px 0px 0px"
+				viewport={{ once: true, margin: "-50px 0px 0px 0px" }}
 			>
 				<div className="flex flex-col gap-4">
 					<Title order={2}>Custom Tailwind Components</Title>
@@ -55,7 +54,7 @@ export function Features() {
 						placeholder="Search for a framework"
 						className="w-full"
 					/>
-					<motion.div key={gaugeFullness}>
+					<motion.div>
 						<Gauge progress={gaugeFullness}>
 							<Text>{gaugeFullness}%</Text>
 						</Gauge>
@@ -71,8 +70,7 @@ export function Features() {
 				className="flex flex-col-reverse sm:flex-row items-center justify-between w-full px-12 gap-8"
 				initial={{ opacity: 0 }}
 				whileInView={{ opacity: 1, transition: { duration: 0.5 } }}
-				viewport={{ once: true }}
-				margin="-50px 0px 0px 0px"
+				viewport={{ once: true, margin: "-50px 0px 0px 0px" }}
 			>
 				<Table.Table>
 					<Table.TableBody>
@@ -102,8 +100,7 @@ export function Features() {
 				className="flex flex-col sm:flex-row items-center justify-between w-full px-12 gap-8"
 				initial={{ opacity: 0 }}
 				whileInView={{ opacity: 1, transition: { duration: 0.5 } }}
-				viewport={{ once: true }}
-				margin="-50px 0px 0px 0px"
+				viewport={{ once: true, margin: "-50px 0px 0px 0px" }}
 			>
 				<div className="flex flex-col gap-4">
 					<Title order={2}>Validation & Error Handling</Title>
