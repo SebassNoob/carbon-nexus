@@ -15,6 +15,6 @@ export async function bootstrap() {
 	app.useGlobalInterceptors(new StandardInterceptor());
 	if (process.env.NODE_ENV === "production") app.useGlobalInterceptors(new LoggingInterceptor());
 
-	const fqdn = new URL(process.env.BACKEND_URL ?? "http://localhost:8080");
+	const fqdn = new URL(process.env.BACKEND_INTERNAL_URL ?? "http://localhost:8080");
 	await app.listen(fqdn.port, fqdn.hostname);
 }

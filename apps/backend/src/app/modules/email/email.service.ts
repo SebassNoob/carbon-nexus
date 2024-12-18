@@ -44,7 +44,7 @@ export class EmailService {
 		});
 		this.emailFrom = this.config.get<string>("EMAIL_USER") ?? "";
 
-		this.emailTemplates = this.compileTemplatesFromDir(`${__dirname}/templates`);
+		this.emailTemplates = this.compileTemplatesFromDir(`${process.cwd()}/public/emailTemplates`);
 	}
 
 	private async sendEmail(
@@ -137,7 +137,7 @@ export class EmailService {
 
 		await this.sendEmail(user.email, "Verify your email", "verify.hbs", {
 			username: user.username,
-			url: `${this.config.get<string>("BACKEND_URL")}/auth/verify/${token.token}`,
+			url: `${this.config.get<string>("BACKEND_PUBLIC_URL")}/auth/verify/${token.token}`,
 		});
 	}
 }
