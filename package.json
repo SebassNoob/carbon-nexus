@@ -1,7 +1,7 @@
 {
 	"name": "carbon-nexus",
 	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
+		"@biomejs/biome": "^2.1.3",
 		"turbo": "^2.5.5",
 		"typescript": "^5.8.3"
 	},
@@ -9,6 +9,7 @@
 		"node": ">=18"
 	},
 	"private": true,
+	"packageManager": "bun@1.2.19",
 	"scripts": {
 		"build": "bunx turbo build",
 		"dev": "bunx turbo dev",
